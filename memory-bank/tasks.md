@@ -28,6 +28,28 @@
 
 **Notes**: Following KIRSS principle for minimal but sufficient setup
 
+### T0.1: Frontend UI Implementation
+**Description**: Implement the basic frontend UI components and layout
+**Status**: ✅ COMPLETED
+**Last Active**: 2025-04-26
+**Completion Criteria**:
+- ✅ Set up basic app layout with header and sidebar
+- ✅ Create paper list and card components
+- ✅ Implement paper table with sortable columns
+- ✅ Add author and category filters
+- ✅ Add expandable paper details
+- ✅ Style components using ShadcnUI
+
+**Related Files**:
+- `src/components/layout/app-layout.tsx`
+- `src/components/papers/paper-table.tsx`
+- `src/components/papers/paper-table-row.tsx`
+- `src/components/papers/paper-filters.tsx`
+- `src/pages/home.tsx`
+- `src/types/paper.ts`
+
+**Notes**: UI components implemented with KIRSS principle, focusing on essential features first
+
 ### T1: @agentic/arxiv Integration
 **Description**: Integrate @agentic/arxiv package for direct arXiv paper access
 **Status**: ⬜ TODO
