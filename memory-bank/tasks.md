@@ -52,19 +52,25 @@
 
 ### T1: @agentic/arxiv Integration
 **Description**: Integrate @agentic/arxiv package for direct arXiv paper access
-**Status**: ⬜ TODO
-**Last Active**: -
+**Status**: 🔄 IN PROGRESS
+**Last Active**: 2025-04-26
 **Completion Criteria**:
-- Install and configure @agentic/arxiv
-- Create paper fetching hooks
-- Implement search functionality
-- Add category filtering support
+- ✅ Install and configure @agentic/arxiv
+- ✅ Create paper fetching hooks
+- ✅ Implement search functionality
+- 🔄 Add category filtering support
 
 **Related Files**:
+- `src/types/arxiv.ts`
 - `src/hooks/useArxiv.ts`
 - `src/lib/arxiv.ts`
+- `src/pages/home.tsx`
+- `src/components/papers/paper-filters.tsx`
+- `src/components/papers/paper-table-row.tsx`
 
-**Notes**: Keep integration minimal and focused on essential features
+**Notes**: Initial integration complete. Known issues:
+- Category filter list not populating
+- React key warning in paper-filters.tsx
 
 ### T2: Paper Display Components
 **Description**: Create core UI components for displaying papers

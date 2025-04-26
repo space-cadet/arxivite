@@ -44,3 +44,5 @@ build
 
 # Development server
 .vite/
+
+*/__pycache__/*

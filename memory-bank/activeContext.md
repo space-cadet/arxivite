@@ -1,33 +1,36 @@
-# Active Context
-*Last Updated: 2025-04-26*
+# Active Development Context
+*Last Updated: 2025-04-26 18:00*
 
 ## Current Focus
-- Completing project setup (T0)
-- Implementation structure defined
-- Ready for frontend implementation (T1, T2)
+Task: T1 - ArXiv Integration
+Status: 🔄 IN PROGRESS
+Priority: HIGH
 
-## Active Context
-- Using @agentic/arxiv for API access
-- Frontend using shadcn/ui components
-- Following KIRFS principle
+## Implementation State
+- Basic UI components in place
+- ArXiv integration partially complete
+- Paper fetching working with real data
+- Search functionality operational
+
+## Current Issues
+1. Category filter not displaying options
+2. React key warning in filters component
+3. No pagination for results
 
 ## Recent Changes
-- Project dependencies installed via pnpm
-- Memory bank structure completed
-- Implementation structure defined
-- Support scripts imported
+- Implemented ArXiv client with proper configuration
+- Added paper data transformation
+- Updated components to use real data
+- Added loading states and error handling
 
-## Implementation Context
-- Frontend structure defined in initial-app-structure.md
-- Component hierarchy established
-- Data flow patterns determined
+## Next Actions
+1. Fix category filter population
+2. Resolve React key warning
+3. Implement pagination
+4. Improve error messaging
 
-## Active Considerations
-- Minimal viable implementation
-- Component reusability
-- Performance optimization
-
-## Next Steps
-- Complete T0 verification
-- Begin T1: @agentic/arxiv integration
-- Begin T2: Paper display components
+## Active Files
+- `src/lib/arxiv.ts`
+- `src/hooks/useArxiv.ts`
+- `src/components/papers/paper-filters.tsx`
+- `src/pages/home.tsx`

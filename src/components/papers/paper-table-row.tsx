@@ -11,6 +11,14 @@ interface PaperTableRowProps {
 const PaperTableRow = ({ paper }: PaperTableRowProps) => {
   const [isOpen, setIsOpen] = useState(false);
 
+  const formatDate = (date: Date) => {
+    return date.toLocaleDateString('en-US', {
+      year: 'numeric',
+      month: 'short',
+      day: 'numeric'
+    });
+  };
+
   return (
     <>
       <TableRow 
@@ -32,16 +40,28 @@ const PaperTableRow = ({ paper }: PaperTableRowProps) => {
             {paper.category}
           </span>
         </TableCell>
-        <TableCell>{paper.publishedDate}</TableCell>
+        <TableCell>{formatDate(paper.publishedDate)}</TableCell>
         <TableCell className="text-right">
-          <div className="flex justify-end gap-2">
-            <Button variant="outline" size="sm">
-              <ExternalLink className="mr-2 h-3 w-3" />
-              View
+          <div className="flex justify-end gap-2" onClick={e => e.stopPropagation()}>
+            <Button 
+              variant="outline" 
+              size="sm"
+              asChild
+            >
+              <a href={`https://arxiv.org/abs/${paper.id}`} target="_blank" rel="noopener noreferrer">
+                <ExternalLink className="mr-2 h-3 w-3" />
+                View
+              </a>
             </Button>
-            <Button variant="default" size="sm">
-              <Download className="mr-2 h-3 w-3" />
-              PDF
+            <Button 
+              variant="default" 
+              size="sm"
+              asChild
+            >
+              <a href={paper.pdfUrl} target="_blank" rel="noopener noreferrer">
+                <Download className="mr-2 h-3 w-3" />
+                PDF
+              </a>
             </Button>
           </div>
         </TableCell>
@@ -54,24 +74,42 @@ const PaperTableRow = ({ paper }: PaperTableRowProps) => {
                 <div>
                   <h4 className="text-sm font-semibold">Abstract</h4>
                   <p className="mt-1 text-sm text-muted-foreground">
-                    {paper.summary}
+                    {paper.abstract}
                   </p>
                 </div>
                 <div className="flex flex-wrap gap-4 text-sm">
                   <div>
                     <span className="font-semibold">Published:</span>{' '}
-                    {paper.publishedDate}
+                    {formatDate(paper.publishedDate)}
                   </div>
-                  {paper.updatedDate !== paper.publishedDate && (
+                  {paper.updatedDate.getTime() !== paper.publishedDate.getTime() && (
                     <div>
                       <span className="font-semibold">Last Updated:</span>{' '}
-                      {paper.updatedDate}
+                      {formatDate(paper.updatedDate)}
                     </div>
                   )}
                   <div>
                     <span className="font-semibold">arXiv ID:</span>{' '}
                     {paper.id}
                   </div>
+                  {paper.doi && (
+                    <div>
+                      <span className="font-semibold">DOI:</span>{' '}
+                      {paper.doi}
+                    </div>
+                  )}
+                  {paper.journalRef && (
+                    <div>
+                      <span className="font-semibold">Journal Ref:</span>{' '}
+                      {paper.journalRef}
+                    </div>
+                  )}
+                  {paper.comments && (
+                    <div>
+                      <span className="font-semibold">Comments:</span>{' '}
+                      {paper.comments}
+                    </div>
+                  )}
                 </div>
               </div>
             </div>

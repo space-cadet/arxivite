@@ -34,3 +34,22 @@
 - Updated paper-table-row.tsx - Fixed table structure and alignment
 - Updated paper-filters.tsx - Fixed Select component value issue
 - Updated paper-table.tsx - Improved column sorting implementation
+
+### 17:30 - T1: ArXiv Integration Initial Implementation
+- Created `src/types/arxiv.ts` - ArXiv API type definitions
+- Created `src/lib/arxiv.ts` - ArXiv client setup and search functionality
+- Created `src/hooks/useArxiv.ts` - React hook for arxiv operations
+- Updated components to use real data from ArXiv API:
+  - Fixed API base URL configuration
+  - Added proper data transformation
+  - Improved error handling
+  - Added loading states
+
+### 18:00 - T1: ArXiv Integration Fixes
+- Updated arxiv.ts - Fixed paper data parsing and formatting
+- Fixed nested object handling for authors and categories
+- Added proper link handling for PDF and abstract URLs
+- Added fallbacks for optional fields
+- Remaining known issues:
+  - Category filter list not populating
+  - React key warning in paper-filters.tsx
