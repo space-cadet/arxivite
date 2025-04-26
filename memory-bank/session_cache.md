@@ -2,7 +2,7 @@
 *Last Updated: 2025-04-26*
 
 ## Overview
-- Active: 2 | Paused: 0 | Focus: T1 (@agentic/arxiv Integration)
+- Active: 3 | Paused: 0 | Focus: T3 (Static Research Profile)
 - Current Session Start: 2025-04-26
 - Last Update: 18:00
 
@@ -10,8 +10,28 @@
 - T0: Project Setup - 🔄
 - T1: @agentic/arxiv Integration - 🔄
 - T2: Paper Display Components - ⬜
+- T3: Static Research Profile - 🔄
+- T4: ML-Enhanced Profile - ⬜
 
 ## Active Tasks
+
+### T3: Static Research Profile
+**Status:** 🔄 **Priority:** HIGH
+**Started:** 2025-04-26 **Last**: 2025-04-26
+**Context**: Implementing basic profile management
+**Files**:
+- `src/contexts/ProfileContext.tsx` - Profile state management
+- `src/pages/profile.tsx` - Profile editor page
+- `src/components/layout/Header.tsx` - Navigation
+- `src/types/profile.ts` - Type definitions
+
+**Progress**:
+1. ✅ Created profile data structures
+2. ✅ Implemented profile context with storage
+3. ✅ Added header navigation
+4. ✅ Created basic profile editor
+5. 🔄 Remaining tasks in TODO.md
+
 
 ### T0: Project Setup
 **Status:** 🔄 **Priority:** HIGH

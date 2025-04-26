@@ -7,6 +7,8 @@
 | T0 | Project Setup | 🔄 IN PROGRESS | HIGH | 2025-04-26 | - |
 | T1 | @agentic/arxiv Integration | ⬜ TODO | HIGH | - | T0 |
 | T2 | Paper Display Components | ⬜ TODO | HIGH | - | T0 |
+| T3 | Static Research Profile | 🔄 IN PROGRESS | HIGH | 2025-04-26 | T0, T1 |
+| T4 | ML-Enhanced Profile | ⬜ TODO | MEDIUM | - | T3 |
 
 ## Task Details
 
@@ -88,6 +90,49 @@
 - `src/components/PaperDetail.tsx`
 
 **Notes**: Use ShadcnUI components for consistent styling
+
+### T3: Static Research Profile
+**Description**: Implement basic user research profile management with manual inputs
+**Status**: 🔄 IN PROGRESS
+**Last Active**: 2025-04-26
+**Completion Criteria**:
+- Create profile data structure and storage
+- Implement profile editor UI components
+- Add profile-based paper filtering
+- Create header menubar with navigation
+- Add profile page
+- Integrate with existing paper display
+
+**Related Files**:
+- `src/types/profile.ts`
+- `src/components/profile/ProfileEditor.tsx`
+- `src/components/layout/Header.tsx`
+- `src/pages/profile.tsx`
+- `src/hooks/useProfile.ts`
+- `src/hooks/useFilteredPapers.ts`
+
+**Notes**: Following KIRSS principle for basic but effective profile management
+
+### T4: ML-Enhanced Profile
+**Description**: Add machine learning capabilities to automatically enhance user research profiles
+**Status**: ⬜ TODO
+**Last Active**: -
+**Completion Criteria**:
+- Implement paper similarity analysis
+- Add paper interaction tracking
+- Create ML model for profile enhancement
+- Integrate with static profile system
+- Add profile suggestions UI
+- Add profile learning controls
+
+**Related Files**:
+- `src/lib/ml/similarity.ts`
+- `src/lib/ml/profile-learner.ts`
+- `src/components/profile/MLControls.tsx`
+- `src/hooks/useProfileLearning.ts`
+- `src/types/ml-profile.ts`
+
+**Notes**: Build on top of static profile system, focus on simple but effective ML approaches first
 
 ## Completed Tasks
 None yet.
