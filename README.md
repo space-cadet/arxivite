@@ -1,141 +1,65 @@
-<div align="center">
-  <h1>ReVite</h1>
-</div>
+# arxivite
 
-<p align="center">
-  <b>QuickStarter for React with Vite:</b> A streamlined template to kickstart your React projects with essential features built-in. Boost your development process with speed and efficiency.
-</p>
+A lightweight, self-contained arXiv paper browser built with React + Vite.
 
-<div align="center">
-  <a href="https://github.com/vwh/revite/actions/workflows/format.yml">
-    <img src="https://github.com/vwh/revite/actions/workflows/format.yml/badge.svg" alt="Check Format Badge"/>
-  </a>
-  <a href="https://github.com/vwh/revite/actions/workflows/lint.yml">
-    <img src="https://github.com/vwh/revite/actions/workflows/lint.yml/badge.svg" alt="Lint Badge"/>
-  </a>
-</div>
+## Features
 
-<br>
+- Search and browse arXiv papers directly in your browser
+- No backend required - uses @agentic/arxiv package
+- Modern UI with ShadcnUI components
+- Local storage for preferences
+- Fully responsive design
 
-<div align="center">
-  <a href="https://github.com/vwh/revite" target="_blank">
-    <img src="https://github.com/user-attachments/assets/9ab15a1e-aa04-4813-8b5c-ca75b72afa43" alt="Preview">
-  </a>
-</div>
+## Getting Started
 
-## 🗃️ Project Structure
+### Prerequisites
+
+- Node.js 18+ or Bun
+
+### Installation
 
 ```bash
-ReVite/
-├── components.json             # Configuration for Shadcn UI components
-├── index.html                  # Main HTML file
-├── package.json                # Project metadata and dependencies
-├── prettier.config.js          # Prettier configuration
-├── public/                     # Public assets
-│   └── images/                 # Image assets
-├── src/                        # Source files
-│   ├── App.tsx                 # Main app component
-│   ├── components/             # React components
-│   │   └── ui/                 # UI components
-│   ├── hooks/                  # Custom hooks
-│   ├── index.css               # Main CSS file
-│   ├── lib/                    # Utility functions
-│   ├── main.tsx                # Main entry point
-│   └── vite-env.d.ts           # TypeScript Vite environment definitions
-├── tailwind.config.js          # Tailwind CSS configuration
-├── tsconfig.app.json           # TypeScript app configuration
-├── tsconfig.json               # TypeScript base configuration
-├── tsconfig.node.json          # TypeScript Node configuration
-└── vite.config.ts              # Vite configuration
-```
+# Clone the repository
+git clone [your-repo-url]
+cd arxivite
 
-## 🚀 Getting Started
-
-### 📥 Installation
-
-Clone the repository and install dependencies:
-
-```bash
-git clone https://github.com/vwh/revite
-cd revite
-
-# Using Bun
-bun install
-
-# Or using npm
+# Install dependencies (using npm)
 npm install
+
+# Or using Bun
+bun install
 ```
 
-### 💻 Development Server
-
-Start the development server:
+### Development
 
 ```bash
-# Using Bun
-bun run dev
-
-# Or using npm
+# Start development server
 npm run dev
+
+# Or using Bun
+bun dev
 ```
 
-### 🏗️ Build
+## Project Structure
 
-Build the project for production:
-
-```bash
-# Using Bun
-bun run build
-
-# Or using npm
-npm run build
+```
+arxivite/
+├── src/              # Source code
+│   ├── components/   # React components
+│   ├── hooks/        # Custom React hooks
+│   └── lib/          # Utility functions
+├── public/           # Static assets
+└── memory-bank/      # Project documentation
 ```
 
-### 👀 Preview
+## Built With
 
-Preview the production build locally:
+- [React](https://react.dev) - UI Framework
+- [Vite](https://vitejs.dev) - Build tool
+- [@agentic/arxiv](https://npmjs.com/package/@agentic/arxiv) - arXiv API client
+- [shadcn/ui](https://ui.shadcn.com) - UI Components
+- [TypeScript](https://typescriptlang.org) - Type safety
 
-```bash
-# Using Bun
-bun run preview
+## License
 
-# Or using npm
-npm run preview
-```
-
-### 🧹 Linting
-
-Lint the project files:
-
-```bash
-# Using Bun
-bun run lint
-
-# Or using npm
-npm run lint
-```
-
-### 🎨 Formatting
-
-Format the project files:
-
-```bash
-# Using Bun
-bun run format
-
-# Or using npm
-npm run format
-```
-
-Check the formatting:
-
-```bash
-# Using Bun
-bun run format:check
-
-# Or using npm
-npm run format:check
-```
-
-## 🤝 Contributing
-
-Contributions are welcome! Feel free to open a pull request with your improvements or fixes.
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.

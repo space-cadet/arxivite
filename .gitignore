@@ -7,10 +7,10 @@ yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 
+# Dependencies
 node_modules
 dist
 dist-ssr
-dev-dist
 *.local
 
 # Editor directories and files
@@ -23,3 +23,24 @@ dev-dist
 *.njsproj
 *.sln
 *.sw?
+
+# Environment files
+.env
+.env.*
+!.env.example
+
+# TypeScript
+*.tsbuildinfo
+
+# Testing
+coverage
+
+# Production build
+build
+
+# Temporary files
+.temp
+.cache
+
+# Development server
+.vite/
