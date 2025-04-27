@@ -49,3 +49,4 @@ build
 
 git.diff
 .vercel
+.env*.local
