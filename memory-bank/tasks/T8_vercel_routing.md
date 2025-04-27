@@ -22,16 +22,16 @@
 ## Progress
 1. ✅ Identified routing configuration issues
 2. ✅ Added base configuration to vite.config.ts
-3. ✅ Updated vercel.json with proper routing configuration
+3. 🔄 Fixing vercel.json configuration errors
 4. ✅ Fixed mixed content security issue with arXiv API
 5. 🔄 Changed to HashRouter for better static deployment compatibility
-6. 🔄 Updated routing configurations for more reliable navigation
-7. ⬜ Verify production deployment
+6. ⬜ Verify production deployment
 
 ## Latest Changes
 - Switched to HashRouter for better static hosting compatibility
 - Updated base URL in vite.config.ts to './'
-- Added specific route handling in vercel.json
+- Simplified vercel.json to avoid configuration conflicts
+- Fixed build command to use pnpm
 
 ## Context
 - Initial deployment had issues with client-side routing
