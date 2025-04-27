@@ -1,5 +1,44 @@
 # Edit History
-*Created: 2025-04-26*
+*Last Updated: 2025-04-27 15:45*
+
+Changes are listed in reverse chronological order (most recent first).
+Each entry includes:
+- Timestamp
+- Task ID
+- Brief description
+- List of modified files with explanations
+
+## Recent Changes
+
+### 2025-04-27 15:45 - T5: Session Updates
+- Updated session cache with current state
+- Reordered edit history chronologically
+- Added environment information
+
+### 2025-04-27 15:30 - T5: Category Management Implementation
+- Created `src/config/arxiv-categories.ts` - Added category configuration
+- Created `src/components/category-select.tsx` - New component for category selection
+- Updated `src/hooks/useRecentPapers.ts` - Enhanced with category filtering
+- Updated `src/pages/profile.tsx` - Added structured category selection
+- Updated `src/components/catchup/RecentPaperList.tsx` - Improved state handling
+
+### 14:45 - T5: Component Integration Fixes
+- Fixed component exports in `paper-card.tsx` for proper tree shaking
+- Updated imports in `RecentPaperList.tsx` to match export style
+- Added ThemeProvider setup and integration
+- Fixed task documentation:
+  - Created individual task files
+  - Updated task registry format
+  - Added proper dependency tracking
+
+### 14:30 - T5: Initial Catchup Page Implementation
+- Created `src/pages/catchup.tsx` - Added time-based paper browsing
+- Created `src/components/catchup/TimeFilter.tsx` - Time range selector
+- Created `src/components/catchup/RecentPaperList.tsx` - Paper list with loading states
+- Updated layout components for sidebar navigation:
+  - Added Sidebar component with navigation links
+  - Moved navigation from header to sidebar
+  - Updated AppLayout to accommodate sidebar
 
 ## 2025-04-26
 ### 10:00 - T0: Initial Memory Bank Setup
@@ -65,22 +104,3 @@
   - Created session file in `sessions/2025-04-26_T3_profile.md`
   - Updated TODO.md with remaining tasks
   - Updated tasks.md with T3 and T4
-
-## 2025-04-27
-### 14:30 - T5: Initial Catchup Page Implementation
-- Created `src/pages/catchup.tsx` - Added time-based paper browsing
-- Created `src/components/catchup/TimeFilter.tsx` - Time range selector
-- Created `src/components/catchup/RecentPaperList.tsx` - Paper list with loading states
-- Updated layout components for sidebar navigation:
-  - Added Sidebar component with navigation links
-  - Moved navigation from header to sidebar
-  - Updated AppLayout to accommodate sidebar
-
-### 14:45 - T5: Component Integration Fixes
-- Fixed component exports in `paper-card.tsx` for proper tree shaking
-- Updated imports in `RecentPaperList.tsx` to match export style
-- Added ThemeProvider setup and integration
-- Fixed task documentation:
-  - Created individual task files
-  - Updated task registry format
-  - Added proper dependency tracking

@@ -18,8 +18,12 @@ Last Active: 2025-04-27
 - [x] Implement time period selector (daily/weekly/monthly)
 - [x] Create time-based paper display components
 - [x] Integrate with main navigation
-- [ ] Create recent papers fetching hook
-- [ ] Add profile-based paper filtering
+- [x] Create recent papers fetching hook
+- [x] Add proper category management
+- [x] Add profile-based paper filtering
+- [ ] Test and optimize paper fetching
+- [ ] Add error handling and recovery
+- [ ] Add bookmarking system
 
 ## Related Files
 - `src/pages/catchup.tsx`
