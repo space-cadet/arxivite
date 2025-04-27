@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo } from 'react';
+import { useEffect, useMemo } from 'react';
 import { usePersistedState } from '@/hooks/usePersistedState';
 import { arxivToPaper } from '@/types/paper';
 import PaperTable from '@/components/papers/paper-table';

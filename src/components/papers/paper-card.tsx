@@ -14,7 +14,7 @@ const PaperCard = ({ paper }: PaperCardProps) => {
     : 'Date not available';
 
   // Get the abstract/summary
-  const abstract = paper.abstract || paper.summary || 'No abstract available';
+  const abstract = paper.abstract || 'No abstract available';
 
   // Get the first category
   const category = Array.isArray(paper.categories) 

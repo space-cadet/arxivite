@@ -61,9 +61,9 @@ export default function RecentPaperList({
   }
 
   // Filter papers by author and category
-  const filteredPapers = papers.filter(paper => {
+  const filteredPapers = papers.filter((paper: Paper) => {
     const authorMatch = !authorFilter || 
-      paper.authors.some(author => 
+      paper.authors.some((author: string) => 
         author.toLowerCase().includes(authorFilter.toLowerCase())
       );
     

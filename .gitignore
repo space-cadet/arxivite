@@ -48,3 +48,4 @@ build
 */__pycache__/*
 
 git.diff
+.vercel

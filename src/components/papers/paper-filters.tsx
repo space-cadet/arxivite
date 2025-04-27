@@ -1,4 +1,4 @@
-import { useState } from 'react';
+
 import { Search } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -25,13 +25,8 @@ const PaperFilters = ({
   categories
 }: PaperFiltersProps) => {
 
-  const handleAuthorSearch = (value: string) => {
-    setAuthorSearch(value);
-    onAuthorSearch(value);
-  };
-
   const handleSearch = () => {
-    onSearch(searchQuery);
+    onSearch(searchValue);
   };
 
   const handleKeyPress = (e: React.KeyboardEvent) => {

@@ -5,7 +5,6 @@ import PaperTableRow from './paper-table-row';
 import {
   Table,
   TableBody,
-  TableCell,
   TableHead,
   TableHeader,
   TableRow,

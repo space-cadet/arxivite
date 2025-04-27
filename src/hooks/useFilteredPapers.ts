@@ -6,10 +6,10 @@ export interface PaperMatch {
   paper: Paper;
   score: number;
   matches: {
-    category?: boolean;
-    author?: boolean;
-    keyword?: string[];
-    excluded?: string[];
+    category: boolean;
+    author: boolean;
+    keyword: string[];
+    excluded: string[];
   };
 }
 

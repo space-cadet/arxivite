@@ -51,7 +51,7 @@ export default function CatchupPage() {
 
       <Card>
         <CardContent className="pt-6">
-          <Tabs defaultValue="all" className="w-full" value={filter} onValueChange={setFilter}>
+          <Tabs defaultValue="all" className="w-full" value={filter} onValueChange={(value) => setFilter(value as FilterType)}>
             <TabsList>
               <TabsTrigger value="all">All Papers</TabsTrigger>
               <TabsTrigger value="recommended">Recommended</TabsTrigger>

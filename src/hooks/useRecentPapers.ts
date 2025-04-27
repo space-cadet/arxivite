@@ -1,10 +1,10 @@
 // src/hooks/useRecentPapers.ts
-import { arxiv } from '@/lib/arxiv';
-import { useEffect, useMemo } from 'react';
+import { useMemo } from 'react';
 import { useProfile } from '@/hooks/useProfile';
 import { useFilteredPapers } from '@/hooks/useFilteredPapers';
 import { useArxivSearch } from '@/hooks/useArxiv';
 import type { Paper } from '@/types/paper';
+import { arxivToPaper } from '@/types/paper';
 import type { ResearchProfile } from '@/types/profile';
 
 type TimeRange = "daily" | "weekly" | "monthly";
@@ -74,14 +74,14 @@ export const useRecentPapers = (timeRange: TimeRange, filter: FilterType) => {
     maxResults: 50
   });
   
-  const papers = data?.papers || [];
+  const papers = (data?.papers || []).map(arxivToPaper);
   const filteredPapers = useFilteredPapers(papers, profile);
 
   const processedPapers = useMemo(() => {
     if (!papers?.length) return [];
     
     // Sort papers by date, most recent first
-    const sortedPapers = [...papers].sort((a, b) => 
+    const sortedPapers = [...papers].sort((a: Paper, b: Paper) => 
       b.updatedDate.getTime() - a.updatedDate.getTime()
     );
 

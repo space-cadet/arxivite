@@ -21,7 +21,7 @@ const ProfilePage = () => {
     excludeTerms: ''
   });
 
-  const validateTerm = (value: string, field: 'keywords' | 'excludeTerms'): { isValid: boolean; message?: string } => {
+  const validateTerm = (value: string): { isValid: boolean; message?: string } => {
     const trimmed = value.trim();
     
     if (trimmed.length < 2) {
@@ -46,7 +46,7 @@ const ProfilePage = () => {
     const value = inputs[field].trim();
     if (e.key === 'Enter' && value) {
       if (field === 'keywords' || field === 'excludeTerms') {
-        const validation = validateTerm(value, field);
+        const validation = validateTerm(value);
         if (!validation.isValid) {
           toast({
             variant: "destructive",
@@ -104,6 +104,7 @@ const ProfilePage = () => {
                   setInputs(prev => ({ ...prev, categories: '' }));
                 }}
                 placeholder="Select a category"
+                categories={profile.categories}
               />
             </div>
 

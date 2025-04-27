@@ -1,10 +1,8 @@
-import { useQuery, useQueryClient } from '@tanstack/react-query';
-import { arxiv } from '../lib/arxiv';
-import type { ArxivPaper, ArxivSearchParams } from '../types/arxiv';
+import { useQuery } from '@tanstack/react-query';
+import type { ArxivSearchParams } from '../types/arxiv';
+import { arxiv } from '@/lib/arxiv';
 
 export function useArxivSearch() {
-  const queryClient = useQueryClient();
-
   const search = (params: ArxivSearchParams) => {
     return useQuery({
       queryKey: ['arxiv', params.query, params.maxResults],
@@ -16,7 +14,7 @@ export function useArxivSearch() {
         };
       },
       staleTime: 5 * 60 * 1000, // Consider data stale after 5 minutes
-      cacheTime: 30 * 60 * 1000, // Keep in cache for 30 minutes
+      gcTime: 30 * 60 * 1000, // Keep in cache for 30 minutes
       enabled: !!params.query?.trim(), // Only run if we have a query
     });
   };

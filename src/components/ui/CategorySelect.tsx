@@ -14,6 +14,7 @@ interface CategorySelectProps {
   value: string
   onValueChange: (value: string) => void
   placeholder?: string
+  categories: string[]
 }
 
 export function CategorySelect({ value, onValueChange, placeholder = "Select a category" }: CategorySelectProps) {
