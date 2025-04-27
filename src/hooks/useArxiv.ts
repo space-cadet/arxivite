@@ -1,32 +1,25 @@
-import { useState, useCallback } from 'react';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { arxiv } from '../lib/arxiv';
 import type { ArxivPaper, ArxivSearchParams } from '../types/arxiv';
 
 export function useArxivSearch() {
-  const [papers, setPapers] = useState<ArxivPaper[]>([]);
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState<Error | null>(null);
-  const [total, setTotal] = useState(0);
+  const queryClient = useQueryClient();
 
-  const search = useCallback(async (params: ArxivSearchParams) => {
-    try {
-      setIsLoading(true);
-      setError(null);
-      const response = await arxiv.search(params);
-      setPapers(response.papers);
-      setTotal(response.total);
-    } catch (err) {
-      setError(err instanceof Error ? err : new Error('Unknown error occurred'));
-    } finally {
-      setIsLoading(false);
-    }
-  }, []);
-
-  return {
-    papers,
-    isLoading,
-    error,
-    total,
-    search,
+  const search = (params: ArxivSearchParams) => {
+    return useQuery({
+      queryKey: ['arxiv', params.query, params.maxResults],
+      queryFn: async () => {
+        const response = await arxiv.search(params);
+        return {
+          papers: response.papers,
+          total: response.total
+        };
+      },
+      staleTime: 5 * 60 * 1000, // Consider data stale after 5 minutes
+      cacheTime: 30 * 60 * 1000, // Keep in cache for 30 minutes
+      enabled: !!params.query?.trim(), // Only run if we have a query
+    });
   };
+
+  return { search };
 }

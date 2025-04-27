@@ -8,29 +8,47 @@ interface PaperCardProps {
 }
 
 const PaperCard = ({ paper }: PaperCardProps) => {
+  // Format the date
+  const formattedDate = paper.publishedDate instanceof Date 
+    ? paper.publishedDate.toLocaleDateString()
+    : 'Date not available';
+
+  // Get the abstract/summary
+  const abstract = paper.abstract || paper.summary || 'No abstract available';
+
+  // Get the first category
+  const category = Array.isArray(paper.categories) 
+    ? paper.categories[0] 
+    : paper.category || 'No category';
+
+  // Array check for authors
+  const authorString = Array.isArray(paper.authors) 
+    ? paper.authors.join(', ') 
+    : 'Authors not available';
+
   return (
     <Card className="flex flex-col">
       <CardHeader>
         <div className="flex items-start justify-between gap-4">
           <CardTitle className="flex-1 text-lg font-semibold leading-tight">
-            {paper.title}
+            {paper.title || 'Untitled'}
           </CardTitle>
         </div>
         <div className="mt-2 flex items-center text-sm text-muted-foreground">
           <Calendar className="mr-1 h-3 w-3" />
-          {paper.publishedDate}
+          {formattedDate}
         </div>
       </CardHeader>
       <CardContent className="flex-1">
         <div className="mb-2 text-sm font-medium">
-          {paper.authors.join(', ')}
+          {authorString}
         </div>
         <p className="text-sm text-muted-foreground line-clamp-3">
-          {paper.summary}
+          {abstract}
         </p>
         <div className="mt-2">
           <span className="inline-flex items-center rounded-md bg-primary/10 px-2 py-1 text-xs font-medium text-primary">
-            {paper.category}
+            {category}
           </span>
         </div>
       </CardContent>

@@ -2,15 +2,30 @@
 *Last Updated: 2025-04-27 15:45*
 
 ## Overview
-- Active: 2 | Paused: 0 | Focus: T5
+- Active: 1 | Completed: 1 | Focus: T7
 
 ## Task Registry
-- T5: Catchup Page Implementation - 🔄
+- T7: Search State Persistence - ✅
 - T4: ML-Enhanced Profile - ⬜
 - T6: Paper Bookmarking System - ⬜
 
 ## Active Tasks
-### T5: Catchup Page Implementation
+### T7: Search State Persistence
+**Status:** ✅ **Priority:** HIGH
+**Started:** 2025-04-27 **Last**: 2025-04-27 17:30
+**Context**: Implementing persistent state and unified filtering
+**Files**: 
+- `src/hooks/usePersistedState.ts`
+- `src/components/papers/paper-filters.tsx`
+- `src/pages/search.tsx`
+- `src/pages/catchup.tsx`
+- `src/hooks/useArxiv.ts`
+**Progress**:
+1. ✅ Created usePersistedState hook
+2. ✅ Updated components for state persistence
+3. ✅ Added React Query caching
+4. ✅ Added catchup page filtering
+5. ✅ Fixed category filter display
 **Status:** 🔄 **Priority:** HIGH
 **Started:** 2025-04-27 **Last**: 2025-04-27 15:45
 **Context**: Implementing category management and paper fetching

@@ -9,6 +9,7 @@
 | T4 | ML-Enhanced Profile | ⬜ TODO | MEDIUM | - | T3 |
 | T5 | Catchup Page Implementation | 🔄 IN PROGRESS | HIGH | 2025-04-27 | T0, T1, T3 |
 | T6 | Paper Bookmarking System | ⬜ TODO | MEDIUM | - | T1, T2 |
+| T7 | Search State Persistence | ✅ COMPLETE | HIGH | 2025-04-27 | T1, T5 |
 
 ## Task Index
 Detailed task information is maintained in individual files under `/tasks/`:

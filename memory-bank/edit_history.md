@@ -1,5 +1,5 @@
 # Edit History
-*Last Updated: 2025-04-27 15:45*
+*Last Updated: 2025-04-27 17:30*
 
 Changes are listed in reverse chronological order (most recent first).
 Each entry includes:
@@ -9,6 +9,25 @@ Each entry includes:
 - List of modified files with explanations
 
 ## Recent Changes
+
+### 2025-04-27 17:30 - T7: Search State Persistence Implementation
+- Created `src/hooks/usePersistedState.ts` - New hook for local storage state persistence
+- Modified `src/components/papers/paper-filters.tsx` - Converted to controlled component
+- Modified `src/hooks/useArxiv.ts` - Added React Query integration for caching
+- Modified `src/pages/search.tsx` - Added state persistence
+- Modified `src/pages/catchup.tsx` - Added filtering capabilities
+- Modified `src/components/catchup/RecentPaperList.tsx` - Added filter support
+
+
+### 2025-04-27 16:44 - T1: Fix ArXiv Date Filter URL Encoding
+- Modified `src/lib/arxiv.ts` - Added conditional URL encoding to handle submittedDate queries differently
+- Added xmldom package for Node.js XML parsing support
+- Refactored XML parsing logic to use getElementsByTagName for Node.js compatibility
+
+### 2025-04-27 16:42 - T1: Configure Test Environment
+- Created `tsconfig.test.json` - Added TypeScript config for test files with ESM support
+- Modified `package.json` - Added tsx for better ESM support in tests
+- Modified `tests/arxiv-test.ts` - Updated import paths and test structure to use local arxiv implementation
 
 ### 2025-04-27 15:45 - T5: Session Updates
 - Updated session cache with current state

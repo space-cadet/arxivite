@@ -6,6 +6,9 @@ import { Button } from '@/components/ui/button';
 import { CategorySelect } from '@/components/ui/CategorySelect';
 
 interface PaperFiltersProps {
+  searchValue: string;
+  authorValue: string;
+  categoryValue: string;
   onAuthorSearch: (value: string) => void;
   onCategorySelect: (value: string) => void;
   onSearch: (query: string) => void;
@@ -13,12 +16,14 @@ interface PaperFiltersProps {
 }
 
 const PaperFilters = ({ 
+  searchValue,
+  authorValue,
+  categoryValue,
   onAuthorSearch, 
   onCategorySelect, 
   onSearch,
+  categories
 }: PaperFiltersProps) => {
-  const [searchQuery, setSearchQuery] = useState('');
-  const [authorSearch, setAuthorSearch] = useState('');
 
   const handleAuthorSearch = (value: string) => {
     setAuthorSearch(value);
@@ -45,8 +50,8 @@ const PaperFilters = ({
             <Input
               id="search"
               placeholder="Search papers..."
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
+              value={searchValue}
+              onChange={(e) => onSearch(e.target.value)}
               onKeyPress={handleKeyPress}
               className="pl-8"
             />
@@ -65,8 +70,8 @@ const PaperFilters = ({
             <Input
               id="author-search"
               placeholder="Author name..."
-              value={authorSearch}
-              onChange={(e) => handleAuthorSearch(e.target.value)}
+              value={authorValue}
+              onChange={(e) => onAuthorSearch(e.target.value)}
               className="pl-8"
             />
           </div>
@@ -75,9 +80,10 @@ const PaperFilters = ({
         <div className="space-y-2 w-[280px]">
           <Label htmlFor="category-select">Filter by Category</Label>
           <CategorySelect
-            value=""
+            value={categoryValue}
             onValueChange={onCategorySelect}
             placeholder="All Categories"
+            categories={categories}
           />
         </div>
       </div>

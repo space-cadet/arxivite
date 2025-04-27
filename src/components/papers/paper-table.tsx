@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { usePersistedState } from '@/hooks/usePersistedState';
 import { ChevronDown, ChevronUp } from 'lucide-react';
 import { Paper } from '@/types/paper';
 import PaperTableRow from './paper-table-row';
@@ -19,8 +19,8 @@ type SortField = 'title' | 'authors' | 'category' | 'publishedDate';
 type SortDirection = 'asc' | 'desc';
 
 const PaperTable = ({ papers }: PaperTableProps) => {
-  const [sortField, setSortField] = useState<SortField>('publishedDate');
-  const [sortDirection, setSortDirection] = useState<SortDirection>('desc');
+  const [sortField, setSortField] = usePersistedState<SortField>('paperTable.sortField', 'publishedDate');
+  const [sortDirection, setSortDirection] = usePersistedState<SortDirection>('paperTable.sortDirection', 'desc');
 
   const sortPapers = (papers: Paper[]): Paper[] => {
     return [...papers].sort((a, b) => {

@@ -1,42 +1,59 @@
-import { ArXivClient } from '@agentic/arxiv';
 import type { ArxivSearchParams, ArxivSearchResponse } from '../types/arxiv';
+import { DOMParser } from 'xmldom';
 
-const arxivClient = new ArXivClient({
-  apiBaseUrl: 'http://export.arxiv.org/api'
-});
+// Make requests directly to match the API format exactly
+const makeArxivRequest = async (searchQuery: string, maxResults: number = 10, start: number = 0) => {
+  // Don't encode if it's a submittedDate query
+  const finalQuery = searchQuery.includes('submittedDate:') ? 
+    searchQuery : 
+    encodeURIComponent(searchQuery);
+    
+  const url = `http://export.arxiv.org/api/query?search_query=${finalQuery}&start=${start}&max_results=${maxResults}&sortBy=submittedDate&sortOrder=descending`;
+  console.log('Requesting:', url);
+  
+  const response = await fetch(url);
+  if (!response.ok) {
+    throw new Error(`ArXiv API error: ${response.status} ${response.statusText}`);
+  }
+  
+  const text = await response.text();
+  
+  const parser = new DOMParser();
+  const xmlDoc = parser.parseFromString(text, 'text/xml');
+  
+  // xmldom doesn't have querySelector, so we need to use getElementsByTagName
+  const entries = Array.from(xmlDoc.getElementsByTagName('entry'));
+  console.log('Found entries:', entries.length);
+  
+  return entries.map(entry => ({
+    id: entry.getElementsByTagName('id')[0]?.textContent?.split('/').pop() || '',
+    title: entry.getElementsByTagName('title')[0]?.textContent?.trim() || '',
+    authors: Array.from(entry.getElementsByTagName('author')).map(author => 
+      author.getElementsByTagName('name')[0]?.textContent || ''
+    ),
+    abstract: entry.getElementsByTagName('summary')[0]?.textContent?.trim() || '',
+    categories: [
+      Array.from(entry.getElementsByTagName('arxiv:primary_category')).map(cat => cat.getAttribute('term') || '')[0],
+      ...Array.from(entry.getElementsByTagName('category')).map(cat => cat.getAttribute('term') || '')
+    ].filter(Boolean),
+    publishedDate: new Date(entry.getElementsByTagName('published')[0]?.textContent || ''),
+    updatedDate: new Date(entry.getElementsByTagName('updated')[0]?.textContent || ''),
+    links: {
+      abstract: Array.from(entry.getElementsByTagName('link')).find(link => !link.getAttribute('title'))?.getAttribute('href') || '',
+      pdf: Array.from(entry.getElementsByTagName('link')).find(link => link.getAttribute('title') === 'pdf')?.getAttribute('href') || ''
+    },
+    comments: entry.getElementsByTagName('arxiv:comment')[0]?.textContent || '',
+    journalRef: entry.getElementsByTagName('arxiv:journal_ref')[0]?.textContent || ''
+  }));
+};
 
 export const searchPapers = async ({ query, maxResults = 10 }: ArxivSearchParams): Promise<ArxivSearchResponse> => {
   try {
-    const result = await arxivClient.search({
-      searchQuery: query,
-      maxResults,
-      start: 0
-    });
-
-    const papers = Array.isArray(result) ? result : result.entries || [];
+    const papers = await makeArxivRequest(query, maxResults);
 
     return {
-      papers: papers.map(paper => ({
-        id: paper.id || '',
-        title: paper.title?.value || paper.title || '',
-        authors: Array.isArray(paper.authors) 
-          ? paper.authors.map(author => author.name || author.toString())
-          : [paper.authors].filter(Boolean).map(author => author.name || author.toString()),
-        abstract: (paper.abstract?.value || paper.summary?.value || paper.abstract || paper.summary || '').trim(),
-        categories: Array.isArray(paper.categories) 
-          ? paper.categories.map(cat => cat.value || cat.toString())
-          : [paper.category].filter(Boolean).map(cat => cat.value || cat.toString()),
-        publishedDate: new Date(paper.published?.value || paper.publishedDate || paper.published || Date.now()),
-        updatedDate: new Date(paper.updated?.value || paper.updatedDate || paper.updated || Date.now()),
-        doi: paper.doi || '',
-        links: {
-          abstract: paper.links?.find(l => l.title === 'Abstract')?.href || `http://arxiv.org/abs/${paper.id}`,
-          pdf: paper.links?.find(l => l.title === 'PDF')?.href || `http://arxiv.org/pdf/${paper.id}`,
-        },
-        comments: paper.comment || '',
-        journalRef: paper.journal_ref || '',
-      })),
-      total: papers.length,
+      papers,
+      total: papers.length
     };
   } catch (error) {
     console.error('Error searching arxiv papers:', error);

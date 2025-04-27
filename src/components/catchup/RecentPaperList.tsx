@@ -1,5 +1,4 @@
-import { useQuery } from "@tanstack/react-query"
-import PaperCard from "@/components/papers/paper-card"
+import PaperTable from "@/components/papers/paper-table"
 import { Skeleton } from "@/components/ui/skeleton"
 import { Alert, AlertDescription } from "@/components/ui/alert"
 import { AlertCircle } from "lucide-react"
@@ -11,11 +10,18 @@ type FilterType = "all" | "recommended" | "bookmarked"
 interface RecentPaperListProps {
   timeRange: TimeRange
   filter: FilterType
+  authorFilter: string
+  categoryFilter: string
 }
 
 import { useRecentPapers } from "@/hooks/useRecentPapers"
 
-export default function RecentPaperList({ timeRange, filter }: RecentPaperListProps) {
+export default function RecentPaperList({ 
+  timeRange, 
+  filter, 
+  authorFilter,
+  categoryFilter 
+}: RecentPaperListProps) {
   const { papers, isLoading, error, isEmpty } = useRecentPapers(timeRange, filter)
 
   if (isLoading) {
@@ -54,11 +60,18 @@ export default function RecentPaperList({ timeRange, filter }: RecentPaperListPr
     )
   }
 
-  return (
-    <div className="space-y-4">
-      {papers.map((paper) => (
-        <PaperCard key={paper.id || paper.title} paper={paper} />
-      ))}
-    </div>
-  )
+  // Filter papers by author and category
+  const filteredPapers = papers.filter(paper => {
+    const authorMatch = !authorFilter || 
+      paper.authors.some(author => 
+        author.toLowerCase().includes(authorFilter.toLowerCase())
+      );
+    
+    const categoryMatch = categoryFilter === 'all' || 
+      paper.categories.includes(categoryFilter);
+    
+    return authorMatch && categoryMatch;
+  });
+
+  return <PaperTable papers={filteredPapers} />
 }

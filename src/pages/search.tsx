@@ -1,4 +1,5 @@
 import { useState, useEffect, useMemo } from 'react';
+import { usePersistedState } from '@/hooks/usePersistedState';
 import { arxivToPaper } from '@/types/paper';
 import PaperTable from '@/components/papers/paper-table';
 import PaperFilters from '@/components/papers/paper-filters';
@@ -8,13 +9,18 @@ import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Skeleton } from '@/components/ui/skeleton';
 
 const SearchPage = () => {
-  const [searchInput, setSearchInput] = useState('');
-  const [authorFilter, setAuthorFilter] = useState('');
-  const [selectedCategory, setSelectedCategory] = useState('all');
-  const [availableCategories, setAvailableCategories] = useState<string[]>([]);
+  const [searchInput, setSearchInput] = usePersistedState('search.input', '');
+  const [authorFilter, setAuthorFilter] = usePersistedState('search.authorFilter', '');
+  const [selectedCategory, setSelectedCategory] = usePersistedState('search.category', 'all');
+  const [availableCategories, setAvailableCategories] = usePersistedState<string[]>('search.availableCategories', []);
   
   const { profile } = useProfile();
-  const { papers: arxivPapers, isLoading, error, search } = useArxivSearch();
+  const arxivSearch = useArxivSearch();
+  const { data, isLoading, error } = arxivSearch.search({ 
+    query: searchInput,
+    maxResults: 20
+  });
+  const arxivPapers = data?.papers || [];
   
   // Convert arXiv papers to our application's Paper type
   const papers = useMemo(() => {
@@ -63,11 +69,8 @@ const SearchPage = () => {
     });
   }, [papers, authorFilter, selectedCategory, profile.excludeTerms]);
   
-  // Handle search submission
+  // Handle search input changes
   const handleSearch = (query: string) => {
-    if (query.trim()) {
-      search({ query, maxResults: 20 });
-    }
     setSearchInput(query);
   };
   
@@ -84,6 +87,9 @@ const SearchPage = () => {
   return (
     <div className="container mx-auto p-4 space-y-6">
       <PaperFilters 
+        searchValue={searchInput}
+        authorValue={authorFilter}
+        categoryValue={selectedCategory}
         onSearch={handleSearch}
         onAuthorSearch={handleAuthorSearch}
         onCategorySelect={handleCategorySelect}
