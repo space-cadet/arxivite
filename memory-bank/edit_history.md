@@ -65,3 +65,22 @@
   - Created session file in `sessions/2025-04-26_T3_profile.md`
   - Updated TODO.md with remaining tasks
   - Updated tasks.md with T3 and T4
+
+## 2025-04-27
+### 14:30 - T5: Initial Catchup Page Implementation
+- Created `src/pages/catchup.tsx` - Added time-based paper browsing
+- Created `src/components/catchup/TimeFilter.tsx` - Time range selector
+- Created `src/components/catchup/RecentPaperList.tsx` - Paper list with loading states
+- Updated layout components for sidebar navigation:
+  - Added Sidebar component with navigation links
+  - Moved navigation from header to sidebar
+  - Updated AppLayout to accommodate sidebar
+
+### 14:45 - T5: Component Integration Fixes
+- Fixed component exports in `paper-card.tsx` for proper tree shaking
+- Updated imports in `RecentPaperList.tsx` to match export style
+- Added ThemeProvider setup and integration
+- Fixed task documentation:
+  - Created individual task files
+  - Updated task registry format
+  - Added proper dependency tracking
