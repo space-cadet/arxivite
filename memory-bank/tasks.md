@@ -11,6 +11,7 @@
 | T5 | Catchup Page Implementation | 🔄 IN PROGRESS | HIGH | 2025-04-27 | T0, T1, T3 |
 | T6 | Paper Bookmarking System | ⬜ TODO | MEDIUM | - | T1, T2 |
 | T7 | Search State Persistence | ✅ COMPLETE | HIGH | 2025-04-27 | T1, T5 |
+| T9 | Electron App Packaging | 🔄 IN PROGRESS | MEDIUM | 2025-04-27 | T0, T1, T2, T3, T5, T7 |
 
 ## Task Index
 Detailed task information is maintained in individual files under `/tasks/`:

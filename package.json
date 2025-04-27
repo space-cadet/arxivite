@@ -1,7 +1,9 @@
 {
   "name": "revite",
+  "version": "0.1.0",
   "private": true,
   "type": "module",
+  "main": "electron/main.js",
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
@@ -9,7 +11,34 @@
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "format": "prettier --write 'src/**/*.{js,jsx,ts,tsx}'",
     "format:check": "prettier --check 'src/**/*.{js,jsx,ts,tsx}'",
-    "clean": "rm -rf node_modules package-lock.json"
+    "clean": "rm -rf node_modules package-lock.json",
+    "electron:dev": "tsc -p electron/tsconfig.json && vite build --watch & electron .",
+    "electron:build": "tsc -p electron/tsconfig.json && vite build && electron-builder",
+    "electron:preview": "tsc -p electron/tsconfig.json && vite build && electron ."
+  },
+  "build": {
+    "appId": "com.arxivite.app",
+    "productName": "Arxivite",
+    "asar": true,
+    "directories": {
+      "output": "release",
+      "buildResources": "electron"
+    },
+    "files": [
+      "dist/**/*",
+      "electron/main.js",
+      "electron/preload.js"
+    ],
+    "mac": {
+      "category": "public.app-category.productivity",
+      "target": ["dir"]
+    },
+    "win": {
+      "target": "nsis"
+    },
+    "linux": {
+      "target": "AppImage"
+    }
   },
   "dependencies": {
     "@agentic/arxiv": "7.6.4",
@@ -42,6 +71,8 @@
   },
   "devDependencies": {
     "@types/bun": "latest",
+    "@types/electron": "1.6.12",
+    "@types/electron-store": "3.2.2",
     "@types/node": "^22.4.1",
     "@types/react": "^18.3.3",
     "@types/react-dom": "^18.3.0",
@@ -50,6 +81,9 @@
     "@typescript-eslint/parser": "^8.3.0",
     "@vitejs/plugin-react": "^4.3.1",
     "autoprefixer": "^10.4.20",
+    "electron": "35.2.1",
+    "electron-builder": "26.0.12",
+    "electron-store": "10.0.1",
     "eslint": "^8.57.0",
     "eslint-plugin-react-hooks": "^4.6.2",
     "eslint-plugin-react-refresh": "^0.4.7",
@@ -61,6 +95,7 @@
     "tsx": "4.19.3",
     "typescript": "^5.2.2",
     "vite": "^5.4.6",
+    "vite-electron-plugin": "0.8.3",
     "vite-plugin-compression": "^0.5.1",
     "vite-plugin-dynamic-import": "^1.5.0",
     "vite-plugin-imagemin": "^0.6.1",
