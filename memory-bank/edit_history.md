@@ -5,6 +5,12 @@
 ### 14:30 - T8: Vercel Deployment Configuration
 - Modified `vite.config.ts` - Added base URL configuration
 - Modified `vercel.json` - Updated routing configuration for SPA
+
+### 15:00 - T8: Mixed Content and Routing Fixes
+- Modified `src/lib/arxiv.ts` - Updated arXiv API URL to use HTTPS
+- Modified `vercel.json` - Updated rewrites configuration for better SPA routing
+- Modified `vite.config.ts` - Added base URL configuration
+- Modified `vercel.json` - Updated routing configuration for SPA
 *Last Updated: 2025-04-27 17:30*
 
 Changes are listed in reverse chronological order (most recent first).

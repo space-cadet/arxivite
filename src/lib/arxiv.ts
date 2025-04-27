@@ -8,7 +8,7 @@ const makeArxivRequest = async (searchQuery: string, maxResults: number = 10, st
     searchQuery : 
     encodeURIComponent(searchQuery);
     
-  const url = `http://export.arxiv.org/api/query?search_query=${finalQuery}&start=${start}&max_results=${maxResults}&sortBy=submittedDate&sortOrder=descending`;
+  const url = `https://export.arxiv.org/api/query?search_query=${finalQuery}&start=${start}&max_results=${maxResults}&sortBy=submittedDate&sortOrder=descending`;
   console.log('Requesting:', url);
   
   const response = await fetch(url);
