@@ -50,3 +50,18 @@ build
 git.diff
 .vercel
 .env*.local
+
+# Electron build output
+release/mac-arm64
+release/mac
+release/win-unpacked
+release/linux-unpacked
+# release/*.exe
+# release/*.dmg
+# release/*.snap
+# release/*.AppImage
+# release/*.deb
+# release/*.rpm
+release/builder-debug.yml
+release/builder-effective-config.yaml
+electron.logs
