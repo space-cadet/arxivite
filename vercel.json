@@ -1,8 +1,15 @@
 {
   "rewrites": [
-    {
-      "source": "/(.*)",
-      "destination": "/index.html"
-    }
+    { "source": "/search", "destination": "/index.html" },
+    { "source": "/catchup", "destination": "/index.html" },
+    { "source": "/profile", "destination": "/index.html" },
+    { "source": "/(.*)", "destination": "/index.html" }
+  ],
+  "routes": [
+    { "handle": "filesystem" },
+    { "src": "/search", "dest": "/index.html" },
+    { "src": "/catchup", "dest": "/index.html" },
+    { "src": "/profile", "dest": "/index.html" },
+    { "src": "/(.*)", "dest": "/index.html" }
   ]
 }
