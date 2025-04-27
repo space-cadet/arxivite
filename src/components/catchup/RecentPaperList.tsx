@@ -13,19 +13,10 @@ interface RecentPaperListProps {
   filter: FilterType
 }
 
-const useRecentPapers = (timeRange: TimeRange, filter: FilterType) => {
-  return useQuery({
-    queryKey: ["recent-papers", timeRange, filter],
-    queryFn: async (): Promise<Paper[]> => {
-      // TODO: Implement paper fetching using @agentic/arxiv
-      // For now return empty array
-      return []
-    }
-  })
-}
+import { useRecentPapers } from "@/hooks/useRecentPapers"
 
 export default function RecentPaperList({ timeRange, filter }: RecentPaperListProps) {
-  const { data: papers, isLoading, error } = useRecentPapers(timeRange, filter)
+  const { papers, isLoading, error, isEmpty } = useRecentPapers(timeRange, filter)
 
   if (isLoading) {
     return (
@@ -48,12 +39,16 @@ export default function RecentPaperList({ timeRange, filter }: RecentPaperListPr
     )
   }
 
-  if (!papers?.length) {
+  if (isEmpty) {
     return (
       <Alert>
         <AlertCircle className="h-4 w-4" />
         <AlertDescription>
-          No papers found for the selected time range.
+          {filter === "recommended" 
+            ? "No recommended papers found based on your profile. Try adjusting your research interests in the profile page."
+            : filter === "bookmarked"
+            ? "No bookmarked papers found. Bookmark papers to see them here."
+            : "No papers found for the selected time range."}
         </AlertDescription>
       </Alert>
     )

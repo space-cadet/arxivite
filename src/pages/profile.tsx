@@ -6,9 +6,14 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { X } from 'lucide-react';
 import { useProfile } from '@/contexts/ProfileContext';
+import { getCategoryById, getCategoryName } from '@/lib/categories';
+import { CategorySelect } from '@/components/ui/CategorySelect';
+import { useToast } from "@/hooks/use-toast";
+import { Toaster } from "@/components/ui/toaster";
 
 const ProfilePage = () => {
   const { profile, addToProfile, removeFromProfile, resetProfile } = useProfile();
+  const { toast } = useToast();
   const [inputs, setInputs] = useState({
     categories: '',
     authors: '',
@@ -16,18 +21,53 @@ const ProfilePage = () => {
     excludeTerms: ''
   });
 
+  const validateTerm = (value: string, field: 'keywords' | 'excludeTerms'): { isValid: boolean; message?: string } => {
+    const trimmed = value.trim();
+    
+    if (trimmed.length < 2) {
+      return { isValid: false, message: 'Term must be at least 2 characters long' };
+    }
+    
+    if (/^\d+$/.test(trimmed)) {
+      return { isValid: false, message: 'Term cannot be purely numeric' };
+    }
+    
+    if (!/^[a-zA-Z0-9\s-]+$/.test(trimmed)) {
+      return { isValid: false, message: 'Term can only contain letters, numbers, spaces, and hyphens' };
+    }
+
+    return { isValid: true };
+  };
+
   const handleKeyPress = (
     e: KeyboardEvent<HTMLInputElement>, 
     field: keyof typeof inputs
   ) => {
-    if (e.key === 'Enter' && inputs[field].trim()) {
-      addToProfile(field, inputs[field].trim());
+    const value = inputs[field].trim();
+    if (e.key === 'Enter' && value) {
+      if (field === 'keywords' || field === 'excludeTerms') {
+        const validation = validateTerm(value, field);
+        if (!validation.isValid) {
+          toast({
+            variant: "destructive",
+            title: "Invalid input",
+            description: validation.message
+          });
+          return;
+        }
+      }
+
+      // Check if item already exists in profile
+      if (!profile[field].includes(value)) {
+        addToProfile(field, value);
+      }
       setInputs(prev => ({ ...prev, [field]: '' }));
     }
   };
 
   return (
     <div className="container mx-auto p-6">
+      <Toaster />
       <div className="space-y-6">
         <Card>
           <CardHeader>
@@ -41,25 +81,29 @@ const ProfilePage = () => {
             <div className="space-y-2">
               <Label>ArXiv Categories</Label>
               <div className="flex flex-wrap gap-2">
-                {profile.categories.map(category => (
+                {profile.categories.map(categoryId => (
                   <Badge 
-                    key={category} 
+                    key={categoryId} 
                     className="flex items-center gap-1"
+                    title={getCategoryById(categoryId)?.description}
                   >
-                    {category}
+                    {getCategoryName(categoryId)}
                     <X 
                       className="h-3 w-3 cursor-pointer" 
-                      onClick={() => removeFromProfile('categories', category)}
+                      onClick={() => removeFromProfile('categories', categoryId)}
                     />
                   </Badge>
                 ))}
               </div>
-              <Input 
-                placeholder="Add a category (e.g., cs.AI) and press Enter" 
-                className="mt-2"
+              <CategorySelect
                 value={inputs.categories}
-                onChange={e => setInputs(prev => ({ ...prev, categories: e.target.value }))}
-                onKeyPress={e => handleKeyPress(e, 'categories')}
+                onValueChange={(value: string) => {
+                  if (!profile.categories.includes(value)) {
+                    addToProfile('categories', value);
+                  }
+                  setInputs(prev => ({ ...prev, categories: '' }));
+                }}
+                placeholder="Select a category"
               />
             </div>
 

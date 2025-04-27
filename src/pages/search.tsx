@@ -1,5 +1,5 @@
 import { useState, useEffect, useMemo } from 'react';
-import { Paper, arxivToPaper } from '@/types/paper';
+import { arxivToPaper } from '@/types/paper';
 import PaperTable from '@/components/papers/paper-table';
 import PaperFilters from '@/components/papers/paper-filters';
 import { useArxivSearch } from '@/hooks/useArxiv';
@@ -22,26 +22,21 @@ const SearchPage = () => {
     return arxivPapers.map(arxivToPaper);
   }, [arxivPapers]);
   
-  // Collect all unique categories from papers
+  // Collect unique categories from papers and profile
   useEffect(() => {
-    if (papers.length > 0) {
-      const categories = papers.flatMap(paper => paper.categories);
-      setAvailableCategories(prev => {
-        const uniqueCategories = Array.from(new Set([...prev, ...categories]));
-        return uniqueCategories.sort();
-      });
-    }
-  }, [papers]);
-  
-  // Include categories from user profile
-  useEffect(() => {
-    if (profile.categories.length > 0) {
-      setAvailableCategories(prev => {
-        const uniqueCategories = Array.from(new Set([...prev, ...profile.categories]));
-        return uniqueCategories.sort();
-      });
-    }
-  }, [profile.categories]);
+    const uniqueCategories = new Set<string>();
+    
+    // Add categories from profile
+    profile.categories.forEach(cat => uniqueCategories.add(cat));
+    
+    // Add categories from papers
+    papers.forEach(paper => {
+      paper.categories.forEach(cat => uniqueCategories.add(cat));
+    });
+    
+    // Convert to sorted array
+    setAvailableCategories(Array.from(uniqueCategories).sort());
+  }, [papers, profile.categories]);
   
   // Filter papers
   const filteredPapers = useMemo(() => {

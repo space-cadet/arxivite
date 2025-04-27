@@ -4,8 +4,8 @@
 ## Active Tasks
 | ID | Title | Status | Priority | Started | Dependencies |
 |----|-------|--------|----------|---------|--------------|
-| T1 | @agentic/arxiv Integration | 🔄 IN PROGRESS | HIGH | 2025-04-26 | T0 |
-| T3 | Static Research Profile | 🔄 IN PROGRESS | HIGH | 2025-04-26 | T0, T1 |
+| T1 | @agentic/arxiv Integration | ✅ COMPLETE | HIGH | 2025-04-26 | T0 |
+| T3 | Static Research Profile | ✅ COMPLETE | HIGH | 2025-04-26 | T0, T1 |
 | T4 | ML-Enhanced Profile | ⬜ TODO | MEDIUM | - | T3 |
 | T5 | Catchup Page Implementation | 🔄 IN PROGRESS | HIGH | 2025-04-27 | T0, T1, T3 |
 

@@ -3,13 +3,7 @@ import { Search } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Button } from '@/components/ui/button';
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select';
+import { CategorySelect } from '@/components/ui/CategorySelect';
 
 interface PaperFiltersProps {
   onAuthorSearch: (value: string) => void;
@@ -22,7 +16,6 @@ const PaperFilters = ({
   onAuthorSearch, 
   onCategorySelect, 
   onSearch,
-  categories 
 }: PaperFiltersProps) => {
   const [searchQuery, setSearchQuery] = useState('');
   const [authorSearch, setAuthorSearch] = useState('');
@@ -41,8 +34,6 @@ const PaperFilters = ({
       handleSearch();
     }
   };
-
-  const uniqueCategories = Array.from(new Set(categories)).sort();
 
   return (
     <div className="space-y-4">
@@ -81,21 +72,13 @@ const PaperFilters = ({
           </div>
         </div>
 
-        <div className="space-y-2 w-[200px]">
+        <div className="space-y-2 w-[280px]">
           <Label htmlFor="category-select">Filter by Category</Label>
-          <Select onValueChange={onCategorySelect}>
-            <SelectTrigger id="category-select">
-              <SelectValue placeholder="Select category" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="all" key="all">All Categories</SelectItem>
-              {uniqueCategories.map((category) => (
-                <SelectItem key={category} value={category}>
-                  {category}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
+          <CategorySelect
+            value=""
+            onValueChange={onCategorySelect}
+            placeholder="All Categories"
+          />
         </div>
       </div>
     </div>
