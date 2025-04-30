@@ -4,7 +4,7 @@ import { defineConfig } from "vite";
 
 import compression from "vite-plugin-compression";
 import dynamicImport from "vite-plugin-dynamic-import";
-import viteImagemin from "vite-plugin-imagemin";
+// import viteImagemin from "vite-plugin-imagemin";
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -13,33 +13,34 @@ export default defineConfig({
     compression(),
     react(),
     dynamicImport(),
-    viteImagemin({
-      gifsicle: {
-        optimizationLevel: 7,
-        interlaced: false
-      },
-      optipng: {
-        optimizationLevel: 7
-      },
-      mozjpeg: {
-        quality: 20
-      },
-      pngquant: {
-        quality: [0.8, 0.9],
-        speed: 4
-      },
-      svgo: {
-        plugins: [
-          {
-            name: "removeViewBox"
-          },
-          {
-            name: "removeEmptyAttrs",
-            active: false
-          }
-        ]
-      }
-    })
+    // Temporarily disabled due to Node.js compatibility issues
+    // viteImagemin({
+    //   gifsicle: {
+    //     optimizationLevel: 7,
+    //     interlaced: false
+    //   },
+    //   optipng: {
+    //     optimizationLevel: 7
+    //   },
+    //   mozjpeg: {
+    //     quality: 20
+    //   },
+    //   pngquant: {
+    //     quality: [0.8, 0.9],
+    //     speed: 4
+    //   },
+    //   svgo: {
+    //     plugins: [
+    //       {
+    //         name: "removeViewBox"
+    //       },
+    //       {
+    //         name: "removeEmptyAttrs",
+    //         active: false
+    //       }
+    //     ]
+    //   }
+    // })
   ],
   build: {
     rollupOptions: {
