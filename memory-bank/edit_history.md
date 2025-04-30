@@ -1,4 +1,11 @@
 # Edit History
+*Last Updated: 2025-04-30*
+
+## 2025-04-30
+### 16:30 - T12: UI and Theme Persistence Fixes
+- Enhanced `src/components/theme/theme-provider.tsx` - Improved theme persistence
+- Updated `src/pages/profile.tsx` - Fixed author name persistence
+- Fixed `usePersistedState` integration with theme system
 *Last Updated: 2025-04-30 16:00*
 
 ## 2025-04-30

@@ -13,12 +13,15 @@
 ## Task Details
 ### T12: UI Navigation and Theme Toggle Issues
 **Description**: Address issues with navigation, sidebar functionality, and theme toggle
-**Status**: 🔄 **Last**: 2025-04-30 16:00
+**Status**: 🔄 **Last**: 2025-04-30 16:30
 **Criteria**: 
+- ✅ Author name persists correctly in profile
+- ✅ Theme selection persists across sessions
 - Navigation from search page works reliably
 - Sidebar collapse/uncollapse works on all pages
-- Theme toggle responds correctly
 **Files**: 
+- `src/components/theme/theme-provider.tsx` - Theme persistence
+- `src/pages/profile.tsx` - Profile state persistence
 - `src/components/layout/app-layout.tsx`
 - `src/components/layout/Sidebar.tsx`
 - `src/pages/search.tsx`

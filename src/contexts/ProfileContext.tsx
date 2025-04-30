@@ -1,5 +1,6 @@
-import { createContext, useContext, ReactNode, useEffect, useState } from 'react';
+import { createContext, useContext, ReactNode } from 'react';
 import { ResearchProfile, DEFAULT_PROFILE } from '@/types/profile';
+import { usePersistedState } from '@/hooks/usePersistedState';
 
 interface ProfileContextType {
   profile: ResearchProfile;
@@ -14,21 +15,7 @@ const ProfileContext = createContext<ProfileContextType | undefined>(undefined);
 const STORAGE_KEY = 'arxivite-profile';
 
 export function ProfileProvider({ children }: { children: ReactNode }) {
-  const [profile, setProfile] = useState<ResearchProfile>(() => {
-    // Try to load from localStorage on initial render
-    const saved = localStorage.getItem(STORAGE_KEY);
-    if (saved) {
-      const parsed = JSON.parse(saved);
-      parsed.lastUpdated = new Date(parsed.lastUpdated); // Convert string back to Date
-      return parsed;
-    }
-    return DEFAULT_PROFILE;
-  });
-
-  // Save to localStorage whenever profile changes
-  useEffect(() => {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(profile));
-  }, [profile]);
+  const [profile, setProfile] = usePersistedState<ResearchProfile>(STORAGE_KEY, DEFAULT_PROFILE);
 
   const updateProfile = (newProfile: ResearchProfile) => {
     setProfile({ ...newProfile, lastUpdated: new Date() });
@@ -36,21 +23,23 @@ export function ProfileProvider({ children }: { children: ReactNode }) {
 
   const addToProfile = (key: keyof ResearchProfile, value: string) => {
     if (Array.isArray(profile[key])) {
-      setProfile(prev => ({
-        ...prev,
-        [key]: [...(prev[key] as string[]), value],
-        lastUpdated: new Date()
-      }));
+      setProfile((prev: ResearchProfile): ResearchProfile => {
+        const updated = { ...prev };
+        (updated[key] as string[]) = [...(prev[key] as string[]), value];
+        updated.lastUpdated = new Date();
+        return updated;
+      });
     }
   };
 
   const removeFromProfile = (key: keyof ResearchProfile, value: string) => {
     if (Array.isArray(profile[key])) {
-      setProfile(prev => ({
-        ...prev,
-        [key]: (prev[key] as string[]).filter(item => item !== value),
-        lastUpdated: new Date()
-      }));
+      setProfile((prev: ResearchProfile): ResearchProfile => {
+        const updated = { ...prev };
+        (updated[key] as string[]) = (prev[key] as string[]).filter(item => item !== value);
+        updated.lastUpdated = new Date();
+        return updated;
+      });
     }
   };
 

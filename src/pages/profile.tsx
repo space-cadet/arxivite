@@ -1,4 +1,4 @@
-import { useState, KeyboardEvent } from 'react';
+import { useState, KeyboardEvent, useEffect } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -15,6 +15,7 @@ import { arxivToPaper } from '@/types/paper';
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Skeleton } from "@/components/ui/skeleton";
 import PaperTable from "@/components/papers/paper-table";
+import { usePersistedState } from '@/hooks/usePersistedState';
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 
 const ProfilePage = () => {
@@ -26,13 +27,23 @@ const ProfilePage = () => {
     keywords: '',
     excludeTerms: ''
   });
-  const [authorName, setAuthorName] = useState('');
+
+  // Use usePersistedState for both the input value and the profile sync
+  const [authorName, setAuthorName] = usePersistedState('profile.authorName', '');
+  const [isOpen, setIsOpen] = usePersistedState('profile.papersTableOpen', true);
+  
+  // Sync authorName with profile
+  useEffect(() => {
+    if (authorName && !profile.authors.includes(authorName)) {
+      addToProfile('authors', authorName);
+    }
+  }, [authorName, profile.authors, addToProfile]);
+  
   const arxivSearch = useArxivSearch();
   const { data: authorPapers, isLoading: isLoadingPapers, error: paperError } = arxivSearch.search({ 
     query: authorName ? `au:"${authorName}"` : '',
     maxResults: 50
   });
-  const [isOpen, setIsOpen] = useState(true);
 
   const validateTerm = (value: string): { isValid: boolean; message?: string } => {
     const trimmed = value.trim();
