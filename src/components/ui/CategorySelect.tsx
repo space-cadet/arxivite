@@ -25,11 +25,12 @@ export function CategorySelect({ value, onValueChange, placeholder = "Select a c
     <Select value={value} onValueChange={onValueChange}>
       <SelectTrigger>
         <SelectValue placeholder={placeholder}>
-          {value ? getCategoryById(value)?.name : placeholder}
+          {value === 'all' ? 'All Categories' : (value ? getCategoryById(value)?.name : placeholder)}
         </SelectValue>
       </SelectTrigger>
       <SelectContent>
         <ScrollArea className="h-80">
+          <SelectItem value="all">All Categories</SelectItem>
           {mainSubjects.map((subject) => (
             <SelectGroup key={`group-${subject}`}>
               <SelectLabel>{subject}</SelectLabel>

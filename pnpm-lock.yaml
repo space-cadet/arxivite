@@ -59,6 +59,9 @@ importers:
       '@tanstack/react-query':
         specifier: 5.74.4
         version: 5.74.4(react@18.3.1)
+      '@xmldom/xmldom':
+        specifier: 0.9.8
+        version: 0.9.8
       caniuse-lite:
         specifier: ^1.0.30001715
         version: 1.0.30001715
@@ -168,9 +171,6 @@ importers:
       vite-plugin-dynamic-import:
         specifier: ^1.5.0
         version: 1.6.0
-      xmldom:
-        specifier: 0.6.0
-        version: 0.6.0
 
 packages:
 
@@ -1138,6 +1138,10 @@ packages:
     engines: {node: ^14.18.0 || >=16.0.0}
     peerDependencies:
       vite: ^4.2.0 || ^5.0.0 || ^6.0.0
+
+  '@xmldom/xmldom@0.9.8':
+    resolution: {integrity: sha512-p96FSY54r+WJ50FIOsCOjyj/wavs8921hG5+kVMmZgKcvIKxMXHTrjNJvRgWa/zuX3B6t2lijLNFaOyuxUH+2A==}
+    engines: {node: '>=14.6'}
 
   acorn-jsx@5.3.2:
     resolution: {integrity: sha512-rq9s+JNhf0IChjtDXxllJ7g41oZk5SlXtp0LHwyA5cejwn7vKmKp4pPri6YEePv2PU65sAsegbXtIinmDFDXgQ==}
@@ -2255,10 +2259,6 @@ packages:
   wrappy@1.0.2:
     resolution: {integrity: sha512-l4Sp/DRseor9wL6EvV2+TuQn63dMkPjZ/sp9XkghTEbV9KlPS1xUsZ3u7/IQO4wxtcFB4bgpQPRcR3QCvezPcQ==}
 
-  xmldom@0.6.0:
-    resolution: {integrity: sha512-iAcin401y58LckRZ0TkI4k0VSM1Qg0KGSc3i8rU+xrxe19A/BN1zHyVSJY7uoutVlaTSzYyk/v5AmkewAP7jtg==}
-    engines: {node: '>=10.0.0'}
-
   yallist@3.1.1:
     resolution: {integrity: sha512-a4UGQaWPH59mOXUYnAG2ewncQS4i4F43Tv3JoAM+s2VDAmS9NsK8GpDMLrCHPksFT7h3K6TOoUNn2pb7RoXx4g==}
 
@@ -3236,6 +3236,8 @@ snapshots:
       vite: 5.4.18(@types/node@22.15.2)
     transitivePeerDependencies:
       - supports-color
+
+  '@xmldom/xmldom@0.9.8': {}
 
   acorn-jsx@5.3.2(acorn@8.14.1):
     dependencies:
@@ -4260,8 +4262,6 @@ snapshots:
       strip-ansi: 7.1.0
 
   wrappy@1.0.2: {}
-
-  xmldom@0.6.0: {}
 
   yallist@3.1.1: {}
 
