@@ -2,6 +2,16 @@
 *Last Updated: 2025-04-30*
 
 ## 2025-04-30
+### UI and Navigation Improvements
+- Implemented LayoutContext for improved sidebar state management
+- Enhanced navigation reliability across all pages
+- Fixed sidebar collapse/uncollapse functionality
+- Updated theme provider with more reliable implementation
+- Known issues:
+  - Search page navigation requires additional testing
+  - Build errors with image optimization dependencies pending resolution
+
+### Earlier Updates
 - Enhanced profile page with collapsible papers table feature
 - Added paper count summary and toggle button
 - Improved UI efficiency by making papers section collapsible

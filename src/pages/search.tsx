@@ -16,6 +16,7 @@ const SearchPage = () => {
   
   const { profile } = useProfile();
   const arxivSearch = useArxivSearch();
+  
   const { data, isLoading, error } = arxivSearch.search({ 
     query: searchInput,
     maxResults: 20
@@ -28,38 +29,27 @@ const SearchPage = () => {
     return arxivPapers.map(arxivToPaper);
   }, [arxivPapers]);
   
-  // Collect unique categories from papers and profile
   useEffect(() => {
     const uniqueCategories = new Set<string>();
-    
-    // Add categories from profile
     profile.categories.forEach(cat => uniqueCategories.add(cat));
-    
-    // Add categories from papers
     papers.forEach(paper => {
       paper.categories.forEach(cat => uniqueCategories.add(cat));
     });
-    
-    // Convert to sorted array
     setAvailableCategories(Array.from(uniqueCategories).sort());
-  }, [papers, profile.categories]);
+  }, [papers, profile.categories, setAvailableCategories]);
   
-  // Filter papers
   const filteredPapers = useMemo(() => {
     if (!papers.length) return [];
     
     return papers.filter(paper => {
-      // Filter by author if specified
       const authorMatch = !authorFilter || 
         paper.authors.some(author => 
           author.toLowerCase().includes(authorFilter.toLowerCase())
         );
       
-      // Filter by category if specified and not "all"
       const categoryMatch = selectedCategory === 'all' || 
         paper.categories.includes(selectedCategory);
       
-      // Filter out papers with excluded terms
       const noExcludedTerms = !profile.excludeTerms.some(term => 
         paper.title.toLowerCase().includes(term.toLowerCase()) || 
         paper.abstract.toLowerCase().includes(term.toLowerCase())
@@ -69,23 +59,20 @@ const SearchPage = () => {
     });
   }, [papers, authorFilter, selectedCategory, profile.excludeTerms]);
   
-  // Handle search input changes
   const handleSearch = (query: string) => {
     setSearchInput(query);
   };
   
-  // Handle author filtering
   const handleAuthorSearch = (author: string) => {
     setAuthorFilter(author);
   };
   
-  // Handle category selection
   const handleCategorySelect = (category: string) => {
     setSelectedCategory(category);
   };
-  
+
   return (
-    <div className="container mx-auto p-4 space-y-6">
+    <div className="container mx-auto py-6 space-y-6">
       <PaperFilters 
         searchValue={searchInput}
         authorValue={authorFilter}
@@ -126,7 +113,6 @@ const SearchPage = () => {
       )}
     </div>
   );
-
 };
 
 export default SearchPage;

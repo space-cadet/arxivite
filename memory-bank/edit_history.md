@@ -1,5 +1,15 @@
 # Edit History
-*Last Updated: 2025-04-30*
+*Last Updated: 2025-04-30 16:00*
+
+## 2025-04-30
+### 16:00 - T12: UI Navigation and Theme Toggle Fixes
+- Modified `src/components/layout/app-layout.tsx` - Added LayoutContext for sidebar state
+- Modified `src/components/layout/Sidebar.tsx` - Updated to use LayoutContext
+- Modified `src/pages/search.tsx` - Improved state management
+- Modified `src/components/theme/theme-provider.tsx` - Enhanced theme handling
+- Modified `src/components/mode-toggle.tsx` - Simplified implementation
+
+### 15:45 - T9: Theme Toggle Fix
 
 ## 2025-04-30
 ### 10:00 - T3: Profile UI Enhancement

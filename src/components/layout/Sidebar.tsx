@@ -1,9 +1,12 @@
 import { Link, useLocation } from 'react-router-dom';
 import { cn } from "@/lib/utils";
-import { Search, UserCircle, Clock } from "lucide-react";
+import { Search, UserCircle, Clock, ChevronLeft, ChevronRight } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { useLayout } from './app-layout';
 
 const Sidebar = () => {
   const location = useLocation();
+  const { isCollapsed, setIsCollapsed } = useLayout();
   
   const navItems = [
     { path: '/search', label: 'Search', icon: Search },
@@ -12,28 +15,59 @@ const Sidebar = () => {
   ];
 
   return (
-    <div className="w-64 border-r h-screen bg-background p-4 fixed">
-      <div className="flex items-center mb-8 px-2">
-        <h2 className="text-lg font-semibold">ArXivite</h2>
+    <aside 
+      className={cn(
+        "fixed left-0 top-0 z-20 h-screen bg-background border-r flex-shrink-0 transition-all duration-300 ease-in-out",
+        isCollapsed ? "w-16" : "w-64"
+      )}
+    >
+      <div className="flex items-center justify-between p-4">
+        <h2 className={cn(
+          "text-lg font-semibold transition-opacity duration-200",
+          isCollapsed && "opacity-0"
+        )}>
+          ArXivite
+        </h2>
+        <Button
+          variant="ghost"
+          size="icon"
+          onClick={() => setIsCollapsed(!isCollapsed)}
+          className="hover:bg-secondary/50"
+          aria-label={isCollapsed ? "Expand sidebar" : "Collapse sidebar"}
+        >
+          {isCollapsed ? (
+            <ChevronRight className="h-4 w-4" />
+          ) : (
+            <ChevronLeft className="h-4 w-4" />
+          )}
+        </Button>
       </div>
-      <nav className="space-y-2">
+      <nav className="space-y-2 p-2">
         {navItems.map(({ path, label, icon: Icon }) => (
           <Link
             key={path}
             to={path}
             className={cn(
-              "flex items-center gap-3 px-3 py-2 text-sm rounded-md transition-colors",
+              "flex items-center gap-3 px-3 py-2 text-sm rounded-md transition-colors relative group",
               location.pathname === path 
                 ? "bg-secondary text-secondary-foreground" 
                 : "hover:bg-secondary/50"
             )}
+            title={isCollapsed ? label : undefined}
           >
-            <Icon className="h-4 w-4" />
-            {label}
+            <Icon className="h-4 w-4 flex-shrink-0" />
+            <span 
+              className={cn(
+                "transition-all duration-200 whitespace-nowrap",
+                isCollapsed && "w-0 opacity-0 overflow-hidden"
+              )}
+            >
+              {label}
+            </span>
           </Link>
         ))}
       </nav>
-    </div>
+    </aside>
   );
 };
 

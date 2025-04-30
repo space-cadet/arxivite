@@ -140,7 +140,7 @@ Individual session files in the `sessions/` directory track work done in a speci
 * IMPORTANT: ALL file updates below require EXPLICIT user approval before implementation
 * Update `tasks.md` only after receiving approval, whenever task status changes
 * Update `edit_history.md` only after receiving approval, by APPENDING entries using block edits, with task ID reference and precise timestamp
-* Update `session_cache.md` only after receiving approval, when switching between tasks
+* Update `session_cache.md` only after receiving approval, when switching between tasks. Do not overwrite existing session history. Update the file with details about the latest session.
 * Review `errorLog.md` weekly, but make no modifications without approval
 * Archive `session_cache.md` only after receiving approval, after all active tasks complete
 * Keep `progress.md` organized by task ID, updating only with explicit approval

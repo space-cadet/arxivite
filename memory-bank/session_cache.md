@@ -2,13 +2,36 @@
 *Last Updated: 2025-04-30 10:45*
 
 ## Overview
-- Active: 2 | Paused: 0 | Focus: T3
-- Completed Today: Profile UI Enhancement
+- Active: 3 | Paused: 0 | Focus: T12
+- Completed Today: Theme Toggle Fix (T9), UI Navigation Improvements
+
+## Current Session
+**Started**: 2025-04-30 14:00
+**Focus**: T12 (UI Navigation and Theme Toggle Issues)
+**Session File**: `sessions/2025-04-30-afternoon.md`
 
 ## Task Registry
-- T3: Static Profile UI Enhancement - 🔄
+- T12: UI Navigation and Theme Toggle Issues - 🔄
 - T8: Fix Vercel Deployment Routing - 🔄
-- T9: Theme Toggle Fix - ✅
+- T5: Catchup Page Implementation - 🔄
+- T4: ML-Enhanced Profile - ⬜
+- T6: Paper Bookmarking System - ⬜
+
+## Active Tasks
+### T12: UI Navigation and Theme Toggle Issues
+**Status:** 🔄 **Priority:** HIGH
+**Started:** 2025-04-30 **Last**: 2025-04-30 16:00
+**Context**: Implementing fixes for navigation and theme issues
+**Files**:
+- `src/components/layout/app-layout.tsx` - Added LayoutContext
+- `src/components/layout/Sidebar.tsx` - Updated state management
+- `src/pages/search.tsx` - Fixed navigation issues
+**Progress**:
+1. ✅ Implemented LayoutContext for sidebar state
+2. ✅ Updated Sidebar component
+3. ✅ Enhanced theme provider
+4. 🔄 Testing navigation fixes
+5. ⬜ Final validation
 
 ## Active Tasks
 ### T3: Static Profile UI Enhancement
