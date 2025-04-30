@@ -4,12 +4,18 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { X } from 'lucide-react';
+import { X, ChevronDown, ChevronUp } from 'lucide-react';
 import { useProfile } from '@/contexts/ProfileContext';
 import { getCategoryById, getCategoryName } from '@/lib/categories';
 import { CategorySelect } from '@/components/ui/CategorySelect';
 import { useToast } from "@/hooks/use-toast";
 import { Toaster } from "@/components/ui/toaster";
+import { useArxivSearch } from '@/hooks/useArxiv';
+import { arxivToPaper } from '@/types/paper';
+import { Alert, AlertDescription } from "@/components/ui/alert";
+import { Skeleton } from "@/components/ui/skeleton";
+import PaperTable from "@/components/papers/paper-table";
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 
 const ProfilePage = () => {
   const { profile, addToProfile, removeFromProfile, resetProfile } = useProfile();
@@ -20,6 +26,13 @@ const ProfilePage = () => {
     keywords: '',
     excludeTerms: ''
   });
+  const [authorName, setAuthorName] = useState('');
+  const arxivSearch = useArxivSearch();
+  const { data: authorPapers, isLoading: isLoadingPapers, error: paperError } = arxivSearch.search({ 
+    query: authorName ? `au:"${authorName}"` : '',
+    maxResults: 50
+  });
+  const [isOpen, setIsOpen] = useState(true);
 
   const validateTerm = (value: string): { isValid: boolean; message?: string } => {
     const trimmed = value.trim();
@@ -69,9 +82,80 @@ const ProfilePage = () => {
     <div className="container mx-auto p-6">
       <Toaster />
       <div className="space-y-6">
+        {/* Author Publications Section - Moved to top */}
         <Card>
           <CardHeader>
-            <CardTitle>Research Profile</CardTitle>
+            <CardTitle>Your Identity</CardTitle>
+            <CardDescription>
+              Enter your name as it appears on your arXiv papers to find your publications
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            <div className="flex gap-4">
+              <div className="flex-1">
+                <Input
+                  placeholder="Enter your name as it appears on arXiv papers"
+                  value={authorName}
+                  onChange={e => setAuthorName(e.target.value)}
+                />
+              </div>
+              <Button 
+                variant="outline" 
+                onClick={() => setAuthorName('')}
+                disabled={!authorName}
+              >
+                Clear
+              </Button>
+            </div>
+
+            {authorPapers?.papers && authorPapers.papers.length > 0 && (
+              <Collapsible open={isOpen} onOpenChange={setIsOpen}>
+                <div className="flex items-center justify-between py-2">
+                  <p className="text-sm text-muted-foreground">
+                    Found {authorPapers.papers.length} papers
+                  </p>
+                  <CollapsibleTrigger asChild>
+                    <Button variant="ghost" size="sm" className="w-9 p-0">
+                      {isOpen ? (
+                        <ChevronUp className="h-4 w-4" />
+                      ) : (
+                        <ChevronDown className="h-4 w-4" />
+                      )}
+                      <span className="sr-only">Toggle papers</span>
+                    </Button>
+                  </CollapsibleTrigger>
+                </div>
+                <CollapsibleContent className="space-y-2">
+                  <PaperTable papers={authorPapers.papers.map(arxivToPaper)} />
+                </CollapsibleContent>
+              </Collapsible>
+            )}
+
+            {isLoadingPapers ? (
+              <div className="space-y-4">
+                <Skeleton className="h-12 w-full" />
+                <Skeleton className="h-64 w-full" />
+              </div>
+            ) : paperError ? (
+              <Alert variant="destructive">
+                <AlertDescription>
+                  Error loading papers: {paperError.message}
+                </AlertDescription>
+              </Alert>
+            ) : authorName && !authorPapers?.papers?.length && (
+              <Alert>
+                <AlertDescription>
+                  No papers found for author "{authorName}". Make sure to enter your name exactly as it appears on your arXiv papers.
+                </AlertDescription>
+              </Alert>
+            )}
+          </CardContent>
+        </Card>
+
+        {/* Research Profile Card */}
+        <Card>
+          <CardHeader>
+            <CardTitle>Research Interests</CardTitle>
             <CardDescription>
               Manage your research interests to get personalized paper recommendations
             </CardDescription>

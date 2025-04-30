@@ -4,12 +4,14 @@
 ## Current Status
 - T1 (ArXiv Integration) ✅ COMPLETE
 - T2 (Paper Components) ✅ COMPLETE
-- T3 (Static Profile) ✅ COMPLETE
+- T3 (Static Profile) ✅ COMPLETE + UI Enhancement
 - T4 (ML Profile) ⬜ TODO
 - T5 (Catchup Page) 🔄 IN PROGRESS
 - T9 (Theme Toggle) ✅ COMPLETE
 
 ## Recent Achievements
+- Enhanced profile page UI with collapsible papers table
+- Added efficient paper browsing with toggle functionality
 - Fixed theme toggle functionality by replacing next-themes with custom implementation
 
 ## Current Status

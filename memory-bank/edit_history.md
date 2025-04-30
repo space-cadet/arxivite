@@ -1,4 +1,11 @@
 # Edit History
+*Last Updated: 2025-04-30*
+
+## 2025-04-30
+### 10:00 - T3: Profile UI Enhancement
+- Modified `src/pages/profile.tsx` - Added collapsible papers table section
+- Enhanced profile page UI with paper count and toggle button
+- Improved user experience with collapsible content
 *Updated: 2025-04-30*
 
 ## 2025-04-30
