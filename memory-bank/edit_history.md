@@ -2,6 +2,12 @@
 *Last Updated: 2025-04-30*
 
 ## 2025-04-30
+### 17:00 - T12: History Input Implementation
+- Modified `src/components/ui/history-dropdown.tsx` - Added keyboard navigation support
+- Modified `src/components/ui/history-input.tsx` - Fixed input value updates and focus handling
+- Enhanced dropdown functionality with automatic focus display
+- Fixed search value persistence in paper filters
+
 ### 16:30 - T12: UI and Theme Persistence Fixes
 - Enhanced `src/components/theme/theme-provider.tsx` - Improved theme persistence
 - Updated `src/pages/profile.tsx` - Fixed author name persistence

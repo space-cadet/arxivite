@@ -1,9 +1,8 @@
-
 import { Search } from 'lucide-react';
-import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Button } from '@/components/ui/button';
 import { CategorySelect } from '@/components/ui/CategorySelect';
+import { HistoryInput } from '@/components/ui/history-input';
 
 interface PaperFiltersProps {
   searchValue: string;
@@ -24,14 +23,13 @@ const PaperFilters = ({
   onSearch,
   categories
 }: PaperFiltersProps) => {
-
-  const handleSearch = () => {
-    onSearch(searchValue);
+  const handleSearch = (value: string) => {
+    onSearch(value);
   };
 
   const handleKeyPress = (e: React.KeyboardEvent) => {
     if (e.key === 'Enter') {
-      handleSearch();
+      handleSearch(searchValue);
     }
   };
 
@@ -42,16 +40,16 @@ const PaperFilters = ({
         <div className="flex gap-2">
           <div className="relative flex-1">
             <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
-            <Input
-              id="search"
+            <HistoryInput
+              id="paper-search"
               placeholder="Search papers..."
               value={searchValue}
-              onChange={(e) => onSearch(e.target.value)}
-              onKeyPress={handleKeyPress}
+              onValueChange={handleSearch}
+              onKeyDown={handleKeyPress}
               className="pl-8"
             />
           </div>
-          <Button onClick={handleSearch}>
+          <Button onClick={() => handleSearch(searchValue)}>
             Search
           </Button>
         </div>
@@ -62,16 +60,16 @@ const PaperFilters = ({
           <Label htmlFor="author-search">Filter by Author</Label>
           <div className="relative">
             <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
-            <Input
-              id="author-search"
+            <HistoryInput
+              id="author-filter"
               placeholder="Author name..."
               value={authorValue}
-              onChange={(e) => onAuthorSearch(e.target.value)}
+              onValueChange={onAuthorSearch}
               className="pl-8"
             />
           </div>
         </div>
-
+        
         <div className="space-y-2 w-[280px]">
           <Label htmlFor="category-select">Filter by Category</Label>
           <CategorySelect

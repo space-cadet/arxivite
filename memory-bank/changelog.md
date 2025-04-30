@@ -2,6 +2,12 @@
 *Last Updated: 2025-04-30*
 
 ## 2025-04-30
+### Input History and Search Improvements
+- Added keyboard navigation support to history dropdowns
+- Fixed search input value persistence issues
+- Improved input field focus handling
+- Enhanced dropdown functionality with auto-focus
+
 ### UI and Navigation Improvements
 - Implemented LayoutContext for improved sidebar state management
 - Enhanced navigation reliability across all pages

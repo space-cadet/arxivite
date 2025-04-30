@@ -6,6 +6,9 @@ import RecentPaperList from "@/components/catchup/RecentPaperList"
 import TimeFilter from "@/components/catchup/TimeFilter"
 import ProfileSummary from "@/components/profile/ProfileSummary"
 import { usePersistedState } from "@/hooks/usePersistedState"
+import { Badge } from "@/components/ui/badge"
+import { X } from "lucide-react"
+import { getCategoryName } from "@/lib/categories"
 
 type TimeRange = "daily" | "weekly" | "monthly"
 type FilterType = "all" | "recommended" | "bookmarked"
@@ -33,7 +36,7 @@ export default function CatchupPage() {
       </div>
 
       <div className="flex gap-4 items-start">
-        <div className="flex-1">
+        <div className="flex-1 space-y-4">
           <PaperFilters 
             authorValue={authorFilter}
             categoryValue={selectedCategory}
@@ -43,6 +46,35 @@ export default function CatchupPage() {
             onCategorySelect={handleCategorySelect}
             categories={profile.categories}
           />
+
+          {/* Active Filters */}
+          {(authorFilter || selectedCategory !== 'all') && (
+            <div className="flex flex-wrap gap-2">
+              {authorFilter && (
+                <Badge 
+                  variant="secondary"
+                  className="flex items-center gap-1"
+                >
+                  Author: {authorFilter}
+                  <X 
+                    className="h-3 w-3 cursor-pointer" 
+                    onClick={() => setAuthorFilter('')}
+                  />
+                </Badge>
+              )}
+              {selectedCategory !== 'all' && (
+                <Badge 
+                  className="flex items-center gap-1"
+                >
+                  Category: {getCategoryName(selectedCategory)}
+                  <X 
+                    className="h-3 w-3 cursor-pointer" 
+                    onClick={() => setSelectedCategory('all')}
+                  />
+                </Badge>
+              )}
+            </div>
+          )}
         </div>
         <div className="w-[300px]">
           <ProfileSummary />

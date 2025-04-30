@@ -1,6 +1,5 @@
 import { useState, KeyboardEvent, useEffect } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -17,9 +16,10 @@ import { Skeleton } from "@/components/ui/skeleton";
 import PaperTable from "@/components/papers/paper-table";
 import { usePersistedState } from '@/hooks/usePersistedState';
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
+import { HistoryInput } from "@/components/ui/history-input";
 
 const ProfilePage = () => {
-  const { profile, addToProfile, removeFromProfile, resetProfile } = useProfile();
+  const { profile, addToProfile, removeFromProfile, resetProfile, updateProfile } = useProfile();
   const { toast } = useToast();
   const [inputs, setInputs] = useState({
     categories: '',
@@ -28,26 +28,73 @@ const ProfilePage = () => {
     excludeTerms: ''
   });
 
-  // Use usePersistedState for both the input value and the profile sync
+  // Use usePersistedState for input value only, not profile sync
   const [authorName, setAuthorName] = usePersistedState('profile.authorName', '');
+  const [searchQuery, setSearchQuery] = useState('');
   const [isOpen, setIsOpen] = usePersistedState('profile.papersTableOpen', true);
-  
-  // Sync authorName with profile
-  useEffect(() => {
-    if (authorName && !profile.authors.includes(authorName)) {
-      addToProfile('authors', authorName);
-    }
-  }, [authorName, profile.authors, addToProfile]);
   
   const arxivSearch = useArxivSearch();
   const { data: authorPapers, isLoading: isLoadingPapers, error: paperError } = arxivSearch.search({ 
-    query: authorName ? `au:"${authorName}"` : '',
+    query: searchQuery,
     maxResults: 50
   });
 
-  const validateTerm = (value: string): { isValid: boolean; message?: string } => {
+  const handleSearch = () => {
+    const name = authorName.trim();
+    if (name.length < 2) {
+      toast({
+        variant: "destructive",
+        title: "Invalid name",
+        description: "Please enter your full name as it appears on arXiv papers"
+      });
+      return;
+    }
+    
+    setSearchQuery(name ? `au:"${name}"` : '');
+    
+    // Only add to profile if searching
+    if (!profile.authors.includes(name)) {
+      addToProfile('authors', name);
+    }
+  };
+
+  // Clean up fragmented author names on mount
+  useEffect(() => {
+    const authors = profile.authors;
+    if (authors.length > 0) {
+      // Find any single-letter or fragmented names
+      const fragmentedNames = authors.filter(name => 
+        name.length <= 2 || 
+        authors.some(other => other !== name && other.includes(name))
+      );
+      
+      if (fragmentedNames.length > 0) {
+        // Remove fragmented names
+        const cleanAuthors = authors.filter(name => !fragmentedNames.includes(name));
+        updateProfile({
+          ...profile,
+          authors: cleanAuthors
+        });
+      }
+    }
+  }, []); // Run once on mount
+
+  const validateTerm = (value: string, field: keyof typeof inputs): { isValid: boolean; message?: string } => {
     const trimmed = value.trim();
     
+    if (field === 'authors') {
+      if (trimmed.length < 2) {
+        return { isValid: false, message: 'Author name must be at least 2 characters long' };
+      }
+      
+      if (!/^[a-zA-Z\s-]+$/.test(trimmed)) {
+        return { isValid: false, message: 'Author name can only contain letters, spaces, and hyphens' };
+      }
+
+      return { isValid: true };
+    }
+    
+    // For keywords and excludeTerms
     if (trimmed.length < 2) {
       return { isValid: false, message: 'Term must be at least 2 characters long' };
     }
@@ -63,22 +110,20 @@ const ProfilePage = () => {
     return { isValid: true };
   };
 
-  const handleKeyPress = (
+  const handleKeyPressForInputs = (
     e: KeyboardEvent<HTMLInputElement>, 
     field: keyof typeof inputs
   ) => {
     const value = inputs[field].trim();
     if (e.key === 'Enter' && value) {
-      if (field === 'keywords' || field === 'excludeTerms') {
-        const validation = validateTerm(value);
-        if (!validation.isValid) {
-          toast({
-            variant: "destructive",
-            title: "Invalid input",
-            description: validation.message
-          });
-          return;
-        }
+      const validation = validateTerm(value, field);
+      if (!validation.isValid) {
+        toast({
+          variant: "destructive",
+          title: "Invalid input",
+          description: validation.message
+        });
+        return;
       }
 
       // Check if item already exists in profile
@@ -104,15 +149,31 @@ const ProfilePage = () => {
           <CardContent className="space-y-4">
             <div className="flex gap-4">
               <div className="flex-1">
-                <Input
+                <HistoryInput
+                  id="author-name"
                   placeholder="Enter your name as it appears on arXiv papers"
                   value={authorName}
-                  onChange={e => setAuthorName(e.target.value)}
+                  onValueChange={setAuthorName}
+                  onKeyDown={e => {
+                    if (e.key === 'Enter') {
+                      handleSearch();
+                    }
+                  }}
                 />
               </div>
               <Button 
+                variant="default"
+                onClick={handleSearch}
+                disabled={!authorName.trim()}
+              >
+                Find Papers
+              </Button>
+              <Button 
                 variant="outline" 
-                onClick={() => setAuthorName('')}
+                onClick={() => {
+                  setAuthorName('');
+                  setSearchQuery('');
+                }}
                 disabled={!authorName}
               >
                 Clear
@@ -221,12 +282,13 @@ const ProfilePage = () => {
                   </Badge>
                 ))}
               </div>
-              <Input 
+              <HistoryInput 
+                id="followed-authors"
                 placeholder="Add an author and press Enter" 
                 className="mt-2"
                 value={inputs.authors}
-                onChange={e => setInputs(prev => ({ ...prev, authors: e.target.value }))}
-                onKeyPress={e => handleKeyPress(e, 'authors')}
+                onValueChange={value => setInputs(prev => ({ ...prev, authors: value }))}
+                onKeyDown={e => handleKeyPressForInputs(e as any, 'authors')}
               />
             </div>
 
@@ -248,12 +310,13 @@ const ProfilePage = () => {
                   </Badge>
                 ))}
               </div>
-              <Input 
+              <HistoryInput 
+                id="research-keywords"
                 placeholder="Add a keyword and press Enter" 
                 className="mt-2"
                 value={inputs.keywords}
-                onChange={e => setInputs(prev => ({ ...prev, keywords: e.target.value }))}
-                onKeyPress={e => handleKeyPress(e, 'keywords')}
+                onValueChange={value => setInputs(prev => ({ ...prev, keywords: value }))}
+                onKeyDown={e => handleKeyPressForInputs(e as any, 'keywords')}
               />
             </div>
 
@@ -275,12 +338,13 @@ const ProfilePage = () => {
                   </Badge>
                 ))}
               </div>
-              <Input 
+              <HistoryInput 
+                id="exclude-terms"
                 placeholder="Add term to exclude and press Enter" 
                 className="mt-2"
                 value={inputs.excludeTerms}
-                onChange={e => setInputs(prev => ({ ...prev, excludeTerms: e.target.value }))}
-                onKeyPress={e => handleKeyPress(e, 'excludeTerms')}
+                onValueChange={value => setInputs(prev => ({ ...prev, excludeTerms: value }))}
+                onKeyDown={e => handleKeyPressForInputs(e as any, 'excludeTerms')}
               />
             </div>
 
