@@ -1,5 +1,16 @@
 # Implementation Progress
-*Last Updated: 2025-04-27 15:30*
+*Last Updated: 2025-04-30 15:45*
+
+## Current Status
+- T1 (ArXiv Integration) ✅ COMPLETE
+- T2 (Paper Components) ✅ COMPLETE
+- T3 (Static Profile) ✅ COMPLETE
+- T4 (ML Profile) ⬜ TODO
+- T5 (Catchup Page) 🔄 IN PROGRESS
+- T9 (Theme Toggle) ✅ COMPLETE
+
+## Recent Achievements
+- Fixed theme toggle functionality by replacing next-themes with custom implementation
 
 ## Current Status
 - T1 (ArXiv Integration) ✅ COMPLETE

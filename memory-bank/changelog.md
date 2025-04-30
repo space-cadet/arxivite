@@ -1,5 +1,11 @@
 # Changelog
-*Last Updated: 2025-04-26*
+*Last Updated: 2025-04-30*
+
+## 2025-04-30
+- Completed T9: Fixed theme toggle functionality
+- Replaced next-themes with custom theme provider implementation
+- Known issue: Build errors present with image optimization dependencies
+
 
 ## 2025-04-26
 - Added T3: Static Research Profile task

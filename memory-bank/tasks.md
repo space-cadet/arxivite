@@ -4,6 +4,7 @@
 ## Active Tasks
 | ID | Title | Status | Priority | Started | Dependencies |
 |----|-------|--------|----------|---------|--------------|
+| T9 | Fix Theme Toggle Functionality | ✅ | HIGH | 2025-04-30 | T0 |
 | T8 | Fix Vercel Deployment Routing | 🔄 | HIGH | 2025-04-27 | T0 |
 | T1 | @agentic/arxiv Integration | ✅ COMPLETE | HIGH | 2025-04-26 | T0 |
 | T3 | Static Research Profile | ✅ COMPLETE | HIGH | 2025-04-26 | T0, T1 |
@@ -14,6 +15,7 @@
 
 ## Task Index
 Detailed task information is maintained in individual files under `/tasks/`:
+- [T9: Fix Theme Toggle Functionality](/tasks/T9_theme_toggle.md) 🔄
 - [T0: Project Setup](/tasks/T0_project_setup.md) ✅
 - [T8: Fix Vercel Deployment Routing](/tasks/T8_vercel_routing.md) 🔄
 - [T1: @agentic/arxiv Integration](/tasks/T1_arxiv_integration.md) 🔄

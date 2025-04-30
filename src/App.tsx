@@ -1,6 +1,6 @@
 import { HashRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { ThemeProvider } from "@/components/theme-provider";
+import ThemeProvider from "@/components/theme/theme-provider";
 import AppLayout from '@/components/layout/app-layout';
 import SearchPage from '@/pages/search';
 import ProfilePage from '@/pages/profile';

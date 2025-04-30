@@ -3,9 +3,11 @@
 
 ## Overview
 - Active: 1 | Paused: 0 | Focus: T8
+- Completed Today: T9 (Theme Toggle Fix)
 
 ## Task Registry
 - T8: Fix Vercel Deployment Routing - 🔄
+- T9: Theme Toggle Fix - ✅
 
 ## Active Tasks
 ### T8: Fix Vercel Deployment Routing
@@ -166,6 +168,8 @@
 - Paper data being fetched successfully
 - Search functionality working
 - Some UI issues remaining
+- Theme toggle functionality fixed with custom implementation
+- Known build issues with image optimization dependencies
 
 ## Session Progress
 1. ✅ Created arxiv integration files
@@ -179,3 +183,4 @@
 2. Resolve React key warning in paper-filters.tsx
 3. Add pagination support
 4. Improve error handling
+5. Address build errors with image optimization dependencies

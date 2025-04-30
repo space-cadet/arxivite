@@ -1,6 +1,6 @@
-
 import { Moon, Sun } from "lucide-react"
-import { useTheme } from "next-themes"
+import { useContext } from "react"
+import { ThemeProviderContext } from "./theme/theme-provider"
 
 import { Button } from "@/components/ui/button"
 import {
@@ -11,7 +11,7 @@ import {
 } from "@/components/ui/dropdown-menu"
 
 export function ModeToggle() {
-  const { setTheme } = useTheme()
+  const { setTheme } = useContext(ThemeProviderContext)
 
   return (
     <DropdownMenu>

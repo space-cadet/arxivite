@@ -1,5 +1,16 @@
 # Edit History
-*Updated: 2025-04-27*
+*Updated: 2025-04-30*
+
+## 2025-04-30
+### 15:45 - T9: Theme Toggle Fix
+- Removed `src/components/theme-provider.tsx` - Removed next-themes implementation
+- Modified `src/components/mode-toggle.tsx` - Updated to use custom theme provider
+- Modified `src/App.tsx` - Updated ThemeProvider import
+- Modified `package.json` - Removed next-themes dependency
+
+Note: Build errors present after dependency cleanup (to be addressed separately):
+- gifsicle postinstall failure
+- Various deprecated dependencies warnings
 
 ## 2025-04-27
 ### 14:30 - T8: Vercel Deployment Configuration
