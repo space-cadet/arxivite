@@ -1,6 +1,6 @@
 import { useLocation, Link } from 'react-router-dom';
 import { cn } from "@/lib/utils";
-import { Search, UserCircle, Clock } from "lucide-react";
+import { Search, UserCircle, Clock, Bookmark } from "lucide-react";
 
 /**
  * Bottom navigation bar component for mobile screens.
@@ -12,6 +12,7 @@ export function MobileNavBottom() {
   const navItems = [
     { path: '/search', label: 'Search', icon: Search },
     { path: '/catchup', label: 'Catchup', icon: Clock },
+    { path: '/bookmarks', label: 'Bookmarks', icon: Bookmark },
     { path: '/profile', label: 'Profile', icon: UserCircle },
   ];
 

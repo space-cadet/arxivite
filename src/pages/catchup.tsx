@@ -11,7 +11,7 @@ import { X } from "lucide-react"
 import { getCategoryName } from "@/lib/categories"
 
 type TimeRange = "daily" | "weekly" | "monthly"
-type FilterType = "all" | "recommended" | "bookmarked"
+type FilterType = "all" | "recommended"
 
 export default function CatchupPage() {
   const { profile } = useProfile();
@@ -87,7 +87,6 @@ export default function CatchupPage() {
             <TabsList className="w-full justify-start overflow-x-auto">
               <TabsTrigger value="all" className="py-2 px-4">All Papers</TabsTrigger>
               <TabsTrigger value="recommended" className="py-2 px-4">Recommended</TabsTrigger>
-              <TabsTrigger value="bookmarked" className="py-2 px-4">Bookmarked</TabsTrigger>
             </TabsList>
             <TabsContent value="all" className="mt-4">
               <RecentPaperList 
@@ -101,14 +100,6 @@ export default function CatchupPage() {
               <RecentPaperList 
                 timeRange={timeRange} 
                 filter="recommended"
-                authorFilter={authorFilter}
-                categoryFilter={selectedCategory}
-              />
-            </TabsContent>
-            <TabsContent value="bookmarked" className="mt-4">
-              <RecentPaperList 
-                timeRange={timeRange} 
-                filter="bookmarked"
                 authorFilter={authorFilter}
                 categoryFilter={selectedCategory}
               />

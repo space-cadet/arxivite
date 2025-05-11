@@ -1,8 +1,9 @@
 import { useState } from 'react';
-import { ChevronDown, ChevronUp, Download, ExternalLink, Bookmark } from 'lucide-react';
+import { ChevronDown, ChevronUp, Download, ExternalLink, Bookmark, BookmarkCheck } from 'lucide-react';
 import { Paper } from '@/types/paper';
 import { Button } from '@/components/ui/button';
 import { TableCell, TableRow } from '@/components/ui/table';
+import { useBookmarkContext } from '@/lib/bookmarks/context';
 
 interface PaperTableRowProps {
   paper: Paper;
@@ -10,6 +11,22 @@ interface PaperTableRowProps {
 
 const PaperTableRow = ({ paper }: PaperTableRowProps) => {
   const [isOpen, setIsOpen] = useState(false);
+  const { addBookmark, removeBookmark, loading, error, getBookmark } = useBookmarkContext();
+  
+  const isBookmarked = getBookmark(paper.id) !== undefined;
+  
+  const handleBookmarkClick = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    if (isBookmarked) {
+      removeBookmark(paper.id);
+    } else {
+      addBookmark({
+        paperId: paper.id,
+        title: paper.title,
+        category: paper.category
+      });
+    }
+  };
 
   const formatDate = (date: Date) => {
     return date.toLocaleDateString('en-US', {
@@ -31,12 +48,14 @@ const PaperTableRow = ({ paper }: PaperTableRowProps) => {
               variant="ghost" 
               size="icon" 
               className="h-6 w-6 p-0 hover:bg-transparent"
-              onClick={(e) => {
-                e.stopPropagation();
-                // TODO: Implement bookmark functionality
-              }}
+              onClick={handleBookmarkClick}
+              disabled={loading}
             >
-              <Bookmark className="h-4 w-4" />
+              {isBookmarked ? (
+                <BookmarkCheck className="h-4 w-4 text-primary" />
+              ) : (
+                <Bookmark className="h-4 w-4" />
+              )}
             </Button>
             {isOpen ? 
               <ChevronUp className="h-4 w-4 flex-shrink-0" /> : 

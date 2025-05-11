@@ -2,7 +2,8 @@ import { useState } from 'react';
 import { Paper } from '@/types/paper';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
-import { ChevronDown, ChevronUp, Download, ExternalLink, Bookmark } from 'lucide-react';
+import { ChevronDown, ChevronUp, Download, ExternalLink, Bookmark, BookmarkCheck } from 'lucide-react';
+import { useBookmarkContext } from '@/lib/bookmarks/context';
 
 interface PaperCardProps {
   paper: Paper;
@@ -10,6 +11,28 @@ interface PaperCardProps {
 
 export function PaperCard({ paper }: PaperCardProps) {
   const [isExpanded, setIsExpanded] = useState(false);
+  const { addBookmark, removeBookmark, loading, error, getBookmark } = useBookmarkContext();
+  
+  const isBookmarked = getBookmark(paper.id) !== undefined;
+  
+  const handleBookmarkClick = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    console.log('Bookmark click handler triggered');
+    console.log('Current bookmark state:', isBookmarked);
+    console.log('Paper ID:', paper.id);
+    
+    if (isBookmarked) {
+      console.log('Attempting to remove bookmark');
+      removeBookmark(paper.id);
+    } else {
+      console.log('Attempting to add bookmark');
+      addBookmark({
+        paperId: paper.id,
+        title: paper.title,
+        category: paper.category
+      });
+    }
+  };
 
   const formatDate = (date: Date) => {
     return date.toLocaleDateString('en-US', {
@@ -96,12 +119,14 @@ export function PaperCard({ paper }: PaperCardProps) {
           variant="ghost"
           size="icon"
           className="h-9 w-9"
-          onClick={(e) => {
-            e.stopPropagation();
-            // TODO: Implement bookmark functionality
-          }}
+          onClick={handleBookmarkClick}
+          disabled={loading}
         >
-          <Bookmark className="h-4 w-4" />
+          {isBookmarked ? (
+            <BookmarkCheck className="h-4 w-4 text-primary" />
+          ) : (
+            <Bookmark className="h-4 w-4" />
+          )}
         </Button>
         <Button variant="outline" size="default" className="flex-1" asChild>
           <a href={`https://arxiv.org/abs/${paper.id}`} target="_blank" rel="noopener noreferrer">

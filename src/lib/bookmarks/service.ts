@@ -7,11 +7,21 @@ export function createBookmarkService(store: BookmarkStore): BookmarkService {
         ...bookmark,
         dateAdded: new Date(),
       };
-      store.bookmarks[bookmark.paperId] = newBookmark;
+      return {
+        ...store,
+        bookmarks: {
+          ...store.bookmarks,
+          [bookmark.paperId]: newBookmark
+        }
+      };
     },
 
     removeBookmark(paperId) {
-      delete store.bookmarks[paperId];
+      const { [paperId]: removed, ...remaining } = store.bookmarks;
+      return {
+        ...store,
+        bookmarks: remaining
+      };
     },
 
     isBookmarked(paperId) {

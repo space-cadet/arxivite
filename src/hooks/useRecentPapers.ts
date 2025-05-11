@@ -1,6 +1,7 @@
 // src/hooks/useRecentPapers.ts
 import { useMemo } from 'react';
 import { useProfile } from '@/hooks/useProfile';
+import { useBookmarkContext } from '@/lib/bookmarks/context';
 import { useFilteredPapers } from '@/hooks/useFilteredPapers';
 import { useArxivSearch } from '@/hooks/useArxiv';
 import type { Paper } from '@/types/paper';
@@ -77,6 +78,9 @@ export const useRecentPapers = (timeRange: TimeRange, filter: FilterType) => {
   const papers = (data?.papers || []).map(arxivToPaper);
   const filteredPapers = useFilteredPapers(papers, profile);
 
+  const { getAllBookmarks } = useBookmarkContext();
+  const bookmarks = getAllBookmarks();
+  
   const processedPapers = useMemo(() => {
     if (!papers?.length) return [];
     
@@ -93,13 +97,18 @@ export const useRecentPapers = (timeRange: TimeRange, filter: FilterType) => {
           .map(match => match.paper);
       
       case "bookmarked":
-        // TODO: Add bookmarking system in a separate task
-        return [];
+        console.log('useRecentPapers: All bookmarks:', bookmarks);
+        const bookmarkedIds = bookmarks.map(b => b.paperId);
+        console.log('useRecentPapers: Bookmarked IDs:', bookmarkedIds);
+        console.log('useRecentPapers: All papers:', sortedPapers);
+        const bookmarkedPapers = sortedPapers.filter(paper => bookmarkedIds.includes(paper.id));
+        console.log('useRecentPapers: Filtered bookmarked papers:', bookmarkedPapers);
+        return bookmarkedPapers;
       
       default:
         return sortedPapers;
     }
-  }, [papers, filter, filteredPapers]);
+  }, [papers, filter, filteredPapers, bookmarks]);
 
   return {
     papers: processedPapers,

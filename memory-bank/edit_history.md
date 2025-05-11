@@ -1,4 +1,28 @@
 # Edit History
+*Last Updated: 2025-05-11 23:00*
+
+## 2025-05-11
+### 23:00 - T6: Bookmark System Implementation
+- Created `src/pages/bookmarks.tsx` - New bookmarks management page
+- Updated `src/App.tsx` - Added bookmarks route
+- Updated `src/components/layout/Sidebar.tsx` - Added bookmarks navigation
+- Updated `src/components/layout/mobile/MobileNavBottom.tsx` - Added bookmarks tab
+- Updated `src/pages/catchup.tsx` - Removed bookmarked tab
+
+### 22:30 - T6: Bookmark State Management Fix
+- Modified `src/lib/bookmarks/context.tsx` - Fixed state updates
+- Modified `src/lib/bookmarks/service.ts` - Added proper immutable updates
+- Updated `src/hooks/useRecentPapers.ts` - Fixed hook usage
+- Updated `src/components/papers/paper-card.tsx` - Added debugging
+- Updated `src/components/papers/paper-table-row.tsx` - Added debugging
+
+### 14:00 - T6: Core Bookmark Implementation
+- Created `src/lib/bookmarks/types.ts` - Core type definitions
+- Created `src/lib/bookmarks/context.tsx` - Context implementation
+- Created `src/lib/bookmarks/service.ts` - Service layer
+- Created `src/hooks/useBookmark.ts` - Custom hook
+- Updated `src/components/papers/paper-card.tsx` - Added bookmark button
+- Updated `src/components/papers/paper-table-row.tsx` - Added bookmark button
 *Last Updated: 2025-05-11*
 
 ## 2025-05-11

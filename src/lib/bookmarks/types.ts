@@ -12,8 +12,8 @@ export interface BookmarkStore {
 }
 
 export interface BookmarkService {
-  addBookmark: (bookmark: Omit<Bookmark, 'dateAdded'>) => void;
-  removeBookmark: (paperId: string) => void;
+  addBookmark: (bookmark: Omit<Bookmark, 'dateAdded'>) => BookmarkStore;
+  removeBookmark: (paperId: string) => BookmarkStore;
   isBookmarked: (paperId: string) => boolean;
   getBookmark: (paperId: string) => Bookmark | undefined;
   getAllBookmarks: () => Bookmark[];
