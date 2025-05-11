@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { ChevronDown, ChevronUp, Download, ExternalLink } from 'lucide-react';
+import { ChevronDown, ChevronUp, Download, ExternalLink, Bookmark } from 'lucide-react';
 import { Paper } from '@/types/paper';
 import { Button } from '@/components/ui/button';
 import { TableCell, TableRow } from '@/components/ui/table';
@@ -27,6 +27,17 @@ const PaperTableRow = ({ paper }: PaperTableRowProps) => {
       >
         <TableCell className="font-medium w-[400px]">
           <div className="flex items-center gap-2">
+            <Button 
+              variant="ghost" 
+              size="icon" 
+              className="h-6 w-6 p-0 hover:bg-transparent"
+              onClick={(e) => {
+                e.stopPropagation();
+                // TODO: Implement bookmark functionality
+              }}
+            >
+              <Bookmark className="h-4 w-4" />
+            </Button>
             {isOpen ? 
               <ChevronUp className="h-4 w-4 flex-shrink-0" /> : 
               <ChevronDown className="h-4 w-4 flex-shrink-0" />

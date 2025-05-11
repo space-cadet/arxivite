@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Paper } from '@/types/paper';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
-import { ChevronDown, ChevronUp, Download, ExternalLink } from 'lucide-react';
+import { ChevronDown, ChevronUp, Download, ExternalLink, Bookmark } from 'lucide-react';
 
 interface PaperCardProps {
   paper: Paper;
@@ -91,14 +91,25 @@ export function PaperCard({ paper }: PaperCardProps) {
         </CardContent>
       )}
       
-      <CardFooter className="flex justify-between items-center gap-2 pt-3 pb-3 border-t">
-        <Button variant="outline" size="default" className="w-1/2" asChild>
+      <CardFooter className="flex items-center gap-2 pt-3 pb-3 border-t">
+        <Button
+          variant="ghost"
+          size="icon"
+          className="h-9 w-9"
+          onClick={(e) => {
+            e.stopPropagation();
+            // TODO: Implement bookmark functionality
+          }}
+        >
+          <Bookmark className="h-4 w-4" />
+        </Button>
+        <Button variant="outline" size="default" className="flex-1" asChild>
           <a href={`https://arxiv.org/abs/${paper.id}`} target="_blank" rel="noopener noreferrer">
             <ExternalLink className="mr-2 h-4 w-4" />
             View
           </a>
         </Button>
-        <Button variant="default" size="default" className="w-1/2" asChild>
+        <Button variant="default" size="default" className="flex-1" asChild>
           <a href={paper.pdfUrl} target="_blank" rel="noopener noreferrer">
             <Download className="mr-2 h-4 w-4" />
             PDF

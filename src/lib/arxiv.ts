@@ -13,7 +13,7 @@ function parseXML(text: string): Document {
     // This code should never run in the browser
     // and will be eliminated by tree-shaking
     // eslint-disable-next-line @typescript-eslint/no-var-requires
-    const xmldom = require('xmldom');
+    const xmldom = require('@xmldom/xmldom');
     return new xmldom.DOMParser().parseFromString(text, 'text/xml');
   }
 }

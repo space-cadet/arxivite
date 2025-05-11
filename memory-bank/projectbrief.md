@@ -28,7 +28,7 @@ arxivite/
 ```
 
 ## Key Components
-- **@agentic/arxiv**: Direct arXiv API integration
+- Custome build integration with arXiv api
 - **ShadcnUI**: Modern UI component library
 - **React + Vite**: Frontend framework and build tool
 - **Local Storage**: Client-side data persistence
@@ -57,7 +57,6 @@ Following KIRSS principle:
 - Minimize external dependencies
 
 ## External Dependencies
-- @agentic/arxiv: Latest - arXiv API integration
 - shadcn/ui: Latest - UI components
 - React: 18 - Frontend framework
 - Vite: Latest - Build tool and dev server
