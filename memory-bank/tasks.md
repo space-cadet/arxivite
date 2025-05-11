@@ -1,15 +1,23 @@
-# Task Registry
-*Last Updated: 2025-05-11 20:45*
+# Tasks Master Reference
+*Last Updated: 2025-05-11 22:45*
+
+## Tasks Overview
+- **Active Tasks:** 6
+- **Paused Tasks:** 0
+- **Completed Tasks:** 4
+- **Latest Task ID:** T13
+
+## Task Registry
 
 ## Active Tasks
-| ID | Title | Status | Priority | Started | Dependencies |
-|----|-------|--------|----------|---------|--------------|
-| T13 | Mobile and Tablet Accessibility | 🔄 | HIGH | 2025-05-11 | T12 |
-| T12 | UI Navigation and Theme Toggle Issues | 🔄 | HIGH | 2025-04-30 | - |
-| T8 | Fix Vercel Deployment Routing | 🔄 | HIGH | 2025-04-27 | T0 |
-| T5 | Catchup Page Implementation | 🔄 | HIGH | 2025-04-27 | T0, T1, T3 |
-| T4 | ML-Enhanced Profile | ⬜ | MEDIUM | - | T3 |
-| T6 | Paper Bookmarking System | ⬜ | MEDIUM | - | T1, T2 |
+| ID | Title | Status | Priority | Started | File |
+|----|-------|--------|----------|---------|------|
+| T13 | Mobile and Tablet Accessibility | 🔄 | HIGH | 2025-05-11 | [tasks/T13.md] |  
+| T12 | UI Navigation and Theme Toggle Issues | 🔄 | HIGH | 2025-04-30 | [tasks/T12.md] |
+| T8 | Fix Vercel Deployment Routing | 🔄 | HIGH | 2025-04-27 | [tasks/T8.md] |
+| T5 | Catchup Page Implementation | 🔄 | HIGH | 2025-04-27 | [tasks/T5.md] |
+| T4 | ML-Enhanced Profile | ⬜ | MEDIUM | - | [tasks/T4.md] |
+| T6 | Paper Bookmarking System | ⬜ | MEDIUM | - | [tasks/T6.md] |
 
 ## Task Details
 ### T13: Mobile and Tablet Accessibility
@@ -140,12 +148,41 @@ interface Bookmark {
 - `src/components/papers/paper-card.tsx` - UI updates ✅
 - `src/components/papers/paper-table-row.tsx` - UI updates ✅
 
+## Dependencies
+- **T13** → Depends on → **T12**
+- **T12** → None
+- **T8** → Depends on → **T0**
+- **T5** → Depends on → **T0, T1, T3**
+- **T4** → Depends on → **T3**
+- **T6** → Depends on → **T1, T2**
+
+## Priority Queue
+1. **T13**: Mobile and Tablet Accessibility - critical for user experience
+2. **T12**: UI Navigation and Theme Toggle Issues - core functionality fixes
+3. **T8**: Fix Vercel Deployment Routing - deployment stability
+4. **T5**: Catchup Page Implementation - key feature completion
+5. **T6**: Paper Bookmarking System - user requested feature
+6. **T4**: ML-Enhanced Profile - enhancement for future release
+
 ## Completed Tasks
-| ID | Title | Completed |
-|----|-------|-----------|
-| T9 | Fix Theme Toggle Functionality | 2025-04-30 |
-| T7 | Search State Persistence | 2025-04-27 |
-| T3 | Static Research Profile | 2025-04-27 |
-| T2 | Paper Display Components | 2025-04-26 |
-| T1 | @agentic/arxiv Integration | 2025-04-26 |
-| T0 | Project Setup | 2025-04-26 |
+| ID | Title | Completed | File |
+|----|-------|-----------|------|
+| T9 | Fix Theme Toggle Functionality | 2025-04-30 | [tasks/T9.md] |
+| T7 | Search State Persistence | 2025-04-27 | [tasks/T7.md] |
+| T3 | Static Research Profile | 2025-04-27 | [tasks/T3.md] |
+| T2 | Paper Display Components | 2025-04-26 | [tasks/T2.md] |
+| T1 | @agentic/arxiv Integration | 2025-04-26 | [tasks/T1.md] |
+| T0 | Project Setup | 2025-04-26 | [tasks/T0.md] |
+
+## Recent Updates
+- 2025-05-11 22:45: Updated tasks.md format and file references
+- 2025-05-11 20:45: Updated T13 progress with mobile optimizations
+- 2025-05-11 14:00: Started T13 for mobile and tablet accessibility
+- 2025-04-30 16:30: Updated T12 with theme persistence fixes
+- 2025-04-30 10:45: Completed T9 theme toggle functionality
+- 2025-04-27 17:30: Completed T7 search state persistence
+- 2025-04-27 15:45: Updated T8 with routing fixes
+- 2025-04-27 14:30: Started T8 for Vercel deployment fixes
+- 2025-04-27 10:00: Updated T5 with catchup page progress
+- 2025-04-26 18:00: Completed T1 and T2
+- 2025-04-26 14:00: Completed T0 project setup
