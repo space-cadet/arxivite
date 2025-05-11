@@ -29,14 +29,14 @@ export default function CatchupPage() {
   };
 
   return (
-    <div className="container mx-auto py-6 space-y-6">
-      <div className="flex justify-between items-center">
-        <h1 className="text-3xl font-bold">Paper Catchup</h1>
+    <div className="w-full max-w-7xl mx-auto px-4 py-4 md:py-6 space-y-4 md:space-y-6">
+      <div className="flex flex-col md:flex-row md:justify-between md:items-center gap-4">
+        <h1 className="text-2xl md:text-3xl font-bold">Paper Catchup</h1>
         <TimeFilter value={timeRange} onValueChange={setTimeRange} />
       </div>
 
-      <div className="flex gap-4 items-start">
-        <div className="flex-1 space-y-4">
+      <div className="flex flex-col md:flex-row gap-4 items-start">
+        <div className="w-full md:flex-1 space-y-4">
           <PaperFilters 
             authorValue={authorFilter}
             categoryValue={selectedCategory}
@@ -49,26 +49,26 @@ export default function CatchupPage() {
 
           {/* Active Filters */}
           {(authorFilter || selectedCategory !== 'all') && (
-            <div className="flex flex-wrap gap-2">
+            <div className="flex flex-wrap gap-2 mt-1">
               {authorFilter && (
                 <Badge 
                   variant="secondary"
-                  className="flex items-center gap-1"
+                  className="flex items-center gap-1 py-1.5 px-3 text-sm"
                 >
                   Author: {authorFilter}
                   <X 
-                    className="h-3 w-3 cursor-pointer" 
+                    className="h-3 w-3 cursor-pointer ml-1" 
                     onClick={() => setAuthorFilter('')}
                   />
                 </Badge>
               )}
               {selectedCategory !== 'all' && (
                 <Badge 
-                  className="flex items-center gap-1"
+                  className="flex items-center gap-1 py-1.5 px-3 text-sm"
                 >
                   Category: {getCategoryName(selectedCategory)}
                   <X 
-                    className="h-3 w-3 cursor-pointer" 
+                    className="h-3 w-3 cursor-pointer ml-1" 
                     onClick={() => setSelectedCategory('all')}
                   />
                 </Badge>
@@ -76,7 +76,7 @@ export default function CatchupPage() {
             </div>
           )}
         </div>
-        <div className="w-[300px]">
+        <div className="w-full md:w-[300px] order-first md:order-last">
           <ProfileSummary />
         </div>
       </div>
@@ -84,10 +84,10 @@ export default function CatchupPage() {
       <Card>
         <CardContent className="pt-6">
           <Tabs defaultValue="all" className="w-full" value={filter} onValueChange={(value) => setFilter(value as FilterType)}>
-            <TabsList>
-              <TabsTrigger value="all">All Papers</TabsTrigger>
-              <TabsTrigger value="recommended">Recommended</TabsTrigger>
-              <TabsTrigger value="bookmarked">Bookmarked</TabsTrigger>
+            <TabsList className="w-full justify-start overflow-x-auto">
+              <TabsTrigger value="all" className="py-2 px-4">All Papers</TabsTrigger>
+              <TabsTrigger value="recommended" className="py-2 px-4">Recommended</TabsTrigger>
+              <TabsTrigger value="bookmarked" className="py-2 px-4">Bookmarked</TabsTrigger>
             </TabsList>
             <TabsContent value="all" className="mt-4">
               <RecentPaperList 

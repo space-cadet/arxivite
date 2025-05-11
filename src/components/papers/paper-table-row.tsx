@@ -45,22 +45,44 @@ const PaperTableRow = ({ paper }: PaperTableRowProps) => {
           <div className="flex justify-end gap-2" onClick={e => e.stopPropagation()}>
             <Button 
               variant="outline" 
-              size="sm"
+              size="default"
+              className="hidden sm:flex md:hidden lg:flex"
               asChild
             >
               <a href={`https://arxiv.org/abs/${paper.id}`} target="_blank" rel="noopener noreferrer">
-                <ExternalLink className="mr-2 h-3 w-3" />
+                <ExternalLink className="mr-2 h-4 w-4" />
                 View
               </a>
             </Button>
             <Button 
+              variant="outline" 
+              size="icon"
+              className="flex sm:hidden md:flex lg:hidden"
+              asChild
+            >
+              <a href={`https://arxiv.org/abs/${paper.id}`} target="_blank" rel="noopener noreferrer">
+                <ExternalLink className="h-4 w-4" />
+              </a>
+            </Button>
+            <Button 
               variant="default" 
-              size="sm"
+              size="default"
+              className="hidden sm:flex md:hidden lg:flex"
               asChild
             >
               <a href={paper.pdfUrl} target="_blank" rel="noopener noreferrer">
-                <Download className="mr-2 h-3 w-3" />
+                <Download className="mr-2 h-4 w-4" />
                 PDF
+              </a>
+            </Button>
+            <Button 
+              variant="default" 
+              size="icon"
+              className="flex sm:hidden md:flex lg:hidden"
+              asChild
+            >
+              <a href={paper.pdfUrl} target="_blank" rel="noopener noreferrer">
+                <Download className="h-4 w-4" />
               </a>
             </Button>
           </div>

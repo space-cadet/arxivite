@@ -1,69 +1,110 @@
-import { Calendar, Download, ExternalLink } from 'lucide-react';
+import { useState } from 'react';
 import { Paper } from '@/types/paper';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
+import { ChevronDown, ChevronUp, Download, ExternalLink } from 'lucide-react';
 
 interface PaperCardProps {
   paper: Paper;
 }
 
-const PaperCard = ({ paper }: PaperCardProps) => {
-  // Format the date
-  const formattedDate = paper.publishedDate instanceof Date 
-    ? paper.publishedDate.toLocaleDateString()
-    : 'Date not available';
+export function PaperCard({ paper }: PaperCardProps) {
+  const [isExpanded, setIsExpanded] = useState(false);
 
-  // Get the abstract/summary
-  const abstract = paper.abstract || 'No abstract available';
+  const formatDate = (date: Date) => {
+    return date.toLocaleDateString('en-US', {
+      year: 'numeric',
+      month: 'short',
+      day: 'numeric'
+    });
+  };
 
-  // Get the first category
-  const category = Array.isArray(paper.categories) 
-    ? paper.categories[0] 
-    : paper.category || 'No category';
+  const truncateText = (text: string, maxLength: number) => {
+    if (text.length <= maxLength) return text;
+    return text.substring(0, maxLength) + '...';
+  };
 
-  // Array check for authors
-  const authorString = Array.isArray(paper.authors) 
-    ? paper.authors.join(', ') 
-    : 'Authors not available';
+  const authors = paper.authors.length > 3 
+    ? paper.authors.slice(0, 3).join(', ') + ' et al.'
+    : paper.authors.join(', ');
 
   return (
-    <Card className="flex flex-col">
-      <CardHeader>
-        <div className="flex items-start justify-between gap-4">
-          <CardTitle className="flex-1 text-lg font-semibold leading-tight">
-            {paper.title || 'Untitled'}
+    <Card className="w-full mb-4">
+      <CardHeader className="pb-2">
+        <div className="flex items-start justify-between">
+          <CardTitle className="text-base font-medium leading-tight cursor-pointer" onClick={() => setIsExpanded(!isExpanded)}>
+            <div className="flex items-start gap-2">
+              <div className="pt-0.5">
+                {isExpanded ? <ChevronUp className="h-4 w-4" /> : <ChevronDown className="h-4 w-4" />}
+              </div>
+              <div>{paper.title}</div>
+            </div>
           </CardTitle>
         </div>
-        <div className="mt-2 flex items-center text-sm text-muted-foreground">
-          <Calendar className="mr-1 h-3 w-3" />
-          {formattedDate}
-        </div>
       </CardHeader>
-      <CardContent className="flex-1">
-        <div className="mb-2 text-sm font-medium">
-          {authorString}
-        </div>
-        <p className="text-sm text-muted-foreground line-clamp-3">
-          {abstract}
-        </p>
-        <div className="mt-2">
-          <span className="inline-flex items-center rounded-md bg-primary/10 px-2 py-1 text-xs font-medium text-primary">
-            {category}
-          </span>
+      <CardContent className="pb-2 pt-0">
+        <div className="flex flex-col space-y-2">
+          <div className="text-sm text-muted-foreground">{authors}</div>
+          <div className="flex justify-between items-center">
+            <span className="inline-flex items-center rounded-md bg-primary/10 px-2 py-1 text-xs font-medium text-primary">
+              {paper.category}
+            </span>
+            <span className="text-xs text-muted-foreground">{formatDate(paper.publishedDate)}</span>
+          </div>
         </div>
       </CardContent>
-      <CardFooter className="flex justify-end gap-2">
-        <Button variant="outline" size="sm">
-          <ExternalLink className="mr-2 h-3 w-3" />
-          View
+      
+      {isExpanded && (
+        <CardContent className="border-t pt-3 text-sm">
+          <div className="space-y-4">
+            <div>
+              <h4 className="font-semibold">Abstract</h4>
+              <p className="mt-1 text-muted-foreground">
+                {paper.abstract}
+              </p>
+            </div>
+            <div className="flex flex-col gap-2">
+              {paper.updatedDate.getTime() !== paper.publishedDate.getTime() && (
+                <div>
+                  <span className="font-semibold">Last Updated:</span>{' '}
+                  {formatDate(paper.updatedDate)}
+                </div>
+              )}
+              <div>
+                <span className="font-semibold">arXiv ID:</span>{' '}
+                {paper.id}
+              </div>
+              {paper.doi && (
+                <div>
+                  <span className="font-semibold">DOI:</span>{' '}
+                  {paper.doi}
+                </div>
+              )}
+              {paper.journalRef && (
+                <div>
+                  <span className="font-semibold">Journal Ref:</span>{' '}
+                  {paper.journalRef}
+                </div>
+              )}
+            </div>
+          </div>
+        </CardContent>
+      )}
+      
+      <CardFooter className="flex justify-between items-center gap-2 pt-3 pb-3 border-t">
+        <Button variant="outline" size="default" className="w-1/2" asChild>
+          <a href={`https://arxiv.org/abs/${paper.id}`} target="_blank" rel="noopener noreferrer">
+            <ExternalLink className="mr-2 h-4 w-4" />
+            View
+          </a>
         </Button>
-        <Button variant="default" size="sm">
-          <Download className="mr-2 h-3 w-3" />
-          PDF
+        <Button variant="default" size="default" className="w-1/2" asChild>
+          <a href={paper.pdfUrl} target="_blank" rel="noopener noreferrer">
+            <Download className="mr-2 h-4 w-4" />
+            PDF
+          </a>
         </Button>
       </CardFooter>
     </Card>
   );
-};
-
-export default PaperCard;
+}

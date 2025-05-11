@@ -1,7 +1,7 @@
 import { useEffect, useMemo } from 'react';
 import { usePersistedState } from '@/hooks/usePersistedState';
 import { arxivToPaper } from '@/types/paper';
-import PaperTable from '@/components/papers/paper-table';
+import { ResponsivePaperList } from '@/components/papers/responsive-paper-list';
 import PaperFilters from '@/components/papers/paper-filters';
 import { useArxivSearch } from '@/hooks/useArxiv';
 import { useProfile } from '@/contexts/ProfileContext';
@@ -72,7 +72,7 @@ const SearchPage = () => {
   };
 
   return (
-    <div className="container mx-auto py-6 space-y-6">
+    <div className="w-full max-w-7xl mx-auto px-4 py-4 md:py-6 space-y-4 md:space-y-6">
       <PaperFilters 
         searchValue={searchInput}
         authorValue={authorFilter}
@@ -99,7 +99,7 @@ const SearchPage = () => {
       ) : (
         <>
           {filteredPapers.length > 0 ? (
-            <PaperTable papers={filteredPapers} />
+            <ResponsivePaperList papers={filteredPapers} />
           ) : (
             searchInput && (
               <Alert>

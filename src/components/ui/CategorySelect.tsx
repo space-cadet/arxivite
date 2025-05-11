@@ -23,22 +23,23 @@ export function CategorySelect({ value, onValueChange, placeholder = "Select a c
 
   return (
     <Select value={value} onValueChange={onValueChange}>
-      <SelectTrigger>
+      <SelectTrigger className="h-10 w-full">
         <SelectValue placeholder={placeholder}>
           {value === 'all' ? 'All Categories' : (value ? getCategoryById(value)?.name : placeholder)}
         </SelectValue>
       </SelectTrigger>
-      <SelectContent>
-        <ScrollArea className="h-80">
-          <SelectItem value="all">All Categories</SelectItem>
+      <SelectContent position="popper" className="w-full min-w-[280px]" sideOffset={4}>
+        <ScrollArea className="h-72">
+          <SelectItem value="all" className="py-2.5">All Categories</SelectItem>
           {mainSubjects.map((subject) => (
             <SelectGroup key={`group-${subject}`}>
-              <SelectLabel>{subject}</SelectLabel>
+              <SelectLabel className="py-1.5">{subject}</SelectLabel>
               {categoriesBySubject[subject].map((category) => (
                 <SelectItem
                   key={`item-${category.id}`}
                   value={category.id}
                   title={category.description}
+                  className="py-2"
                 >
                   {category.name}
                 </SelectItem>

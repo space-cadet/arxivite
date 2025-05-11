@@ -34,10 +34,10 @@ const PaperFilters = ({
   };
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-5">
       <div className="space-y-2">
         <Label htmlFor="search">Search Papers</Label>
-        <div className="flex gap-2">
+        <div className="flex flex-col sm:flex-row gap-2">
           <div className="relative flex-1">
             <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
             <HistoryInput
@@ -46,17 +46,20 @@ const PaperFilters = ({
               value={searchValue}
               onValueChange={handleSearch}
               onKeyDown={handleKeyPress}
-              className="pl-8"
+              className="pl-8 w-full"
             />
           </div>
-          <Button onClick={() => handleSearch(searchValue)}>
+          <Button 
+            onClick={() => handleSearch(searchValue)}
+            className="h-10 sm:w-auto w-full"
+          >
             Search
           </Button>
         </div>
       </div>
 
-      <div className="flex gap-4">
-        <div className="space-y-2 flex-1">
+      <div className="flex flex-col md:flex-row gap-4">
+        <div className="space-y-2 w-full md:flex-1">
           <Label htmlFor="author-search">Filter by Author</Label>
           <div className="relative">
             <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
@@ -65,12 +68,12 @@ const PaperFilters = ({
               placeholder="Author name..."
               value={authorValue}
               onValueChange={onAuthorSearch}
-              className="pl-8"
+              className="pl-8 w-full"
             />
           </div>
         </div>
         
-        <div className="space-y-2 w-[280px]">
+        <div className="space-y-2 w-full md:w-[280px]">
           <Label htmlFor="category-select">Filter by Category</Label>
           <CategorySelect
             value={categoryValue}

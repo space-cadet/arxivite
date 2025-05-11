@@ -13,7 +13,7 @@ import { useArxivSearch } from '@/hooks/useArxiv';
 import { arxivToPaper } from '@/types/paper';
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Skeleton } from "@/components/ui/skeleton";
-import PaperTable from "@/components/papers/paper-table";
+import { ResponsivePaperList } from "@/components/papers/responsive-paper-list";
 import { usePersistedState } from '@/hooks/usePersistedState';
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import { HistoryInput } from "@/components/ui/history-input";
@@ -135,7 +135,7 @@ const ProfilePage = () => {
   };
 
   return (
-    <div className="container mx-auto p-6">
+    <div className="w-full max-w-7xl mx-auto px-4 py-4 md:py-6 space-y-4 md:space-y-6">
       <Toaster />
       <div className="space-y-6">
         {/* Author Publications Section - Moved to top */}
@@ -147,8 +147,8 @@ const ProfilePage = () => {
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
-            <div className="flex gap-4">
-              <div className="flex-1">
+            <div className="flex flex-col sm:flex-row gap-3">
+              <div className="w-full sm:flex-1">
                 <HistoryInput
                   id="author-name"
                   placeholder="Enter your name as it appears on arXiv papers"
@@ -161,23 +161,26 @@ const ProfilePage = () => {
                   }}
                 />
               </div>
-              <Button 
-                variant="default"
-                onClick={handleSearch}
-                disabled={!authorName.trim()}
-              >
-                Find Papers
-              </Button>
-              <Button 
-                variant="outline" 
-                onClick={() => {
-                  setAuthorName('');
-                  setSearchQuery('');
-                }}
-                disabled={!authorName}
-              >
-                Clear
-              </Button>
+              <div className="flex gap-2">
+                <Button 
+                  variant="default"
+                  onClick={handleSearch}
+                  disabled={!authorName.trim()}
+                  className="flex-1 sm:flex-none"
+                >
+                  Find Papers
+                </Button>
+                <Button 
+                  variant="outline" 
+                  onClick={() => {
+                    setAuthorName('');
+                    setSearchQuery('');
+                  }}
+                  disabled={!authorName}
+                >
+                  Clear
+                </Button>
+              </div>
             </div>
 
             {authorPapers?.papers && authorPapers.papers.length > 0 && (
@@ -198,7 +201,7 @@ const ProfilePage = () => {
                   </CollapsibleTrigger>
                 </div>
                 <CollapsibleContent className="space-y-2">
-                  <PaperTable papers={authorPapers.papers.map(arxivToPaper)} />
+                  <ResponsivePaperList papers={authorPapers.papers.map(arxivToPaper)} />
                 </CollapsibleContent>
               </Collapsible>
             )}

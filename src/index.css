@@ -65,5 +65,15 @@
   }
   body {
     @apply bg-background text-foreground;
+    overflow-x: hidden;
+    position: relative;
+    width: 100%;
+  }
+}
+
+/* Mobile navigation fixes */
+@layer utilities {
+  .mobile-safe-area {
+    padding-bottom: calc(1.5rem + env(safe-area-inset-bottom, 0));
   }
 }

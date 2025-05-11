@@ -1,4 +1,4 @@
-import PaperTable from "@/components/papers/paper-table"
+import { ResponsivePaperList } from "@/components/papers/responsive-paper-list"
 import { Skeleton } from "@/components/ui/skeleton"
 import { Alert, AlertDescription } from "@/components/ui/alert"
 import { AlertCircle } from "lucide-react"
@@ -73,5 +73,5 @@ export default function RecentPaperList({
     return authorMatch && categoryMatch;
   });
 
-  return <PaperTable papers={filteredPapers} />
+  return <ResponsivePaperList papers={filteredPapers} />
 }

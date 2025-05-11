@@ -1,5 +1,5 @@
 import { Paper } from '@/types/paper';
-import PaperCard from './paper-card';
+import { PaperCard } from './paper-card';
 
 interface PaperListProps {
   papers: Paper[];
