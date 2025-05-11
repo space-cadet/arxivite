@@ -1,9 +1,10 @@
 # Task Registry
-*Last Updated: 2025-04-30*
+*Last Updated: 2025-05-11 16:30*
 
 ## Active Tasks
 | ID | Title | Status | Priority | Started | Dependencies |
 |----|-------|--------|----------|---------|--------------|
+| T13 | Mobile and Tablet Accessibility | 🔄 | HIGH | 2025-05-11 | T12 |
 | T12 | UI Navigation and Theme Toggle Issues | 🔄 | HIGH | 2025-04-30 | - |
 | T8 | Fix Vercel Deployment Routing | 🔄 | HIGH | 2025-04-27 | T0 |
 | T5 | Catchup Page Implementation | 🔄 | HIGH | 2025-04-27 | T0, T1, T3 |
@@ -11,6 +12,24 @@
 | T6 | Paper Bookmarking System | ⬜ | MEDIUM | - | T1, T2 |
 
 ## Task Details
+### T13: Mobile and Tablet Accessibility
+**Description**: Optimize the application for mobile and tablet screens
+**Status**: 🔄 **Last**: 2025-05-11 16:30
+**Criteria**: 
+- App is fully functional on mobile devices (320px-428px width)
+- App is fully functional on tablet devices (768px-1024px width)
+- All interactive elements are touch-friendly
+**Progress**:
+- ✅ Created useMediaQuery hook and responsive utilities
+- ✅ Added development testing components
+- ✅ Fixed build and context issues
+- 🔄 Working on layout components
+**Files**: 
+- `src/hooks/useMediaQuery.ts` - Created for responsive detection
+- `src/components/responsive/` - New responsive component directory
+- `src/components/layout/app-layout.tsx` - To be updated
+- `src/components/layout/Sidebar.tsx` - To be updated
+
 ### T12: UI Navigation and Theme Toggle Issues
 **Description**: Address issues with navigation, sidebar functionality, and theme toggle
 **Status**: 🔄 **Last**: 2025-04-30 16:30

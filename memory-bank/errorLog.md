@@ -1,5 +1,43 @@
 # Error Log
-*Last Updated: 2025-04-27 16:45*
+*Last Updated: 2025-05-11 16:45*
+
+## 2025-05-11 16:45: T13 - React Context "Dispatcher is null" Error
+**File:** Multiple components including `mode-toggle.tsx`
+**Error:** `Uncaught TypeError: dispatcher is null`
+**Stack trace:** 
+```
+useContext React
+useTheme useTheme.ts:5
+ModeToggle mode-toggle.tsx:12
+```
+**Cause:** Interaction between browser/Node.js environment detection in the XML parser and React's context system. The theme provider context was not properly accessed after changes to fix the build error.
+**Fix:** Simplified environment detection approach in the XML parser and adjusted the main.tsx structure
+**Changes:**
+- Simplified the XML parser's browser detection to avoid conflicts with React
+- Improved how ThemeProvider context is provided in the component tree
+- Removed unnecessary wrapper elements in main.tsx
+**Task:** T13
+
+## 2025-05-11 16:30: T13 - Vite Build Failure with xmldom
+**File:** `src/lib/arxiv.ts`
+**Error:** `Rollup failed to resolve import "xmldom" from "/Users/deepak/code/arxivite/src/lib/arxiv.ts"`
+**Cause:** The xmldom package is a Node.js dependency and not meant for browser environments, which Vite targets during the build process
+**Fix:** Created a browser-compatible XML parsing solution that avoids direct import of xmldom in browser environments
+**Changes:** 
+- Implemented a conditional XML parser that uses native DOM in browsers
+- Used a safe require approach for Node.js environments
+- Added proper tree-shaking hints for bundlers
+**Task:** T13
+
+## 2025-05-11 16:15: T13 - TypeScript Unused Variable Warning
+**File:** `src/components/responsive/ResponsiveIndicator.tsx`
+**Error:** `error TS6133: 'isDesktop' is declared but its value is never read.`
+**Cause:** The isDesktop variable was declared but not used in the component, which is caught by the strict TS configuration
+**Fix:** Updated tsconfig and component to properly use the variable
+**Changes:** 
+- Modified `tsconfig.app.json` to temporarily disable noUnusedLocals
+- Updated the ResponsiveIndicator component to use the isDesktop variable in conditions
+**Task:** T13
 
 ## 2025-04-27 16:45: T1 - Module Resolution Error in Test Setup
 **File:** `tests/arxiv-test.ts`

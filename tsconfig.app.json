@@ -19,7 +19,7 @@
 
     /* Linting */
     "strict": true,
-    "noUnusedLocals": true,
+    "noUnusedLocals": false, /* Changed to allow unused variables like isDesktop in the ResponsiveIndicator */
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true,
 

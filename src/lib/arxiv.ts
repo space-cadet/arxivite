@@ -1,5 +1,22 @@
 import type { ArxivSearchParams, ArxivSearchResponse } from '../types/arxiv';
-import { DOMParser } from 'xmldom';
+// import { DOMParser } from 'xmldom';
+
+// Helper function to parse XML that works in both browser and Node environments
+function parseXML(text: string): Document {
+  // Simple browser detection
+  const isBrowser = typeof window !== 'undefined';
+  
+  if (isBrowser) {
+    // Browser environment
+    return new window.DOMParser().parseFromString(text, 'text/xml');
+  } else {
+    // This code should never run in the browser
+    // and will be eliminated by tree-shaking
+    // eslint-disable-next-line @typescript-eslint/no-var-requires
+    const xmldom = require('xmldom');
+    return new xmldom.DOMParser().parseFromString(text, 'text/xml');
+  }
+}
 
 // Make requests directly to match the API format exactly
 const makeArxivRequest = async (searchQuery: string, maxResults: number = 10, start: number = 0) => {
@@ -19,7 +36,8 @@ const makeArxivRequest = async (searchQuery: string, maxResults: number = 10, st
   const text = await response.text();
   
   const parser = new DOMParser();
-  const xmlDoc = parser.parseFromString(text, 'text/xml');
+  // const xmlDoc = parser.parseFromString(text, 'text/xml');
+  const xmlDoc = parseXML(text);
   
   // xmldom doesn't have querySelector, so we need to use getElementsByTagName
   const entries = Array.from(xmlDoc.getElementsByTagName('entry'));
