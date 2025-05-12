@@ -20,10 +20,28 @@ function parseXML(text: string): Document {
 
 // Make requests directly to match the API format exactly
 const makeArxivRequest = async (searchQuery: string, maxResults: number = 10, start: number = 0) => {
-  // Don't encode if it's a submittedDate query
-  const finalQuery = searchQuery.includes('submittedDate:') ? 
-    searchQuery : 
-    encodeURIComponent(searchQuery);
+  // Determine if we need special handling for this query
+  // Don't encode if it's a submittedDate query or an ID query
+  let finalQuery;
+  if (searchQuery.includes('submittedDate:') || searchQuery.includes('id:')) {
+    // ID queries need special formatting for the ArXiv API
+    if (searchQuery.includes('id:') && searchQuery.includes('OR')) {
+      // Transform "id:1234 OR id:5678" into "id:1234,5678" (ArXiv API format for multiple IDs)
+      const idPattern = /id:([^OR\s]+)/g;
+      const ids = [];
+      let match;
+      while ((match = idPattern.exec(searchQuery)) !== null) {
+        ids.push(match[1].trim());
+      }
+      // ArXiv API uses comma for multiple IDs
+      finalQuery = `id:${ids.join(',')}`;
+      console.log('Converted ID query:', finalQuery);
+    } else {
+      finalQuery = searchQuery;
+    }
+  } else {
+    finalQuery = encodeURIComponent(searchQuery);
+  }
     
   const url = `https://export.arxiv.org/api/query?search_query=${finalQuery}&start=${start}&max_results=${maxResults}&sortBy=submittedDate&sortOrder=descending`;
   console.log('Requesting:', url);

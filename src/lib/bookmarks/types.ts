@@ -4,6 +4,7 @@ export interface Bookmark {
   title: string;
   category: string;
   collections?: string[];
+  paperData: any; // Store the full paper data
 }
 
 export interface BookmarkStore {
@@ -22,4 +23,5 @@ export interface BookmarkService {
 export interface BookmarkContextType extends BookmarkService {
   loading: boolean;
   error: Error | null;
+  resetBookmarks: () => void;
 }

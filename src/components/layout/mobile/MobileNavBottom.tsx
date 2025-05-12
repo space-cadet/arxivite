@@ -1,6 +1,6 @@
 import { useLocation, Link } from 'react-router-dom';
 import { cn } from "@/lib/utils";
-import { Search, UserCircle, Clock, Bookmark } from "lucide-react";
+import { Search, UserCircle, Clock, Bookmark, Settings } from "lucide-react";
 
 /**
  * Bottom navigation bar component for mobile screens.
@@ -14,11 +14,12 @@ export function MobileNavBottom() {
     { path: '/catchup', label: 'Catchup', icon: Clock },
     { path: '/bookmarks', label: 'Bookmarks', icon: Bookmark },
     { path: '/profile', label: 'Profile', icon: UserCircle },
+    { path: '/settings', label: 'Settings', icon: Settings },
   ];
 
   return (
     <div className="fixed bottom-0 left-0 right-0 bg-background border-t z-40 py-1 w-full max-w-full overflow-x-hidden mobile-safe-area">
-      <nav className="flex justify-evenly items-center w-full">
+      <nav className="flex justify-between items-center w-full px-1">
         {navItems.map(({ path, label, icon: Icon }) => {
           const isActive = location.pathname === path;
           
@@ -27,7 +28,7 @@ export function MobileNavBottom() {
               key={path}
               to={path}
               className={cn(
-                "flex flex-col items-center py-3 px-4 gap-1 min-w-[72px] flex-1",
+                "flex flex-col items-center py-2 px-2 gap-1 min-w-[60px] flex-1",
                 isActive 
                   ? "text-primary font-medium" 
                   : "text-muted-foreground"

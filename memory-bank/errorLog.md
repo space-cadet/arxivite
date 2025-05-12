@@ -1,5 +1,114 @@
 # Error Log
-*Last Updated: 2025-05-11 16:45*
+*Last Updated: 2025-05-12 17:30*
+
+## 2025-05-12 17:30: T6 - Invalid Error Type Access in Bookmarks Page
+**File:** `src/pages/bookmarks.tsx`
+**Error:** TypeScript compile error
+```
+Property 'message' does not exist on type 'never'.
+```
+**Cause:** Attempting to access the 'message' property on an error object that TypeScript infers as type 'never'
+**Fix:** Added proper type checking and error handling
+**Changes:**
+- Added type guard to check if error is instance of Error
+- Added fallback for unknown error types
+**Task:** T6
+
+## 2025-05-12 17:00: T6 - Readonly Array Type Mismatch in Bookmark Update
+**File:** `src/pages/bookmarks.tsx`
+**Error:** TypeScript compile error
+```
+Argument of type 'ArxivPaper[] | readonly []' is not assignable to parameter of type 'any[]'.
+  The type 'readonly []' is 'readonly' and cannot be assigned to the mutable type 'any[]'.
+```
+**Cause:** Function parameter type mismatch between readonly array from API response and mutable array parameter
+**Fix:** Updated parameter type to accept readonly arrays
+**Changes:**
+- Changed updateOldBookmarks parameter type to ReadonlyArray<ArxivPaper>
+- Imported ArxivPaper type from @/types/arxiv
+**Task:** T6
+
+## 2025-05-12 17:00: T6 - Invalid Error Type in Error Message Display
+**File:** `src/pages/bookmarks.tsx`
+**Error:** TypeScript compile errors
+```
+The left-hand side of an 'instanceof' expression must be of type 'any', an object type or a type parameter.
+Property 'message' does not exist on type 'never'.
+```
+**Cause:** Incorrect error type checking and unsafe property access in error display component
+**Fix:** Implemented more robust error type checking and safe property access
+**Changes:**
+- Updated error message display to use type-safe checks
+- Modified error message extraction to handle unknown error types
+**Task:** T6
+
+## 2025-05-12 16:00: T6 - Missing Type Annotations and Returns in BookmarkContext
+**File:** `src/lib/bookmarks/context.tsx`
+**Error Message:**
+```
+Cannot find name 'useState'.
+Parameter 'bookmark' implicitly has an 'any' type.
+Parameter 'paperId' implicitly has an 'any' type.
+Type 'void' is not assignable to type 'BookmarkStore'.
+```
+**Cause:** Multiple TypeScript issues in BookmarkContext:
+1. useState not imported from React
+2. Missing type annotations for function parameters
+3. Service method return types not properly defined
+**Fix:** 
+1. Added useState import
+2. Added correct type annotations
+3. Updated service interface and implementation to handle return values correctly
+**Changes:**
+1. Added useState to React imports
+2. Added Bookmark import from types
+3. Added proper type annotations for function parameters
+4. Updated BookmarkService interface to specify correct return types
+5. Modified service methods to return updated store
+**Task:** T6
+
+*Last Updated: 2025-05-12 16:00*
+
+## 2025-05-12 15:20: T6 - ArxivPaper to Paper Type Mismatch
+**File:** `src/pages/bookmarks.tsx`
+**Error:** TypeScript compile error
+```
+Type 'ArxivPaper[]' is not assignable to type 'Paper[]'.
+  Type 'ArxivPaper' is not assignable to type 'Paper'.
+    Type 'ArxivPaper' is missing the following properties from type '{ pdfUrl: string; thumbnailUrl?: string | undefined; abstract: string; category: string; categories: string[]; }': pdfUrl, category
+```
+**Cause:** ResponsivePaperList component expects Paper type but was receiving ArxivPaper type without proper conversion
+**Fix:** Added proper type conversion using arxivToPaper utility function
+**Changes:**
+- Imported arxivToPaper from @/types/paper
+- Added conversion of ArxivPaper to Paper type
+- Updated code to use converted papers
+**Task:** T6
+
+## 2025-05-12 15:25: T6 - Implicit any Type in Author Filter
+**File:** `src/pages/bookmarks.tsx`
+**Error:** TypeScript compile error
+```
+Parameter 'author' implicitly has an 'any' type.
+```
+**Cause:** Missing type annotation for author parameter in papers filter callback
+**Fix:** Added explicit type annotation for the author parameter
+**Changes:**
+- Added `: string` type annotation to author parameter in filter callback
+**Task:** T6
+
+## 2025-05-12 14:30: T6 - Missing Required paperData in Bookmark Type
+**File:** `src/components/papers/paper-table-row.tsx`
+**Error:** TypeScript compile error
+```
+Argument of type '{ paperId: string; title: string; category: string; }' is not assignable to parameter of type 'Omit<Bookmark, "dateAdded">'.
+  Property 'paperData' is missing in type '{ paperId: string; title: string; category: string; }' but required in type 'Omit<Bookmark, "dateAdded">'
+```
+**Cause:** When adding a new bookmark in PaperTableRow component, the required `paperData` property was not included in the bookmark object being passed to `addBookmark`.
+**Fix:** Added the full paper data to the bookmark object when calling `addBookmark`
+**Changes:**
+- Updated `addBookmark` call to include `paperData: paper` in the bookmark object
+**Task:** T6
 
 ## 2025-05-11 16:45: T13 - React Context "Dispatcher is null" Error
 **File:** Multiple components including `mode-toggle.tsx`
