@@ -1,6 +1,6 @@
 import { Link, useLocation } from 'react-router-dom';
 import { cn } from "@/lib/utils";
-import { Search, UserCircle, Clock, ChevronLeft, ChevronRight, Bookmark } from "lucide-react";
+import { Search, UserCircle, Clock, ChevronLeft, ChevronRight, Bookmark, Settings } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useLayout } from './app-layout';
 
@@ -13,6 +13,7 @@ const Sidebar = () => {
     { path: '/catchup', label: 'Catchup', icon: Clock },
     { path: '/bookmarks', label: 'Bookmarks', icon: Bookmark },
     { path: '/profile', label: 'Profile', icon: UserCircle },
+    { path: '/settings', label: 'Settings', icon: Settings },
   ];
 
   return (

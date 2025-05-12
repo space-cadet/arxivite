@@ -8,6 +8,7 @@ import SearchPage from "@/pages/search";
 import CatchupPage from "@/pages/catchup";
 import ProfilePage from "@/pages/profile";
 import BookmarksPage from "./pages/bookmarks";
+import SettingsPage from "./pages/settings";
 
 export default function App() {
   return (
@@ -21,6 +22,7 @@ export default function App() {
               <Route path="/catchup" element={<CatchupPage />} />
               <Route path="/profile" element={<ProfilePage />} />
               <Route path="/bookmarks" element={<BookmarksPage />} />
+              <Route path="/settings" element={<SettingsPage />} />
               <Route path="/" element={<Navigate to="/search" replace />} />
             </Routes>
           </AppLayout>

@@ -13,6 +13,7 @@ export function useBookmark() {
         paperId: paper.id,
         title: paper.title,
         category: paper.category,
+        paperData: paper, // Store the complete paper object
       });
     }
   }, [context]);

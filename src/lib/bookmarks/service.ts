@@ -3,17 +3,21 @@ import { Bookmark, BookmarkStore, BookmarkService } from './types';
 export function createBookmarkService(store: BookmarkStore): BookmarkService {
   return {
     addBookmark(bookmark) {
+      console.log('Store before update:', store);
       const newBookmark: Bookmark = {
         ...bookmark,
         dateAdded: new Date(),
       };
-      return {
+      console.log('New bookmark being added:', newBookmark);
+      const updatedStore = {
         ...store,
         bookmarks: {
           ...store.bookmarks,
           [bookmark.paperId]: newBookmark
         }
       };
+      console.log('Store after update:', updatedStore);
+      return updatedStore;
     },
 
     removeBookmark(paperId) {

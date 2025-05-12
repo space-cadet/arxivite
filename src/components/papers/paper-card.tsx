@@ -20,6 +20,7 @@ export function PaperCard({ paper }: PaperCardProps) {
     console.log('Bookmark click handler triggered');
     console.log('Current bookmark state:', isBookmarked);
     console.log('Paper ID:', paper.id);
+    console.log('Paper data being bookmarked:', paper);
     
     if (isBookmarked) {
       console.log('Attempting to remove bookmark');
@@ -29,17 +30,28 @@ export function PaperCard({ paper }: PaperCardProps) {
       addBookmark({
         paperId: paper.id,
         title: paper.title,
-        category: paper.category
+        category: paper.category,
+        paperData: paper // Store the complete paper data
       });
     }
   };
 
-  const formatDate = (date: Date) => {
-    return date.toLocaleDateString('en-US', {
-      year: 'numeric',
-      month: 'short',
-      day: 'numeric'
-    });
+  const formatDate = (date: Date | string | undefined) => {
+    if (!date) return 'Unknown date';
+    
+    try {
+      // If it's a string, convert to a Date object
+      const dateObj = typeof date === 'string' ? new Date(date) : date;
+      
+      return dateObj.toLocaleDateString('en-US', {
+        year: 'numeric',
+        month: 'short',
+        day: 'numeric'
+      });
+    } catch (error) {
+      console.error('Error formatting date:', date, error);
+      return 'Invalid date';
+    }
   };
 
   const truncateText = (text: string, maxLength: number) => {
@@ -87,7 +99,8 @@ export function PaperCard({ paper }: PaperCardProps) {
               </p>
             </div>
             <div className="flex flex-col gap-2">
-              {paper.updatedDate.getTime() !== paper.publishedDate.getTime() && (
+              {paper.updatedDate && paper.publishedDate && 
+               new Date(paper.updatedDate).getTime() !== new Date(paper.publishedDate).getTime() && (
                 <div>
                   <span className="font-semibold">Last Updated:</span>{' '}
                   {formatDate(paper.updatedDate)}

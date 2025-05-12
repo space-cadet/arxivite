@@ -23,17 +23,28 @@ const PaperTableRow = ({ paper }: PaperTableRowProps) => {
       addBookmark({
         paperId: paper.id,
         title: paper.title,
-        category: paper.category
+        category: paper.category,
+        paperData: paper
       });
     }
   };
 
-  const formatDate = (date: Date) => {
-    return date.toLocaleDateString('en-US', {
-      year: 'numeric',
-      month: 'short',
-      day: 'numeric'
-    });
+  const formatDate = (date: Date | string | undefined) => {
+    if (!date) return 'Unknown date';
+    
+    try {
+      // If it's a string, convert to a Date object
+      const dateObj = typeof date === 'string' ? new Date(date) : date;
+      
+      return dateObj.toLocaleDateString('en-US', {
+        year: 'numeric',
+        month: 'short',
+        day: 'numeric'
+      });
+    } catch (error) {
+      console.error('Error formatting date:', date, error);
+      return 'Invalid date';
+    }
   };
 
   return (
@@ -134,7 +145,8 @@ const PaperTableRow = ({ paper }: PaperTableRowProps) => {
                     <span className="font-semibold">Published:</span>{' '}
                     {formatDate(paper.publishedDate)}
                   </div>
-                  {paper.updatedDate.getTime() !== paper.publishedDate.getTime() && (
+                  {paper.updatedDate && paper.publishedDate && 
+                   new Date(paper.updatedDate).getTime() !== new Date(paper.publishedDate).getTime() && (
                     <div>
                       <span className="font-semibold">Last Updated:</span>{' '}
                       {formatDate(paper.updatedDate)}

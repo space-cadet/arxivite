@@ -1,4 +1,4 @@
-import { createContext, useContext, useMemo, useState } from 'react';
+import { createContext, useContext, useMemo, useState, useCallback } from 'react';
 import { usePersistedState } from '@/hooks/usePersistedState';
 import { BookmarkStore, BookmarkContextType, Bookmark } from './types';
 import { createBookmarkService } from './service';
@@ -11,7 +11,14 @@ const initialStore: BookmarkStore = {
 const BookmarkContext = createContext<BookmarkContextType | null>(null);
 
 export function BookmarkProvider({ children }: { children: React.ReactNode }) {
-  const [store, setStore] = usePersistedState<BookmarkStore>('bookmarks', initialStore);
+  // When this key changes, it forces a re-initialization of the store
+  const [storeKey, setStoreKey] = useState<string>('bookmarks');
+  const [store, setStore] = usePersistedState<BookmarkStore>(storeKey, initialStore);
+  
+  // Function to completely reset the bookmark storage
+  const resetBookmarks = useCallback(() => {
+    setStore(initialStore);
+  }, [setStore]);
   const [error, setError] = useState<Error | null>(null);
   const [loading, setLoading] = useState(false);
 
@@ -28,6 +35,7 @@ export function BookmarkProvider({ children }: { children: React.ReactNode }) {
         console.log('BookmarkProvider: Current store:', store);
         try {
           setLoading(true);
+          console.log('Complete bookmark data being saved:', bookmark);
           const newStore = baseService.addBookmark(bookmark);
           console.log('BookmarkProvider: New store after add:', newStore);
           setStore(newStore);
@@ -65,8 +73,9 @@ export function BookmarkProvider({ children }: { children: React.ReactNode }) {
       ...service,
       loading,
       error,
+      resetBookmarks,
     }),
-    [service, loading, error]
+    [service, loading, error, resetBookmarks]
   );
 
   return <BookmarkContext.Provider value={value}>{children}</BookmarkContext.Provider>;
