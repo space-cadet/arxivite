@@ -1,16 +1,18 @@
-import { useState } from 'react';
+
 import { ChevronDown, ChevronUp, Download, ExternalLink, Bookmark, BookmarkCheck } from 'lucide-react';
 import { Paper } from '@/types/paper';
+import type { ReturnType } from '@/hooks/usePaperState';
 import { Button } from '@/components/ui/button';
 import { TableCell, TableRow } from '@/components/ui/table';
 import { useBookmarkContext } from '@/lib/bookmarks/context';
 
 interface PaperTableRowProps {
   paper: Paper;
+  paperState: ReturnType<typeof usePaperState>;
 }
 
-const PaperTableRow = ({ paper }: PaperTableRowProps) => {
-  const [isOpen, setIsOpen] = useState(false);
+const PaperTableRow = ({ paper, paperState }: PaperTableRowProps) => {
+  const isOpen = paperState.isExpanded(paper.id);
   const { addBookmark, removeBookmark, loading, error, getBookmark } = useBookmarkContext();
   
   const isBookmarked = getBookmark(paper.id) !== undefined;
@@ -51,7 +53,7 @@ const PaperTableRow = ({ paper }: PaperTableRowProps) => {
     <>
       <TableRow 
         className="cursor-pointer hover:bg-muted/50"
-        onClick={() => setIsOpen(!isOpen)}
+        onClick={() => paperState.toggleExpanded(paper.id)}
       >
         <TableCell className="font-medium w-[400px]">
           <div className="flex items-center gap-2">

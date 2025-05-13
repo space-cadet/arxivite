@@ -1,4 +1,6 @@
 import { useEffect } from "react"
+import { useScrollState } from '@/hooks/useScrollState';
+import { usePaperState } from '@/hooks/usePaperState';
 import { useBookmarkContext } from "@/lib/bookmarks/context"
 import { useProfile } from "@/hooks/useProfile"
 import PaperFilters from "@/components/papers/paper-filters"
@@ -15,6 +17,9 @@ import { arxivToPaper } from "@/types/paper"
 import type { ArxivPaper } from "@/types/arxiv"
 
 export default function BookmarksPage() {
+  // Add scroll and paper state persistence
+  useScrollState('bookmarks');
+  const paperState = usePaperState('bookmarks');
   const { profile } = useProfile();
   const context = useBookmarkContext();
   const { getAllBookmarks } = context;
@@ -223,7 +228,7 @@ export default function BookmarksPage() {
                 </AlertDescription>
               </Alert>
             ) : (
-              <ResponsivePaperList papers={filteredPapers} />
+              <ResponsivePaperList papers={filteredPapers} paperState={paperState} />
             )}
           </CardContent>
         </Card>

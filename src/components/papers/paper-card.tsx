@@ -1,4 +1,4 @@
-import { useState } from 'react';
+// Modified PaperCard component
 import { Paper } from '@/types/paper';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
@@ -7,14 +7,19 @@ import { useBookmarkContext } from '@/lib/bookmarks/context';
 
 interface PaperCardProps {
   paper: Paper;
+  paperState: ReturnType<typeof usePaperState>;  // Add paperState prop
 }
 
-export function PaperCard({ paper }: PaperCardProps) {
-  const [isExpanded, setIsExpanded] = useState(false);
-  const { addBookmark, removeBookmark, loading, error, getBookmark } = useBookmarkContext();
+export function PaperCard({ paper, paperState }: PaperCardProps) {
+const { addBookmark, removeBookmark, loading, error, getBookmark } = useBookmarkContext();
   
   const isBookmarked = getBookmark(paper.id) !== undefined;
+  const isExpanded = paperState.isExpanded(paper.id);
   
+  const handleExpandClick = () => {
+    paperState.toggleExpanded(paper.id);
+  };
+
   const handleBookmarkClick = (e: React.MouseEvent) => {
     e.stopPropagation();
     console.log('Bookmark click handler triggered');
@@ -67,7 +72,7 @@ export function PaperCard({ paper }: PaperCardProps) {
     <Card className="w-full mb-4">
       <CardHeader className="pb-2">
         <div className="flex items-start justify-between">
-          <CardTitle className="text-base font-medium leading-tight cursor-pointer" onClick={() => setIsExpanded(!isExpanded)}>
+          <CardTitle className="text-base font-medium leading-tight cursor-pointer" onClick={handleExpandClick}>
             <div className="flex items-start gap-2">
               <div className="pt-0.5">
                 {isExpanded ? <ChevronUp className="h-4 w-4" /> : <ChevronDown className="h-4 w-4" />}

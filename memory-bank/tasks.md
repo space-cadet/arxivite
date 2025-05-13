@@ -1,11 +1,11 @@
 # Tasks Master Reference
-*Last Updated: 2025-05-12 17:45*
+*Last Updated: 2025-05-13 10:00*
 
 ## Tasks Overview
 - **Active Tasks:** 6
 - **Paused Tasks:** 0
-- **Completed Tasks:** 4
-- **Latest Task ID:** T13
+- **Completed Tasks:** 5
+- **Latest Task ID:** T14
 
 ## Task Registry
 
@@ -171,6 +171,7 @@
 ## Completed Tasks
 | ID | Title | Completed | File |
 |----|-------|-----------|------|
+| T14 | UI State Persistence Enhancement | 2025-05-13 | [tasks/T14.md] |
 | T9 | Fix Theme Toggle Functionality | 2025-04-30 | [tasks/T9.md] |
 | T7 | Search State Persistence | 2025-04-27 | [tasks/T7.md] |
 | T3 | Static Research Profile | 2025-04-27 | [tasks/T3.md] |
@@ -179,6 +180,7 @@
 | T0 | Project Setup | 2025-04-26 | [tasks/T0.md] |
 
 ## Recent Updates
+- 2025-05-13 10:00: Completed T14 UI State Persistence Enhancement
 - 2025-05-12 17:45: Updated T6 with settings page and bookmark storage improvements
 - 2025-05-12 17:00: Fixed TypeScript errors in bookmark implementation
 - 2025-05-12 14:30: Implemented settings page with bookmark management

@@ -13,12 +13,22 @@ import { getCategoryName } from "@/lib/categories"
 type TimeRange = "daily" | "weekly" | "monthly"
 type FilterType = "all" | "recommended"
 
+// Modified CatchupPage component
+import { useScrollState } from '@/hooks/useScrollState';
+import { usePaperState } from '@/hooks/usePaperState';
+
 export default function CatchupPage() {
   const { profile } = useProfile();
   const [timeRange, setTimeRange] = usePersistedState<TimeRange>("catchup.timeRange", "daily")
   const [filter, setFilter] = usePersistedState<FilterType>("catchup.filter", "all")
   const [authorFilter, setAuthorFilter] = usePersistedState<string>("catchup.authorFilter", "")
   const [selectedCategory, setSelectedCategory] = usePersistedState<string>("catchup.category", "all")
+
+  // Add scroll state persistence
+  useScrollState('catchup');
+
+  // Add paper expanded state persistence
+  const paperState = usePaperState('catchup');
 
   const handleAuthorSearch = (author: string) => {
     setAuthorFilter(author);
@@ -94,6 +104,7 @@ export default function CatchupPage() {
                 filter="all"
                 authorFilter={authorFilter}
                 categoryFilter={selectedCategory}
+                paperState={paperState} 
               />
             </TabsContent>
             <TabsContent value="recommended" className="mt-4">
@@ -102,6 +113,7 @@ export default function CatchupPage() {
                 filter="recommended"
                 authorFilter={authorFilter}
                 categoryFilter={selectedCategory}
+                paperState={paperState}
               />
             </TabsContent>
           </Tabs>

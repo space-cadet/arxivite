@@ -1,4 +1,5 @@
 import { usePersistedState } from '@/hooks/usePersistedState';
+import { usePaperState } from '@/hooks/usePaperState';
 import { ChevronDown, ChevronUp } from 'lucide-react';
 import { Paper } from '@/types/paper';
 import PaperTableRow from './paper-table-row';
@@ -12,12 +13,13 @@ import {
 
 interface PaperTableProps {
   papers: Paper[];
+  paperState: ReturnType<typeof usePaperState>;
 }
 
 type SortField = 'title' | 'authors' | 'category' | 'publishedDate';
 type SortDirection = 'asc' | 'desc';
 
-const PaperTable = ({ papers }: PaperTableProps) => {
+const PaperTable = ({ papers, paperState }: PaperTableProps) => {
   const [sortField, setSortField] = usePersistedState<SortField>('paperTable.sortField', 'publishedDate');
   const [sortDirection, setSortDirection] = usePersistedState<SortDirection>('paperTable.sortDirection', 'desc');
 
@@ -116,7 +118,7 @@ const PaperTable = ({ papers }: PaperTableProps) => {
         </TableHeader>
         <TableBody>
           {sortPapers(papers).map((paper) => (
-            <PaperTableRow key={paper.id} paper={paper} />
+            <PaperTableRow key={paper.id} paper={paper} paperState={paperState} />
           ))}
         </TableBody>
       </Table>

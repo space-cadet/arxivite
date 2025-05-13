@@ -1,4 +1,5 @@
 import { ResponsivePaperList } from "@/components/papers/responsive-paper-list"
+import { usePaperState } from '@/hooks/usePaperState'
 import { Skeleton } from "@/components/ui/skeleton"
 import { Alert, AlertDescription } from "@/components/ui/alert"
 import { AlertCircle } from "lucide-react"
@@ -12,6 +13,7 @@ interface RecentPaperListProps {
   filter: FilterType
   authorFilter: string
   categoryFilter: string
+  paperState: ReturnType<typeof usePaperState>
 }
 
 import { useRecentPapers } from "@/hooks/useRecentPapers"
@@ -20,7 +22,8 @@ export default function RecentPaperList({
   timeRange, 
   filter, 
   authorFilter,
-  categoryFilter 
+  categoryFilter,
+  paperState
 }: RecentPaperListProps) {
   const { papers, isLoading, error, isEmpty } = useRecentPapers(timeRange, filter)
 
@@ -73,5 +76,5 @@ export default function RecentPaperList({
     return authorMatch && categoryMatch;
   });
 
-  return <ResponsivePaperList papers={filteredPapers} />
+  return <ResponsivePaperList papers={filteredPapers} paperState={paperState} />
 }

@@ -1,5 +1,7 @@
 import { useEffect, useMemo } from 'react';
 import { usePersistedState } from '@/hooks/usePersistedState';
+import { useScrollState } from '@/hooks/useScrollState';
+import { usePaperState } from '@/hooks/usePaperState';
 import { arxivToPaper } from '@/types/paper';
 import { ResponsivePaperList } from '@/components/papers/responsive-paper-list';
 import PaperFilters from '@/components/papers/paper-filters';
@@ -9,6 +11,9 @@ import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Skeleton } from '@/components/ui/skeleton';
 
 const SearchPage = () => {
+  // Add scroll and paper state persistence
+  useScrollState('search');
+  const paperState = usePaperState('search');
   const [searchInput, setSearchInput] = usePersistedState('search.input', '');
   const [authorFilter, setAuthorFilter] = usePersistedState('search.authorFilter', '');
   const [selectedCategory, setSelectedCategory] = usePersistedState('search.category', 'all');
@@ -99,7 +104,7 @@ const SearchPage = () => {
       ) : (
         <>
           {filteredPapers.length > 0 ? (
-            <ResponsivePaperList papers={filteredPapers} />
+            <ResponsivePaperList papers={filteredPapers} paperState={paperState} />
           ) : (
             searchInput && (
               <Alert>

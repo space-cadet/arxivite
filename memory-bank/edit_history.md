@@ -1,5 +1,16 @@
 # Edit History
-*Last Updated: 2025-05-12 18:00*
+*Last Updated: 2025-05-13 10:00*
+
+## 2025-05-13
+### 10:00 - T14: UI State Persistence Enhancement
+- Created `src/hooks/useScrollState.ts` - New hook for scroll position persistence
+- Created `src/hooks/usePaperState.ts` - New hook for paper expanded state persistence
+- Modified `src/components/papers/paper-card.tsx` - Updated to use paper state
+- Modified `src/components/papers/paper-table-row.tsx` - Updated to use paper state
+- Modified `src/components/papers/responsive-paper-list.tsx` - Added paper state prop
+- Modified `src/pages/catchup.tsx` - Added scroll and paper state persistence
+- Modified `src/pages/search.tsx` - Added scroll and paper state persistence
+- Modified `src/pages/bookmarks.tsx` - Added scroll and paper state persistence
 
 ## 2025-05-12
 ### 17:45 - T6: Complete Bookmark System Implementation
