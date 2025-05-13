@@ -10,7 +10,6 @@
 - Tailwind CSS 3.4.7
 
 ### Key Libraries
-- @agentic/arxiv: arXiv API client
 - shadcn/ui: UI component library
 - Radix UI: Accessible primitives
 - Lucide React: Icons
@@ -28,6 +27,12 @@
 - Modern browsers (last 2 versions)
 - ES2021+ features
 - CSS Grid and Flexbox
+- Mobile browsers:
+  - Safari iOS 14+
+  - Chrome Android 90+
+- Tablet optimization:
+  - iPadOS 14+
+  - Android tablets 10+
 
 ### Performance Targets
 - First Contentful Paint: < 1.5s
@@ -43,18 +48,34 @@
 
 ### State Management
 ```typescript
-// Example Context Structure
+// Core State Interfaces
 interface ArXivState {
   papers: Paper[];
   categories: Category[];
   searchParams: SearchParams;
-  favorites: string[];
+  bookmarks: BookmarkedPaper[];
+  uiState: UIState;
+}
+
+interface UIState {
+  expandedPapers: string[];
+  scrollPositions: Record<string, number>;
+  activeLayout: 'mobile' | 'tablet' | 'desktop';
+  sidebarCollapsed: boolean;
 }
 
 interface ArXivActions {
   searchPapers: (params: SearchParams) => Promise<void>;
-  toggleFavorite: (paperId: string) => void;
+  toggleBookmark: (paper: Paper) => void;
   updateCategories: (categories: Category[]) => void;
+  updateUIState: (updates: Partial<UIState>) => void;
+}
+
+// Persistence Hooks
+interface PersistedState<T> {
+  value: T;
+  setValue: (value: T | ((prev: T) => T)) => void;
+  reset: () => void;
 }
 ```
 
@@ -81,10 +102,13 @@ interface SearchParams {
 ```
 
 ### API Integration
-- Direct arXiv API access via @agentic/arxiv
+- Direct arXiv XML API integration (export.arxiv.org/api/query)
+- Custom XML parsing and data extraction
+- Robust time-based filtering support
+- Special handling for ID-based queries
 - Rate limiting compliance
-- Error handling strategy
-- Response caching
+- Error handling with retries
+- Response caching in local storage
 
 ### Storage Strategy
 ```typescript

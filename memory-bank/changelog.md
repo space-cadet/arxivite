@@ -1,5 +1,33 @@
 # Changelog
-*Last Updated: 2025-04-30*
+*Last Updated: 2025-05-13*
+
+## 2025-05-13
+### Memory Bank and Documentation
+- Updated all documentation to reflect custom arXiv API implementation
+- Added META-1 task for documentation alignment
+- Updated component index and project map
+- Enhanced system patterns documentation
+
+### UI State Persistence Enhancement (T14)
+- Implemented scroll position persistence
+- Added expanded paper state memory
+- Integrated with all paper list pages
+- Added mobile-specific state handling
+
+## 2025-05-12
+### Bookmarking System Improvements
+- Enhanced bookmark storage with full paper data
+- Added settings page with bookmark management
+- Improved type safety and error handling
+- Added mobile navigation support
+
+## 2025-05-11
+### Mobile and Tablet Accessibility (T13)
+- Created useMediaQuery hook
+- Added responsive utilities
+- Implemented mobile bottom navigation
+- Created mobile-optimized paper cards
+- Enhanced touch controls and interactions
 
 ## 2025-04-30
 ### Input History and Search Improvements

@@ -2,7 +2,7 @@
 *Last Updated: 2025-04-26*
 
 ## Project Overview
-A self-contained arXiv paper browser built with React + Vite. Uses the @agentic/arxiv package for direct arXiv interactions, with a modern UI built using ShadcnUI components.
+A self-contained arXiv paper browser built with React + Vite. Uses a custom-built arXiv API integration for reliable paper fetching and time-based filtering, with a modern UI built using ShadcnUI components.
 
 ## Goals
 - Create a lightweight, self-contained arXiv paper browser

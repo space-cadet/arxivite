@@ -22,19 +22,24 @@ User Interface
     ↓
 React Components
     ↓
-@agentic/arxiv Client
+Custom arXiv Integration
     ↓
-arXiv API
+arXiv XML API (export.arxiv.org)
 ```
 
 ### Caching Strategy
 - Local Storage for:
-  - User preferences
-  - Recent searches
-  - Favorite papers
+  - User preferences and theme
+  - Recent searches with parameters
+  - Bookmarked papers with full metadata
+  - Search state and filters
+  - UI state (expanded papers, scroll positions)
+  - Category preferences
 - Runtime caching for:
-  - Search results
+  - Active search results
   - Paper metadata
+  - XML parsing results
+  - Mobile layout preferences
 
 ## Design Patterns
 
@@ -45,8 +50,16 @@ arXiv API
 
 ### UI Patterns
 - Responsive design using Tailwind CSS
-- Progressive enhancement
-- Mobile-first approach
+- Mobile-first approach with:
+  - Bottom navigation for mobile
+  - Collapsible sidebar for tablet
+  - Adaptive paper cards and lists
+  - Touch-optimized controls
+- Progressive enhancement with:
+  - Skeleton loading states
+  - Optimistic updates
+  - Scroll position persistence
+  - Expanded state memory
 
 ### State Management Patterns
 - Single source of truth

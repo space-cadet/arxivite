@@ -2,16 +2,17 @@
 *Last Updated: 2025-05-13 10:00*
 
 ## Tasks Overview
-- **Active Tasks:** 6
+- **Active Tasks:** 7
 - **Paused Tasks:** 0
 - **Completed Tasks:** 5
-- **Latest Task ID:** T14
+- **Latest Task ID:** META-1
 
 ## Task Registry
 
 ## Active Tasks
 | ID | Title | Status | Priority | Started | File |
 |----|-------|--------|----------|---------|------|
+| META-1 | Memory Bank Alignment with Custom arXiv API Implementation | 🔄 | HIGH | 2025-05-13 | [tasks/META-1.md] |
 | T13 | Mobile and Tablet Accessibility | 🔄 | HIGH | 2025-05-11 | [tasks/T13.md] |  
 | T12 | UI Navigation and Theme Toggle Issues | 🔄 | HIGH | 2025-04-30 | [tasks/T12.md] |
 | T8 | Fix Vercel Deployment Routing | 🔄 | HIGH | 2025-04-27 | [tasks/T8.md] |
@@ -156,9 +157,9 @@
 - **T13** → Depends on → **T12**
 - **T12** → None
 - **T8** → Depends on → **T0**
-- **T5** → Depends on → **T0, T1, T3**
+- **T5** → Depends on → **T0, T1, T3**  # Depends on custom arXiv API
 - **T4** → Depends on → **T3**
-- **T6** → Depends on → **T1, T2**
+- **T6** → Depends on → **T1, T2**  # Depends on custom arXiv API
 
 ## Priority Queue
 1. **T13**: Mobile and Tablet Accessibility - critical for user experience
@@ -176,10 +177,11 @@
 | T7 | Search State Persistence | 2025-04-27 | [tasks/T7.md] |
 | T3 | Static Research Profile | 2025-04-27 | [tasks/T3.md] |
 | T2 | Paper Display Components | 2025-04-26 | [tasks/T2.md] |
-| T1 | @agentic/arxiv Integration | 2025-04-26 | [tasks/T1.md] |
+| T1 | Custom arXiv API Integration | 2025-04-26 | [tasks/T1.md] |
 | T0 | Project Setup | 2025-04-26 | [tasks/T0.md] |
 
 ## Recent Updates
+- 2025-05-13 12:00: Completed META-1 Memory Bank Alignment
 - 2025-05-13 10:00: Completed T14 UI State Persistence Enhancement
 - 2025-05-12 17:45: Updated T6 with settings page and bookmark storage improvements
 - 2025-05-12 17:00: Fixed TypeScript errors in bookmark implementation
