@@ -186,6 +186,7 @@
 | T0 | Project Setup | 2025-04-26 | [tasks/T0.md] |
 
 ## Recent Updates
+- 2025-05-13 17:45: Added detailed authentication setup documentation
 - 2025-05-13 17:30: Completed Google OAuth implementation in T17
 - 2025-05-13 17:00: Created T17 for Authentication System POC
 - 2025-05-13 16:00: Completed T15 profile/settings reorganization

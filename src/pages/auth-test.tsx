@@ -54,9 +54,7 @@ export default function AuthTestPage() {
     const { error } = await supabase.auth.signInWithOAuth({
       provider,
       options: {
-        redirectTo: process.env.NODE_ENV === 'production' 
-          ? 'https://arxivite.vercel.app/auth-test'  // We'll replace this with your actual URL
-          : `${window.location.origin}/auth-test`
+        redirectTo: 'https://arxivite.vercel.app/auth-test'
       }
     });
 

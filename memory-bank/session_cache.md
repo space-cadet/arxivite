@@ -15,13 +15,14 @@
 ## Task Registry
 ### T17: Authentication System POC
 **Status**: 🔄 **Priority**: HIGH
-**Started**: 2025-05-13 **Last**: 2025-05-13 17:30
+**Started**: 2025-05-13 **Last**: 2025-05-13 17:45
 **Context**: Implementing authentication system with Supabase
 **Files**: 
 - `src/lib/supabase.ts`
 - `src/pages/auth-test.tsx`
 - `src/App.tsx`
 - `.env.local`
+- `memory-bank/implementation-details/supabase-google-auth-setup.md`
 **Progress**:
 1. ✅ Supabase project setup
 2. ✅ Test route implementation
