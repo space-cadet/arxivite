@@ -17,6 +17,7 @@ import { ResponsivePaperList } from "@/components/papers/responsive-paper-list";
 import { usePersistedState } from '@/hooks/usePersistedState';
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import { HistoryInput } from "@/components/ui/history-input";
+import { usePaperState } from '@/hooks/usePaperState';
 
 const ProfilePage = () => {
   const { profile, addToProfile, removeFromProfile, resetProfile, updateProfile } = useProfile();
@@ -201,7 +202,10 @@ const ProfilePage = () => {
                   </CollapsibleTrigger>
                 </div>
                 <CollapsibleContent className="space-y-2">
-                  <ResponsivePaperList papers={authorPapers.papers.map(arxivToPaper)} />
+                  <ResponsivePaperList 
+                    papers={authorPapers.papers.map(arxivToPaper)} 
+                    paperState={usePaperState('profile-papers')} 
+                  />
                 </CollapsibleContent>
               </Collapsible>
             )}

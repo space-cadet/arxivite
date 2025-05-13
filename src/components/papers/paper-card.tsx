@@ -5,9 +5,11 @@ import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/componen
 import { ChevronDown, ChevronUp, Download, ExternalLink, Bookmark, BookmarkCheck } from 'lucide-react';
 import { useBookmarkContext } from '@/lib/bookmarks/context';
 
+import { usePaperState, PaperStateHook } from '@/hooks/usePaperState';
+
 interface PaperCardProps {
   paper: Paper;
-  paperState: ReturnType<typeof usePaperState>;  // Add paperState prop
+  paperState: PaperStateHook;
 }
 
 export function PaperCard({ paper, paperState }: PaperCardProps) {

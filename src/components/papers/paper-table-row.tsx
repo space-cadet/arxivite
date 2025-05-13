@@ -1,14 +1,14 @@
 
 import { ChevronDown, ChevronUp, Download, ExternalLink, Bookmark, BookmarkCheck } from 'lucide-react';
 import { Paper } from '@/types/paper';
-import type { ReturnType } from '@/hooks/usePaperState';
+import { PaperStateHook } from '@/hooks/usePaperState';
 import { Button } from '@/components/ui/button';
 import { TableCell, TableRow } from '@/components/ui/table';
 import { useBookmarkContext } from '@/lib/bookmarks/context';
 
 interface PaperTableRowProps {
   paper: Paper;
-  paperState: ReturnType<typeof usePaperState>;
+  paperState: PaperStateHook;
 }
 
 const PaperTableRow = ({ paper, paperState }: PaperTableRowProps) => {

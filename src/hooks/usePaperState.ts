@@ -5,7 +5,13 @@ interface PaperState {
   expandedPapers: Record<string, boolean>;
 }
 
-export function usePaperState(key: string) {
+export type PaperStateHook = {
+  paperState: PaperState;
+  toggleExpanded: (paperId: string) => void;
+  isExpanded: (paperId: string) => boolean;
+};
+
+export function usePaperState(key: string): PaperStateHook {
   const [paperState, setPaperState] = usePersistedState<PaperState>(`papers.${key}`, {
     expandedPapers: {}
   });

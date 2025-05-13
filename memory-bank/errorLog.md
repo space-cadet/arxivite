@@ -1,6 +1,28 @@
 # Error Log
 
-*Last Updated: 2025-05-12 17:30*
+## 2025-05-13 10:30: T14 - TypeScript Build Errors in Paper Components
+**File:** Multiple files (paper-card.tsx, paper-list.tsx, paper-table-row.tsx, profile.tsx)
+**Error:** TypeScript compile errors
+```
+Cannot find name 'usePaperState'.
+Property 'paperState' is missing in type '{ key: string; paper: Paper; }'.
+Module '@/hooks/usePaperState' has no exported member 'ReturnType'.
+```
+**Cause:** Missing type exports and prop requirements in paper components:
+1. usePaperState hook type not properly exported
+2. paperState prop missing in component props
+3. Incorrect type import for ReturnType
+**Fix:** 
+1. Added proper type exports for usePaperState hook
+2. Updated components to include and pass paperState prop
+3. Fixed type imports and definitions
+**Changes:**
+- Added PaperStateHook type export in usePaperState.ts
+- Updated PaperCard, PaperList, and PaperTableRow components with proper types
+- Added paperState prop passing in profile.tsx
+**Task:** T14
+
+*Last Updated: 2025-05-13 10:30*
 
 ## 2025-05-12 17:30: T6 - Invalid Error Type Access in Bookmarks Page
 **File:** `src/pages/bookmarks.tsx`

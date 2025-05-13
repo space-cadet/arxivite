@@ -1,4 +1,42 @@
 # Session Cache
+*Last Updated: 2025-05-13 10:30*
+
+## Current Session
+**Started**: 2025-05-13 10:00
+**Focus Task**: T14
+**Session File**: `sessions/2025-05-13-morning.md`
+
+## Overview
+- Active: 1 | Paused: 0
+- Last Session: `sessions/2025-05-12-evening.md`
+- Current Period: morning
+
+## Task Registry
+- T14: UI State Persistence Enhancement - 🔄
+
+## Active Tasks
+### T14: UI State Persistence Enhancement
+**Status**: 🔄 **Priority**: HIGH
+**Started**: 2025-05-13 **Last**: 2025-05-13 10:30
+**Context**: Implementing paper state persistence across navigation
+**Files**: 
+- `src/hooks/usePaperState.ts`
+- `src/components/papers/paper-card.tsx`
+- `src/components/papers/paper-table-row.tsx`
+- `src/components/papers/paper-list.tsx`
+- `src/pages/profile.tsx`
+**Progress**:
+1. ✅ Created usePaperState hook
+2. ✅ Added type exports and definitions
+3. ✅ Fixed TypeScript build errors
+4. 🔄 Testing in development environment
+5. ⬜ Deploy to staging
+
+## Session History (Last 3)
+1. `sessions/2025-05-13-morning.md`
+2. `sessions/2025-05-12-evening.md`
+3. `sessions/2025-05-12-afternoon.md`
+
 *Last Updated: 2025-05-13 12:00*
 
 ## Current Session

@@ -1,4 +1,13 @@
 # Edit History
+
+## 2025-05-13
+### 10:30 - T14: Fixed TypeScript Build Errors in Paper Components
+- Modified `src/hooks/usePaperState.ts` - Added PaperStateHook type export
+- Updated `src/components/papers/paper-card.tsx` - Fixed usePaperState import and type
+- Updated `src/components/papers/paper-table-row.tsx` - Fixed type imports
+- Updated `src/components/papers/paper-list.tsx` - Added paperState prop
+- Updated `src/pages/profile.tsx` - Added paperState prop passing
+
 *Last Updated: 2025-05-13 10:00*
 
 ## 2025-05-13
