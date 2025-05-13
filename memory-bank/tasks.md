@@ -12,6 +12,7 @@
 ## Active Tasks
 | ID | Title | Status | Priority | Started | File |
 |----|-------|--------|----------|---------|------|
+| T16 | Comprehensive Research Keywords System | 🔄 | HIGH | 2025-05-13 | [tasks/T16.md] |
 | T15 | Profile and Settings Enhancement & Reorganization | 🔄 | HIGH | 2025-05-13 | [tasks/T15.md] |
 | ID | Title | Status | Priority | Started | File |
 |----|-------|--------|----------|---------|------|
@@ -184,6 +185,10 @@
 | T0 | Project Setup | 2025-04-26 | [tasks/T0.md] |
 
 ## Recent Updates
+- 2025-05-13 16:00: Completed T15 profile/settings reorganization
+- 2025-05-13 15:55: Integrated author names management in settings
+- 2025-05-13 15:50: Updated T16 implementation plan
+- 2025-05-13 15:50: Created T16 for Comprehensive Research Keywords System
 - 2025-05-13 15:45: Completed core implementation of T15 reorganization
 - 2025-05-13 15:30: Implemented Profile/Settings reorganization for T15
 - 2025-05-13 15:00: Updated T15 scope to include Profile/Settings reorganization

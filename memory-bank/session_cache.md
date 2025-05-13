@@ -1,4 +1,64 @@
 # Session Cache
+*Last Updated: 2025-05-13 16:00*
+
+## Current Session
+**Started**: 2025-05-13 15:45
+**Focus Task**: T15
+**Session File**: `sessions/2025-05-13-afternoon.md`
+
+## Overview
+- Active: 2
+- Paused: 0
+- Last Session: `sessions/2025-05-13-morning.md`
+- Current Period: afternoon
+
+## Task Registry
+### T15: Profile and Settings Enhancement
+**Status**: ✅ **Priority**: HIGH
+**Started**: 2025-05-13 **Last**: 2025-05-13 16:00
+**Context**: Profile and settings reorganization
+**Files**: 
+- `src/pages/profile.tsx`
+- `src/components/settings/research-interest-settings.tsx`
+- `src/components/profile/author-names.tsx`
+**Progress**:
+1. ✅ Profile page read-only conversion
+2. ✅ Settings integration
+3. ✅ Component reorganization
+4. ✅ Mobile optimization
+
+### T16: Research Keywords System
+**Status**: 🔄 **Priority**: HIGH
+**Started**: 2025-05-13 **Last**: 2025-05-13 15:50
+**Context**: Comprehensive keyword system planning
+**Files**:
+- `src/lib/keywords/t16/service.ts`
+- `src/data/research-fields.json`
+- `src/components/profile/t16/advanced-keywords-input.tsx`
+**Progress**:
+1. ✅ Initial architecture
+2. ✅ Data structure design
+3. ✅ Preliminary implementation
+4. 🔄 Backend planning
+
+## Active Session State
+- Profile/Settings reorganization complete
+- AuthorNames component integrated
+- T16 preliminary work stored
+- Ready for backend tasks
+
+## Critical Files
+- `src/pages/profile.tsx`
+- `src/components/settings/research-interest-settings.tsx`
+- `src/components/profile/author-names.tsx`
+- `memory-bank/tasks/T15.md`
+- `memory-bank/tasks/T16.md`
+
+## Session Notes
+- T15 completed with full profile/settings separation
+- T16 code stored for future implementation
+- All component integrations tested
+- Mobile layouts verified
 *Last Updated: 2025-05-13 15:45*
 
 ## Current Session

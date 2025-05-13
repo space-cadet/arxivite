@@ -1,5 +1,26 @@
 # Error Log
 
+## 2025-05-13 15:14: T15 - Merge Conflict in Profile Page
+**File:** `src/pages/profile.tsx`
+**Error:** Runtime error in Vite
+```
+Pre-transform error: Unexpected token (118:0)
+  116 |   }, []); // Run once on mount
+  117 |
+> 118 | =======
+      | ^
+```
+**Cause:** Unresolved merge conflict markers left in the code during a merge or rebase operation
+**Fix:** Cleaned up the file by:
+1. Removing all merge conflict markers
+2. Fixing the structure of the useEffect hook
+3. Ensuring proper code flow and indentation
+**Changes:**
+- Removed all `=======` merge conflict markers
+- Fixed code structure around the useEffect hook for cleaning up fragmented author names
+- Ensured proper flow between hooks and render section
+**Task:** T15
+
 ## 2025-05-13 10:30: T14 - TypeScript Build Errors in Paper Components
 **File:** Multiple files (paper-card.tsx, paper-list.tsx, paper-table-row.tsx, profile.tsx)
 **Error:** TypeScript compile errors

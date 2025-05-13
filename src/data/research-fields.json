@@ -1,0 +1,159 @@
+{
+  "physics": {
+    "quantum_mechanics": {
+      "label": "Quantum Mechanics",
+      "related": ["quantum_field_theory", "quantum_information"],
+      "subtopics": [
+        "quantum_entanglement",
+        "quantum_measurement",
+        "quantum_decoherence",
+        "quantum_tunneling",
+        "quantum_foundations"
+      ]
+    },
+    "quantum_field_theory": {
+      "label": "Quantum Field Theory",
+      "related": ["quantum_mechanics", "particle_physics"],
+      "subtopics": [
+        "conformal_field_theory",
+        "topological_field_theory",
+        "gauge_theory",
+        "supersymmetry"
+      ]
+    },
+    "quantum_gravity": {
+      "label": "Quantum Gravity",
+      "related": ["general_relativity", "string_theory"],
+      "subtopics": [
+        "loop_quantum_gravity",
+        "causal_dynamical_triangulations",
+        "asymptotic_safety",
+        "holography"
+      ]
+    },
+    "general_relativity": {
+      "label": "General Relativity",
+      "related": ["quantum_gravity", "cosmology"],
+      "subtopics": [
+        "black_holes",
+        "gravitational_waves",
+        "exact_solutions",
+        "numerical_relativity"
+      ]
+    },
+    "particle_physics": {
+      "label": "Particle Physics",
+      "related": ["quantum_field_theory", "nuclear_physics"],
+      "subtopics": [
+        "standard_model",
+        "elementary_particles",
+        "higgs_boson",
+        "neutrino_physics",
+        "cp_violation",
+        "quark_gluon_plasma"
+      ]
+    },
+    "cosmology": {
+      "label": "Cosmology",
+      "related": ["general_relativity", "astrophysics"],
+      "subtopics": [
+        "inflation",
+        "dark_matter",
+        "dark_energy",
+        "cosmic_microwave_background",
+        "large_scale_structure",
+        "early_universe"
+      ]
+    },
+    "condensed_matter": {
+      "label": "Condensed Matter Physics",
+      "related": ["statistical_physics", "materials_science"],
+      "subtopics": [
+        "superconductivity",
+        "quantum_hall_effect",
+        "topological_insulators",
+        "strongly_correlated_systems",
+        "phase_transitions",
+        "quantum_magnetism"
+      ]
+    },
+    "optics": {
+      "label": "Optics",
+      "related": ["quantum_optics", "photonics"],
+      "subtopics": [
+        "lasers",
+        "waveguides",
+        "optical_fibers",
+        "nonlinear_optics",
+        "metamaterials",
+        "photonic_crystals"
+      ]
+    },
+    "quantum_computing": {
+      "label": "Quantum Computing",
+      "related": ["quantum_information", "computer_science"],
+      "subtopics": [
+        "quantum_circuits",
+        "quantum_error_correction",
+        "quantum_algorithms",
+        "quantum_simulation",
+        "quantum_hardware"
+      ]
+    }
+  },
+  "mathematics": {
+    "algebra": {
+      "label": "Algebra",
+      "subtopics": [
+        "group_theory",
+        "ring_theory",
+        "lie_algebras",
+        "representation_theory",
+        "homological_algebra"
+      ]
+    },
+    "geometry": {
+      "label": "Geometry",
+      "subtopics": [
+        "differential_geometry",
+        "algebraic_geometry",
+        "symplectic_geometry",
+        "topology",
+        "geometric_analysis"
+      ]
+    },
+    "analysis": {
+      "label": "Analysis",
+      "subtopics": [
+        "functional_analysis",
+        "complex_analysis",
+        "harmonic_analysis",
+        "operator_theory",
+        "partial_differential_equations"
+      ]
+    }
+  },
+  "computer_science": {
+    "machine_learning": {
+      "label": "Machine Learning",
+      "subtopics": [
+        "deep_learning",
+        "reinforcement_learning",
+        "neural_networks",
+        "statistical_learning",
+        "generative_models",
+        "transformers"
+      ]
+    },
+    "quantum_information": {
+      "label": "Quantum Information",
+      "related": ["quantum_computing", "quantum_mechanics"],
+      "subtopics": [
+        "quantum_cryptography",
+        "quantum_communication",
+        "quantum_shannon_theory",
+        "quantum_error_correction"
+      ]
+    }
+  }
+}

@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import AuthorNames from "@/components/profile/author-names";
 import { Label } from "@/components/ui/label";
 import { Badge } from "@/components/ui/badge";
 import { X, RefreshCcw } from 'lucide-react';
@@ -86,6 +87,16 @@ export function ProfileSettings() {
         </CardDescription>
       </CardHeader>
       <CardContent className="space-y-6">
+        {/* Author Names Section */}
+        <div className="space-y-2">
+          <Label>Author Names</Label>
+          <AuthorNames
+            authorNames={profile.authors}
+            onAddName={(name) => addToProfile('authors', name)}
+            onRemoveName={(name) => removeFromProfile('authors', name)}
+          />
+        </div>
+
         {/* Categories Section */}
         <div className="space-y-2">
           <Label>ArXiv Categories</Label>

@@ -2,6 +2,19 @@
 *Last Updated: 2025-05-13 15:45*
 
 ## 2025-05-13
+### 16:00 - T15: Profile/Settings Integration
+- Created `src/components/profile/author-names.tsx` - New author names management component
+- Created `src/components/profile/keywords-input.tsx` - Simple keyword input component
+- Created `src/lib/keywords/t16/service.ts` - Advanced keyword service (for T16)
+- Created `src/data/research-fields.json` - Research fields data (for T16)
+- Created `src/components/profile/t16/advanced-keywords-input.tsx` - Advanced UI (for T16)
+- Created `memory-bank/tasks/T16.md` - New task documentation
+- Modified `src/pages/profile.tsx` - Converted to read-only display
+- Modified `src/components/settings/profile-settings.tsx` - Added author names integration
+- Modified `src/components/settings/research-interest-settings.tsx` - Added author names management
+- Removed author management from profile page
+- Updated component organization and validation
+
 ### 15:45 - T15: Profile and Settings Reorganization
 - Created `/src/components/ui/navigation-link.tsx` - Added navigation component
 - Created `/src/components/settings/research-interest-settings.tsx` - New settings component

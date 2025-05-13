@@ -1,5 +1,6 @@
 import { useProfile } from '@/contexts/ProfileContext';
 import { useToast } from "@/hooks/use-toast";
+import AuthorNames from "@/components/profile/author-names";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 import { Badge } from "@/components/ui/badge";
@@ -15,24 +16,12 @@ export function ResearchInterestSettings() {
   const { profile, addToProfile, removeFromProfile, resetProfile } = useProfile();
   const { toast } = useToast();
   const [inputs, setInputs] = useState({
-    authors: '',
     keywords: '',
     excludeTerms: ''
   });
 
   const validateTerm = (value: string, field: keyof typeof inputs): { isValid: boolean; message?: string } => {
     const trimmed = value.trim();
-    
-    if (field === 'authors') {
-      if (trimmed.length < 2) {
-        return { isValid: false, message: 'Author name must be at least 2 characters long' };
-      }
-      
-      if (!/^[a-zA-Z\s-]+$/.test(trimmed)) {
-        return { isValid: false, message: 'Author name can only contain letters, spaces, and hyphens' };
-      }
-      return { isValid: true };
-    }
     
     if (trimmed.length < 2) {
       return { isValid: false, message: 'Term must be at least 2 characters long' };
@@ -87,6 +76,16 @@ export function ResearchInterestSettings() {
         </CardDescription>
       </CardHeader>
       <CardContent className="space-y-6">
+        {/* Author Names Section */}
+        <div className="space-y-2">
+          <Label>Author Names</Label>
+          <AuthorNames
+            authorNames={profile.authors}
+            onAddName={(name) => addToProfile('authors', name)}
+            onRemoveName={(name) => removeFromProfile('authors', name)}
+          />
+        </div>
+
         {/* Categories Section */}
         <div className="space-y-2">
           <Label>ArXiv Categories</Label>

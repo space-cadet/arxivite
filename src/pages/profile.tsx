@@ -1,13 +1,12 @@
-import { useState, KeyboardEvent, useEffect, useCallback } from 'react';
+import { useState, useEffect } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { X, ChevronDown, ChevronUp, RefreshCcw, Settings } from 'lucide-react';
+import { ChevronDown, ChevronUp, RefreshCcw } from 'lucide-react';
 import { NavigationLink } from "@/components/ui/navigation-link";
 import { useProfile } from '@/contexts/ProfileContext';
 import { getCategoryById, getCategoryName } from '@/lib/categories';
-import { CategorySelect } from '@/components/ui/CategorySelect';
 import { useToast } from "@/hooks/use-toast";
 import { Toaster } from "@/components/ui/toaster";
 import { useArxivSearch } from '@/hooks/useArxiv';
@@ -18,24 +17,24 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { ResponsivePaperList } from "@/components/papers/responsive-paper-list";
 import { usePersistedState } from '@/hooks/usePersistedState';
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
-import { HistoryInput } from "@/components/ui/history-input";
 import { usePaperState } from '@/hooks/usePaperState';
 
 const ProfilePage = () => {
-  const { profile, addToProfile, removeFromProfile, resetProfile, updateProfile } = useProfile();
+  const { profile } = useProfile();
   const { toast } = useToast();
   const paperState = usePaperState('profile-papers');
-  // Use usePersistedState for input value only, not profile sync
-  const [authorName, setAuthorName] = usePersistedState('profile.authorName', '');
-  const [searchQuery, setSearchQuery] = useState('');
   const [isOpen, setIsOpen] = usePersistedState('profile.papersTableOpen', true);
   
-  const arxivSearch = useArxivSearch();
   const [papers, setPapers] = useState<Paper[]>([]);
   const [isRefreshing, setIsRefreshing] = useState(false);
+
+  // Build search query from all author names
+  const authorQuery = profile.authors.length > 0
+    ? profile.authors.map(name => `au:"${name}"`).join(' OR ')
+    : '';
   
-  const { data: authorPapers, isLoading: isLoadingPapers, error: paperError } = arxivSearch.search({ 
-    query: searchQuery,
+  const { data: authorPapers, isLoading: isLoadingPapers, error: paperError } = useArxivSearch().search({ 
+    query: authorQuery,
     maxResults: 50
   });
 
@@ -56,14 +55,15 @@ const ProfilePage = () => {
     }
   }, [authorPapers]);
 
-  const handleRefresh = useCallback(async () => {
-    if (!authorName.trim()) return;
+  const handleRefresh = async () => {
+    if (profile.authors.length === 0) return;
     
     setIsRefreshing(true);
     PaperCacheService.clear();
     
     try {
-      setSearchQuery(authorName ? `au:"${authorName}"` : '');
+      // Force a refetch by clearing the cache
+      PaperCacheService.clear();
     } catch (error) {
       toast({
         variant: "destructive",
@@ -73,98 +73,62 @@ const ProfilePage = () => {
     } finally {
       setIsRefreshing(false);
     }
-  }, [authorName, toast]);
-
-  const handleSearch = () => {
-    const name = authorName.trim();
-    if (name.length < 2) {
-      toast({
-        variant: "destructive",
-        title: "Invalid name",
-        description: "Please enter your full name as it appears on arXiv papers"
-      });
-      return;
-    }
-    
-    setSearchQuery(name ? `au:"${name}"` : '');
-    
-    // Only add to profile if searching
-    if (!profile.authors.includes(name)) {
-      addToProfile('authors', name);
-    }
   };
-
-  // Clean up fragmented author names on mount
-  useEffect(() => {
-    const authors = profile.authors;
-    if (authors.length > 0) {
-      // Find any single-letter or fragmented names
-      const fragmentedNames = authors.filter(name => 
-        name.length <= 2 || 
-        authors.some(other => other !== name && other.includes(name))
-      );
-      
-      if (fragmentedNames.length > 0) {
-        // Remove fragmented names
-        const cleanAuthors = authors.filter(name => !fragmentedNames.includes(name));
-        updateProfile({
-          ...profile,
-          authors: cleanAuthors
-        });
-      }
-    }
-  }, []); // Run once on mount
-
-=======
 
   return (
     <div className="w-full max-w-7xl mx-auto px-4 py-4 md:py-6 space-y-4 md:space-y-6">
       <Toaster />
       <div className="space-y-6">
-        {/* Author Publications Section - Moved to top */}
+        {/* Author Publications Section */}
         <Card>
           <CardHeader>
-            <CardTitle>User Profile</CardTitle>
+            <CardTitle>Your Publications</CardTitle>
             <CardDescription>
-              Enter your name as it appears on your arXiv papers to find your publications
+              Papers associated with your author names
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
-            <div className="flex flex-col sm:flex-row gap-3">
-              <div className="w-full sm:flex-1">
-                <HistoryInput
-                  id="author-name"
-                  placeholder="Enter your name as it appears on arXiv papers"
-                  value={authorName}
-                  onValueChange={setAuthorName}
-                  onKeyDown={e => {
-                    if (e.key === 'Enter') {
-                      handleSearch();
-                    }
-                  }}
-                />
-              </div>
-              <div className="flex gap-2">
-                <Button 
-                  variant="default"
-                  onClick={handleSearch}
-                  disabled={!authorName.trim()}
-                  className="flex-1 sm:flex-none"
-                >
-                  Find Papers
-                </Button>
-                <Button 
-                  variant="outline" 
-                  onClick={() => {
-                    setAuthorName('');
-                    setSearchQuery('');
-                  }}
-                  disabled={!authorName}
-                >
-                  Clear
-                </Button>
-              </div>
+            <div className="flex items-center justify-between">
+              <Label>Author Names</Label>
+              <NavigationLink 
+                to="/settings" 
+                section="profile"
+                variant="link"
+                className="text-xs text-muted-foreground h-auto p-0"
+              >
+                Edit Author Names
+              </NavigationLink>
             </div>
+            <div className="flex flex-wrap gap-2">
+              {profile.authors.map(name => (
+                <Badge 
+                  key={name}
+                  variant="secondary"
+                >
+                  {name}
+                </Badge>
+              ))}
+              {profile.authors.length === 0 && (
+                <p className="text-sm text-muted-foreground">
+                  No author names added. Add your names in settings.
+                </p>
+              )}
+            </div>
+
+            {profile.authors.length > 0 && (
+              <div className="flex gap-2 mt-4">
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  onClick={handleRefresh}
+                  disabled={isRefreshing || profile.authors.length === 0}
+                  className="h-10 w-10"
+                >
+                  <RefreshCcw className={`h-4 w-4 ${isRefreshing ? 'animate-spin' : ''}`} />
+                  <span className="sr-only">Refresh papers</span>
+                </Button>
+              </div>
+            )}
 
             {papers.length > 0 && (
               <Collapsible open={isOpen} onOpenChange={setIsOpen}>
@@ -173,16 +137,6 @@ const ProfilePage = () => {
                     <p className="text-sm text-muted-foreground">
                       Found {papers.length} papers
                     </p>
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      onClick={handleRefresh}
-                      disabled={isRefreshing || !authorName.trim()}
-                      className="h-8 px-2"
-                    >
-                      <RefreshCcw className={`h-4 w-4 ${isRefreshing ? 'animate-spin' : ''}`} />
-                      <span className="sr-only">Refresh papers</span>
-                    </Button>
                   </div>
                   <CollapsibleTrigger asChild>
                     <Button variant="ghost" size="sm" className="w-9 p-0">
@@ -215,10 +169,10 @@ const ProfilePage = () => {
                   Error loading papers: {paperError.message}
                 </AlertDescription>
               </Alert>
-            ) : authorName && !papers.length && !isLoadingPapers && (
+            ) : profile.authors.length > 0 && !papers.length && !isLoadingPapers && (
               <Alert>
                 <AlertDescription>
-                  No papers found for author "{authorName}". Make sure to enter your name exactly as it appears on your arXiv papers.
+                  No papers found for your author names. Make sure your names are entered exactly as they appear on your arXiv papers.
                 </AlertDescription>
               </Alert>
             )}
@@ -291,7 +245,7 @@ const ProfilePage = () => {
                 {profile.keywords.map(keyword => (
                   <Badge 
                     key={keyword} 
-                    variant="outline"
+                    variant="secondary"
                   >
                     {keyword}
                   </Badge>
