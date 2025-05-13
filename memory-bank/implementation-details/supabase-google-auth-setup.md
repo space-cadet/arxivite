@@ -52,11 +52,33 @@ This guide documents the setup process for implementing Supabase authentication 
 
 ## Step 3: Supabase Provider Configuration
 
+### Google OAuth Setup
 1. In Supabase Dashboard:
    - Go to Authentication > Providers
    - Enable Google provider
    - Add Client ID and Client Secret from Google
    - Save changes
+
+### Email Authentication Setup
+1. In Supabase Dashboard:
+   - Go to Authentication > Providers
+   - Enable Email provider
+   - Configure email settings:
+     - Enable "Confirm email by default"
+     - Enable "Secure email change"
+     - Set minimum password length
+     - Configure password strength requirements
+
+2. Email Templates Configuration:
+   - Go to Authentication > Email Templates
+   - Customize confirmation email template
+   - Set sender name and email address
+   - Test email delivery
+
+3. Production Considerations:
+   - Configure custom SMTP server (optional)
+   - Set up email allow/deny lists
+   - Monitor email delivery rates
 
 ## Step 4: Project Implementation
 
@@ -114,12 +136,36 @@ This guide documents the setup process for implementing Supabase authentication 
 
 ## Authentication Flow
 
+### Google OAuth Flow
 1. User clicks "Continue with Google"
 2. Redirected to Google consent screen
 3. After consent, redirected to Supabase callback URL
 4. Supabase handles token exchange
 5. User redirected back to app with session
 6. Session persisted in browser
+
+### Email Authentication Flow
+1. Sign Up:
+   - User enters email and password
+   - Supabase creates unconfirmed user
+   - Verification email sent
+   - User clicks verification link
+   - Email confirmed, can now sign in
+
+2. Sign In:
+   - User enters email and password
+   - If email unconfirmed:
+     - Show "Email not confirmed" message
+     - Prompt to check inbox
+   - If email confirmed:
+     - Create session
+     - Redirect to app
+
+3. Error Handling:
+   - Existing email detection
+   - Invalid credentials
+   - Rate limiting
+   - Network issues
 
 ## Security Considerations
 
@@ -153,11 +199,22 @@ This guide documents the setup process for implementing Supabase authentication 
 ## Next Steps
 
 1. Implement GitHub authentication
-2. Add email verification
+2. ✅ Add email verification
 3. Enhance error handling
+   - Improve error messages
+   - Add loading states
+   - Handle network errors
 4. Add password reset functionality
 5. Implement protected routes
 6. Add user profile management
+7. UX Improvements
+   - Loading states
+   - Better success messages
+   - Smoother transitions
+8. Production Monitoring
+   - Error tracking
+   - Email delivery rates
+   - Authentication success rates
 
 ## References
 

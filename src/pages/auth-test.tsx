@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
-import { supabase } from '@/lib/supabase';
-import type { AuthError, User } from '@supabase/supabase-js';
+import { supabase, getSiteUrl } from '@/lib/supabase';
+import { AuthError, User } from '@supabase/supabase-js';
 
 export default function AuthTestPage() {
   const [email, setEmail] = useState('');
@@ -8,8 +8,19 @@ export default function AuthTestPage() {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<AuthError | null>(null);
+  const [successMessage, setSuccessMessage] = useState<string | null>(null);
 
   useEffect(() => {
+    // Check for email confirmation success
+    const hashParams = new URLSearchParams(window.location.hash.slice(1));
+    const type = hashParams.get('type');
+    
+    if (type === 'recovery' || type === 'signup') {
+      setSuccessMessage('Email confirmed successfully! You can now sign in.');
+      // Clean up the URL
+      window.history.replaceState({}, '', window.location.pathname);
+    }
+
     // Check active sessions and sets the user
     supabase.auth.getSession().then(({ data: { session } }) => {
       setUser(session?.user ?? null);
@@ -24,28 +35,54 @@ export default function AuthTestPage() {
     return () => subscription.unsubscribe();
   }, []);
 
-  const handleSignUp = async (e: React.FormEvent) => {
+  const [mode, setMode] = useState<'signin' | 'signup'>('signin');
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError(null);
+    setSuccessMessage(null);
     
-    const { error } = await supabase.auth.signUp({
-      email,
-      password,
-    });
-
-    if (error) setError(error);
-  };
-
-  const handleSignIn = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setError(null);
-
-    const { error } = await supabase.auth.signInWithPassword({
-      email,
-      password,
-    });
-
-    if (error) setError(error);
+    if (mode === 'signup') {
+      const { data, error } = await supabase.auth.signUp({
+        email,
+        password,
+        options: {
+          emailRedirectTo: `${getSiteUrl()}/auth-test`
+        }
+      });
+      
+      if (error) {
+        setError(error);
+      } else if (data.user?.identities?.length === 0) {
+        setError({ 
+          name: 'AuthError',
+          message: 'This email is already registered. Please sign in instead.'
+        } as AuthError);
+      } else {
+        setSuccessMessage('Verification email sent! Please check your inbox.');
+        // Clear the form
+        setEmail('');
+        setPassword('');
+      }
+    } else {
+      const { error } = await supabase.auth.signInWithPassword({
+        email,
+        password,
+      });
+      if (error) {
+        // Check for email not confirmed error
+        if (error.message.toLowerCase().includes('email not confirmed')) {
+          // Create a new AuthError while preserving the original error's properties
+          const customError = new AuthError(
+            'Email not confirmed. Please check your inbox and click the confirmation link before signing in.',
+            error.status
+          );
+          setError(customError);
+        } else {
+          setError(error);
+        }
+      }
+    }
   };
 
   const handleSocialSignIn = async (provider: 'google' | 'github') => {
@@ -91,8 +128,14 @@ export default function AuthTestPage() {
               {error.message}
             </div>
           )}
+          
+          {successMessage && (
+            <div className="p-4 text-green-700 bg-green-100 rounded-lg">
+              {successMessage}
+            </div>
+          )}
 
-          <form onSubmit={handleSignIn} className="space-y-4">
+          <form onSubmit={handleSubmit} className="space-y-4">
             <div>
               <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
                 Email
@@ -124,15 +167,15 @@ export default function AuthTestPage() {
                 type="submit"
                 className="w-full px-4 py-2 text-white bg-blue-600 rounded hover:bg-blue-700"
               >
-                Sign In
+                {mode === 'signin' ? 'Sign In' : 'Sign Up'}
               </button>
               
               <button
                 type="button"
-                onClick={handleSignUp}
+                onClick={() => setMode(mode === 'signin' ? 'signup' : 'signin')}
                 className="w-full px-4 py-2 text-blue-600 bg-transparent border border-blue-600 rounded hover:bg-blue-50 dark:hover:bg-gray-700"
               >
-                Sign Up
+                {mode === 'signin' ? 'Need an account? Sign Up' : 'Already have an account? Sign In'}
               </button>
             </div>
           </form>
