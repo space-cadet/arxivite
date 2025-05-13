@@ -45,11 +45,14 @@ const AppLayout = ({ children }: AppLayoutProps) => {
     setIsCollapsed(true);
   }
 
+  // Make sure the sidebar is shown in tablet view with condensed layout
+  const showSidebar = !isMobile && (!isTablet || activeLayout === MobileLayout.CONDENSED);
+
   return (
     <LayoutContext.Provider value={{ isCollapsed, setIsCollapsed }}>
       <div className="min-h-screen bg-background">
         {/* Only render sidebar on desktop or condensed tablet layout */}
-        {!useMobileLayout && <Sidebar />}
+        {showSidebar && <Sidebar />}
         
         <div className={cn(
           "transition-all duration-300 flex flex-col min-h-screen",

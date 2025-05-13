@@ -3,6 +3,7 @@ import { cn } from "@/lib/utils";
 import { Search, UserCircle, Clock, ChevronLeft, ChevronRight, Bookmark, Settings } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useLayout } from './app-layout';
+import { LogoIcon } from '@/components/icons';
 
 const Sidebar = () => {
   const location = useLocation();
@@ -24,12 +25,18 @@ const Sidebar = () => {
       )}
     >
       <div className="flex items-center justify-between p-4">
-        <h2 className={cn(
-          "text-lg font-semibold transition-opacity duration-200",
-          isCollapsed && "opacity-0"
-        )}>
-          ArXivite
-        </h2>
+        <div className="flex items-center gap-2">
+          <LogoIcon 
+            size={isCollapsed ? 24 : 28} 
+            className="text-primary-foreground flex-shrink-0" 
+          />
+          <h2 className={cn(
+            "text-lg font-semibold transition-all duration-200",
+            isCollapsed ? "opacity-0 w-0 overflow-hidden" : "opacity-100"
+          )}>
+            ArXivite
+          </h2>
+        </div>
         <Button
           variant="ghost"
           size="icon"

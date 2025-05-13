@@ -43,7 +43,7 @@ class KeywordService {
     if (this.initialized) return;
 
     // Process the research fields data
-    Object.entries(researchFields).forEach(([category, fields]) => {
+    Object.entries(researchFields).forEach(([_, fields]) => {
       Object.entries(fields as ResearchFieldCategory).forEach(([id, field]) => {
         // Add main field
         this.keywords.add(field.label);

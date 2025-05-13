@@ -20,7 +20,7 @@ export function ResearchInterestSettings() {
     excludeTerms: ''
   });
 
-  const validateTerm = (value: string, field: keyof typeof inputs): { isValid: boolean; message?: string } => {
+  const validateTerm = (value: string): { isValid: boolean; message?: string } => {
     const trimmed = value.trim();
     
     if (trimmed.length < 2) {
@@ -42,7 +42,7 @@ export function ResearchInterestSettings() {
     const trimmedValue = value.trim();
     if (!trimmedValue) return;
 
-    const validation = validateTerm(trimmedValue, field);
+    const validation = validateTerm(trimmedValue);
     if (!validation.isValid) {
       toast({
         variant: "destructive",
