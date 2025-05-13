@@ -1,4 +1,14 @@
 # Edit History
+*Last Updated: 2025-05-13 15:45*
+
+## 2025-05-13
+### 15:45 - T15: Profile and Settings Reorganization
+- Created `/src/components/ui/navigation-link.tsx` - Added navigation component
+- Created `/src/components/settings/research-interest-settings.tsx` - New settings component
+- Modified `/src/pages/profile.tsx` - Converted to read-only with navigation
+- Modified `/src/pages/settings.tsx` - Added research interests section
+- Updated task documentation and progress tracking
+
 
 ## 2025-05-13
 ### 10:30 - T14: Fixed TypeScript Build Errors in Paper Components

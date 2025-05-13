@@ -12,6 +12,9 @@
 ## Active Tasks
 | ID | Title | Status | Priority | Started | File |
 |----|-------|--------|----------|---------|------|
+| T15 | Profile and Settings Enhancement & Reorganization | 🔄 | HIGH | 2025-05-13 | [tasks/T15.md] |
+| ID | Title | Status | Priority | Started | File |
+|----|-------|--------|----------|---------|------|
 | META-1 | Memory Bank Alignment with Custom arXiv API Implementation | 🔄 | HIGH | 2025-05-13 | [tasks/META-1.md] |
 | T13 | Mobile and Tablet Accessibility | 🔄 | HIGH | 2025-05-11 | [tasks/T13.md] |  
 | T12 | UI Navigation and Theme Toggle Issues | 🔄 | HIGH | 2025-04-30 | [tasks/T12.md] |
@@ -181,6 +184,9 @@
 | T0 | Project Setup | 2025-04-26 | [tasks/T0.md] |
 
 ## Recent Updates
+- 2025-05-13 15:45: Completed core implementation of T15 reorganization
+- 2025-05-13 15:30: Implemented Profile/Settings reorganization for T15
+- 2025-05-13 15:00: Updated T15 scope to include Profile/Settings reorganization
 - 2025-05-13 10:30: Fixed TypeScript build errors in T14 implementation
 - 2025-05-13 12:00: Completed META-1 Memory Bank Alignment
 - 2025-05-13 10:00: Completed T14 UI State Persistence Enhancement

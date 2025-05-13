@@ -1,4 +1,37 @@
 # Session Cache
+*Last Updated: 2025-05-13 15:45*
+
+## Current Session
+**Started**: 2025-05-13 15:00
+**Focus Task**: T15 - Profile and Settings Enhancement & Reorganization
+**Session File**: `sessions/2025-05-13-afternoon.md`
+
+## Active Tasks
+### T15: Profile and Settings Enhancement & Reorganization
+**Status**: 🔄 **Priority**: HIGH
+**Progress**:
+1. ✅ Implemented paper caching
+2. ✅ Added refresh mechanism
+3. ✅ Converted profile to read-only
+4. ✅ Reorganized settings page
+5. 🔄 Testing and refinements pending
+
+## Implementation Context
+- Focusing on separation of concerns
+- Improving mobile experience
+- Enhancing navigation patterns
+
+## Critical Files
+- `src/pages/profile.tsx`: Profile page updates
+- `src/pages/settings.tsx`: Settings integration
+- `src/components/settings/`: Settings components
+- `src/components/ui/`: UI components
+
+## Session Notes
+- Successfully implemented core reorganization
+- Navigation system in place
+- Mobile improvements added
+- Some refinements needed in next session
 *Last Updated: 2025-05-13 10:30*
 
 ## Current Session

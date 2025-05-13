@@ -1,16 +1,18 @@
-import { useState, KeyboardEvent, useEffect } from 'react';
+import { useState, KeyboardEvent, useEffect, useCallback } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { X, ChevronDown, ChevronUp } from 'lucide-react';
+import { X, ChevronDown, ChevronUp, RefreshCcw, Settings } from 'lucide-react';
+import { NavigationLink } from "@/components/ui/navigation-link";
 import { useProfile } from '@/contexts/ProfileContext';
 import { getCategoryById, getCategoryName } from '@/lib/categories';
 import { CategorySelect } from '@/components/ui/CategorySelect';
 import { useToast } from "@/hooks/use-toast";
 import { Toaster } from "@/components/ui/toaster";
 import { useArxivSearch } from '@/hooks/useArxiv';
-import { arxivToPaper } from '@/types/paper';
+import { arxivToPaper, Paper } from '@/types/paper';
+import { PaperCacheService } from '@/lib/papers/cache';
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Skeleton } from "@/components/ui/skeleton";
 import { ResponsivePaperList } from "@/components/papers/responsive-paper-list";
@@ -22,23 +24,56 @@ import { usePaperState } from '@/hooks/usePaperState';
 const ProfilePage = () => {
   const { profile, addToProfile, removeFromProfile, resetProfile, updateProfile } = useProfile();
   const { toast } = useToast();
-  const [inputs, setInputs] = useState({
-    categories: '',
-    authors: '',
-    keywords: '',
-    excludeTerms: ''
-  });
-
+  const paperState = usePaperState('profile-papers');
   // Use usePersistedState for input value only, not profile sync
   const [authorName, setAuthorName] = usePersistedState('profile.authorName', '');
   const [searchQuery, setSearchQuery] = useState('');
   const [isOpen, setIsOpen] = usePersistedState('profile.papersTableOpen', true);
   
   const arxivSearch = useArxivSearch();
+  const [papers, setPapers] = useState<Paper[]>([]);
+  const [isRefreshing, setIsRefreshing] = useState(false);
+  
   const { data: authorPapers, isLoading: isLoadingPapers, error: paperError } = arxivSearch.search({ 
     query: searchQuery,
     maxResults: 50
   });
+
+  // Load cached papers on mount
+  useEffect(() => {
+    const cachedData = PaperCacheService.get();
+    if (cachedData) {
+      setPapers(cachedData.papers);
+    }
+  }, []);
+
+  // Update cache when new papers are fetched
+  useEffect(() => {
+    if (authorPapers?.papers) {
+      const convertedPapers = authorPapers.papers.map(arxivToPaper);
+      setPapers(convertedPapers);
+      PaperCacheService.set(convertedPapers);
+    }
+  }, [authorPapers]);
+
+  const handleRefresh = useCallback(async () => {
+    if (!authorName.trim()) return;
+    
+    setIsRefreshing(true);
+    PaperCacheService.clear();
+    
+    try {
+      setSearchQuery(authorName ? `au:"${authorName}"` : '');
+    } catch (error) {
+      toast({
+        variant: "destructive",
+        title: "Error refreshing papers",
+        description: "There was a problem refreshing your papers. Please try again."
+      });
+    } finally {
+      setIsRefreshing(false);
+    }
+  }, [authorName, toast]);
 
   const handleSearch = () => {
     const name = authorName.trim();
@@ -80,60 +115,7 @@ const ProfilePage = () => {
     }
   }, []); // Run once on mount
 
-  const validateTerm = (value: string, field: keyof typeof inputs): { isValid: boolean; message?: string } => {
-    const trimmed = value.trim();
-    
-    if (field === 'authors') {
-      if (trimmed.length < 2) {
-        return { isValid: false, message: 'Author name must be at least 2 characters long' };
-      }
-      
-      if (!/^[a-zA-Z\s-]+$/.test(trimmed)) {
-        return { isValid: false, message: 'Author name can only contain letters, spaces, and hyphens' };
-      }
-
-      return { isValid: true };
-    }
-    
-    // For keywords and excludeTerms
-    if (trimmed.length < 2) {
-      return { isValid: false, message: 'Term must be at least 2 characters long' };
-    }
-    
-    if (/^\d+$/.test(trimmed)) {
-      return { isValid: false, message: 'Term cannot be purely numeric' };
-    }
-    
-    if (!/^[a-zA-Z0-9\s-]+$/.test(trimmed)) {
-      return { isValid: false, message: 'Term can only contain letters, numbers, spaces, and hyphens' };
-    }
-
-    return { isValid: true };
-  };
-
-  const handleKeyPressForInputs = (
-    e: KeyboardEvent<HTMLInputElement>, 
-    field: keyof typeof inputs
-  ) => {
-    const value = inputs[field].trim();
-    if (e.key === 'Enter' && value) {
-      const validation = validateTerm(value, field);
-      if (!validation.isValid) {
-        toast({
-          variant: "destructive",
-          title: "Invalid input",
-          description: validation.message
-        });
-        return;
-      }
-
-      // Check if item already exists in profile
-      if (!profile[field].includes(value)) {
-        addToProfile(field, value);
-      }
-      setInputs(prev => ({ ...prev, [field]: '' }));
-    }
-  };
+=======
 
   return (
     <div className="w-full max-w-7xl mx-auto px-4 py-4 md:py-6 space-y-4 md:space-y-6">
@@ -142,7 +124,7 @@ const ProfilePage = () => {
         {/* Author Publications Section - Moved to top */}
         <Card>
           <CardHeader>
-            <CardTitle>Your Identity</CardTitle>
+            <CardTitle>User Profile</CardTitle>
             <CardDescription>
               Enter your name as it appears on your arXiv papers to find your publications
             </CardDescription>
@@ -184,12 +166,24 @@ const ProfilePage = () => {
               </div>
             </div>
 
-            {authorPapers?.papers && authorPapers.papers.length > 0 && (
+            {papers.length > 0 && (
               <Collapsible open={isOpen} onOpenChange={setIsOpen}>
                 <div className="flex items-center justify-between py-2">
-                  <p className="text-sm text-muted-foreground">
-                    Found {authorPapers.papers.length} papers
-                  </p>
+                  <div className="flex items-center gap-2">
+                    <p className="text-sm text-muted-foreground">
+                      Found {papers.length} papers
+                    </p>
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      onClick={handleRefresh}
+                      disabled={isRefreshing || !authorName.trim()}
+                      className="h-8 px-2"
+                    >
+                      <RefreshCcw className={`h-4 w-4 ${isRefreshing ? 'animate-spin' : ''}`} />
+                      <span className="sr-only">Refresh papers</span>
+                    </Button>
+                  </div>
                   <CollapsibleTrigger asChild>
                     <Button variant="ghost" size="sm" className="w-9 p-0">
                       {isOpen ? (
@@ -203,8 +197,8 @@ const ProfilePage = () => {
                 </div>
                 <CollapsibleContent className="space-y-2">
                   <ResponsivePaperList 
-                    papers={authorPapers.papers.map(arxivToPaper)} 
-                    paperState={usePaperState('profile-papers')} 
+                    papers={papers}
+                    paperState={paperState}
                   />
                 </CollapsibleContent>
               </Collapsible>
@@ -221,7 +215,7 @@ const ProfilePage = () => {
                   Error loading papers: {paperError.message}
                 </AlertDescription>
               </Alert>
-            ) : authorName && !authorPapers?.papers?.length && (
+            ) : authorName && !papers.length && !isLoadingPapers && (
               <Alert>
                 <AlertDescription>
                   No papers found for author "{authorName}". Make sure to enter your name exactly as it appears on your arXiv papers.
@@ -233,16 +227,35 @@ const ProfilePage = () => {
 
         {/* Research Profile Card */}
         <Card>
-          <CardHeader>
-            <CardTitle>Research Interests</CardTitle>
-            <CardDescription>
-              Manage your research interests to get personalized paper recommendations
-            </CardDescription>
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <div className="space-y-1">
+              <CardTitle>Research Interests</CardTitle>
+              <CardDescription>
+                Your research profile and interests
+              </CardDescription>
+            </div>
+            <NavigationLink 
+              to="/settings" 
+              section="profile"
+              className="text-muted-foreground"
+            >
+              Manage Settings
+            </NavigationLink>
           </CardHeader>
           <CardContent className="space-y-6">
             {/* Categories Section */}
             <div className="space-y-2">
-              <Label>ArXiv Categories</Label>
+              <div className="flex items-center justify-between">
+                <Label>ArXiv Categories</Label>
+                <NavigationLink 
+                  to="/settings" 
+                  section="categories"
+                  variant="link"
+                  className="text-xs text-muted-foreground h-auto p-0"
+                >
+                  Edit Categories
+                </NavigationLink>
+              </div>
               <div className="flex flex-wrap gap-2">
                 {profile.categories.map(categoryId => (
                   <Badge 
@@ -251,117 +264,90 @@ const ProfilePage = () => {
                     title={getCategoryById(categoryId)?.description}
                   >
                     {getCategoryName(categoryId)}
-                    <X 
-                      className="h-3 w-3 cursor-pointer" 
-                      onClick={() => removeFromProfile('categories', categoryId)}
-                    />
                   </Badge>
                 ))}
+                {profile.categories.length === 0 && (
+                  <p className="text-sm text-muted-foreground">
+                    No categories selected. Add categories in settings.
+                  </p>
+                )}
               </div>
-              <CategorySelect
-                value={inputs.categories}
-                onValueChange={(value: string) => {
-                  if (!profile.categories.includes(value)) {
-                    addToProfile('categories', value);
-                  }
-                  setInputs(prev => ({ ...prev, categories: '' }));
-                }}
-                placeholder="Select a category"
-                categories={profile.categories}
-              />
-            </div>
-
-            {/* Authors Section */}
-            <div className="space-y-2">
-              <Label>Followed Authors</Label>
-              <div className="flex flex-wrap gap-2">
-                {profile.authors.map(author => (
-                  <Badge 
-                    key={author} 
-                    variant="secondary" 
-                    className="flex items-center gap-1"
-                  >
-                    {author}
-                    <X 
-                      className="h-3 w-3 cursor-pointer" 
-                      onClick={() => removeFromProfile('authors', author)}
-                    />
-                  </Badge>
-                ))}
-              </div>
-              <HistoryInput 
-                id="followed-authors"
-                placeholder="Add an author and press Enter" 
-                className="mt-2"
-                value={inputs.authors}
-                onValueChange={value => setInputs(prev => ({ ...prev, authors: value }))}
-                onKeyDown={e => handleKeyPressForInputs(e as any, 'authors')}
-              />
             </div>
 
             {/* Keywords Section */}
             <div className="space-y-2">
-              <Label>Research Keywords</Label>
+              <div className="flex items-center justify-between">
+                <Label>Research Keywords</Label>
+                <NavigationLink 
+                  to="/settings" 
+                  section="keywords"
+                  variant="link"
+                  className="text-xs text-muted-foreground h-auto p-0"
+                >
+                  Edit Keywords
+                </NavigationLink>
+              </div>
               <div className="flex flex-wrap gap-2">
                 {profile.keywords.map(keyword => (
                   <Badge 
                     key={keyword} 
-                    variant="outline" 
-                    className="flex items-center gap-1"
+                    variant="outline"
                   >
                     {keyword}
-                    <X 
-                      className="h-3 w-3 cursor-pointer" 
-                      onClick={() => removeFromProfile('keywords', keyword)}
-                    />
                   </Badge>
                 ))}
+                {profile.keywords.length === 0 && (
+                  <p className="text-sm text-muted-foreground">
+                    No keywords added. Add keywords in settings.
+                  </p>
+                )}
               </div>
-              <HistoryInput 
-                id="research-keywords"
-                placeholder="Add a keyword and press Enter" 
-                className="mt-2"
-                value={inputs.keywords}
-                onValueChange={value => setInputs(prev => ({ ...prev, keywords: value }))}
-                onKeyDown={e => handleKeyPressForInputs(e as any, 'keywords')}
-              />
             </div>
 
             {/* Exclude Terms Section */}
             <div className="space-y-2">
-              <Label>Exclude Terms</Label>
+              <div className="flex items-center justify-between">
+                <Label>Exclude Terms</Label>
+                <NavigationLink 
+                  to="/settings" 
+                  section="exclude"
+                  variant="link"
+                  className="text-xs text-muted-foreground h-auto p-0"
+                >
+                  Edit Terms
+                </NavigationLink>
+              </div>
               <div className="flex flex-wrap gap-2">
                 {profile.excludeTerms.map(term => (
                   <Badge 
                     key={term} 
-                    variant="destructive" 
-                    className="flex items-center gap-1"
+                    variant="destructive"
                   >
                     {term}
-                    <X 
-                      className="h-3 w-3 cursor-pointer" 
-                      onClick={() => removeFromProfile('excludeTerms', term)}
-                    />
                   </Badge>
                 ))}
+                {profile.excludeTerms.length === 0 && (
+                  <p className="text-sm text-muted-foreground">
+                    No exclude terms added. Add terms in settings.
+                  </p>
+                )}
               </div>
-              <HistoryInput 
-                id="exclude-terms"
-                placeholder="Add term to exclude and press Enter" 
-                className="mt-2"
-                value={inputs.excludeTerms}
-                onValueChange={value => setInputs(prev => ({ ...prev, excludeTerms: value }))}
-                onKeyDown={e => handleKeyPressForInputs(e as any, 'excludeTerms')}
-              />
             </div>
 
-            <div className="flex justify-end space-x-2 pt-4">
-              <Button 
-                variant="outline" 
-                onClick={resetProfile}
-              >
-                Reset
-              </Button>
+            {/* Quick Stats Section */}
+            <div className="pt-4 border-t">
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <p className="text-sm font-medium">Primary Category</p>
+                  <p className="text-2xl font-bold">
+                    {profile.categories[0] ? getCategoryName(profile.categories[0]) : '-'}
+                  </p>
+                </div>
+                <div>
+                  <p className="text-sm font-medium">Total Papers</p>
+                  <p className="text-2xl font-bold">{papers.length}</p>
+                </div>
+              </div>
             </div>
           </CardContent>
         </Card>

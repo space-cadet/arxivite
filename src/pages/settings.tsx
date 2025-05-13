@@ -22,6 +22,8 @@ import {
 import { Trash2, RefreshCcw } from "lucide-react";
 import { useBookmarkContext } from "@/lib/bookmarks/context";
 import { useToast } from "@/hooks/use-toast";
+import { ProfileSettings } from "@/components/settings/profile-settings";
+import { ResearchInterestSettings } from "@/components/settings/research-interest-settings";
 
 export default function SettingsPage() {
   const [isClearing, setIsClearing] = useState(false);
@@ -59,6 +61,7 @@ export default function SettingsPage() {
       </div>
 
       <div className="grid gap-4">
+        <ResearchInterestSettings />
         <Card>
           <CardHeader>
             <CardTitle>Bookmarks</CardTitle>
