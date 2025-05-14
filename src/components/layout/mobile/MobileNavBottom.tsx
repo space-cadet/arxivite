@@ -10,11 +10,11 @@ export function MobileNavBottom() {
   const location = useLocation();
   
   const navItems = [
-    { path: '/search', label: 'Search', icon: Search },
-    { path: '/catchup', label: 'Catchup', icon: Clock },
-    { path: '/bookmarks', label: 'Bookmarks', icon: Bookmark },
-    { path: '/profile', label: 'Profile', icon: UserCircle },
-    { path: '/settings', label: 'Settings', icon: Settings },
+    { path: '/app/search', label: 'Search', icon: Search },
+    { path: '/app/catchup', label: 'Catchup', icon: Clock },
+    { path: '/app/bookmarks', label: 'Bookmarks', icon: Bookmark },
+    { path: '/app/profile', label: 'Profile', icon: UserCircle },
+    { path: '/app/settings', label: 'Settings', icon: Settings },
   ];
 
   return (

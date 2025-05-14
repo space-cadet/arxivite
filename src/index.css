@@ -77,3 +77,33 @@
     padding-bottom: calc(1.5rem + env(safe-area-inset-bottom, 0));
   }
 }
+
+/* Landing page animations */
+@keyframes float {
+  0% {
+    transform: translate(0, 0) scale(1);
+    opacity: 1;
+  }
+  25% {
+    transform: translate(2rem, 2rem) scale(1.05);
+    opacity: 0.9;
+  }
+  50% {
+    transform: translate(1rem, -1rem) scale(0.95);
+    opacity: 0.8;
+  }
+  75% {
+    transform: translate(-2rem, 1rem) scale(1.05);
+    opacity: 0.9;
+  }
+  100% {
+    transform: translate(0, 0) scale(1);
+    opacity: 1;
+  }
+}
+
+@layer utilities {
+  .animate-float {
+    animation: float 20s infinite ease-in-out;
+  }
+}

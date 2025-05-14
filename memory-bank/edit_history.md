@@ -2,6 +2,16 @@
 *Last Updated: 2025-05-14 10:00*
 
 ## 2025-05-14
+### 15:30 - T18: Landing Page Implementation
+- Created `src/pages/landing.tsx` - Added landing page with dynamic background and animations
+- Modified `src/App.tsx` - Updated routing structure with /app prefix
+- Modified `src/index.css` - Added animation and background styles
+- Modified `public/favicon.svg` - Created favicon from LogoIcon
+- Integrated LogoIcon and updated navigation links
+- Updated components for new routing structure
+
+### 10:30 - T18: Expanded Website Visibility Scope
+- Updated `memory-bank/tasks/T18.md` - Added comprehensive visibility enhancement plan
 ### 10:00 - T18: SEO Implementation
 - Modified `index.html` - Updated meta tags, added OpenGraph and Twitter cards
 - Modified `public/robots.txt` - Added sitemap reference

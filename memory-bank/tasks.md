@@ -12,7 +12,7 @@
 ## Active Tasks
 | ID | Title | Status | Priority | Started | File |
 |----|-------|--------|----------|---------|------|
-| T18 | SEO Implementation and Google Search Console Setup | 🔄 | HIGH | 2025-05-14 | [tasks/T18.md] |
+| T18 | SEO Implementation and Website Visibility Enhancement | 🔄 | HIGH | 2025-05-14 | [tasks/T18.md] |
 | T17 | Authentication System POC | 🔄 | HIGH | 2025-05-13 | [tasks/T17.md] |
 | T16 | Comprehensive Research Keywords System | 🔄 | HIGH | 2025-05-13 | [tasks/T16.md] |
 | T15 | Profile and Settings Enhancement & Reorganization | 🔄 | HIGH | 2025-05-13 | [tasks/T15.md] |
@@ -27,6 +27,40 @@
 | T6 | Paper Bookmarking System | 🔄 | MEDIUM | 2025-05-11 | [tasks/T6.md] |
 
 ## Task Details
+### T18: SEO Implementation and Website Visibility Enhancement
+**Description**: Implement SEO optimizations and enhance overall web presence
+**Status**: 🔄 **Last**: 2025-05-14 15:30
+**Criteria**:
+Phase 1: Technical SEO
+- ✅ Meta tags and OpenGraph implementation
+- ✅ Robots.txt configuration
+- ✅ Sitemap.xml creation
+- ✅ Google Search Console setup
+- ✅ Landing page implementation
+
+Phase 2: Documentation & Content
+- ⬜ User guide and tutorials
+- ⬜ Project blog
+- ⬜ FAQ page
+
+Phase 3: Open Source & Community
+- ⬜ GitHub repository setup
+- ⬜ Contribution guidelines
+- ⬜ Public roadmap
+
+Phase 4: Social & Analytics
+- ⬜ Social media presence
+- ⬜ Analytics implementation
+- ⬜ Newsletter setup
+
+**Files**:
+- `index.html` - SEO implementation
+- `public/robots.txt` - Crawler directives
+- `public/sitemap.xml` - Site structure
+- `docs/` - Documentation (planned)
+- `CONTRIBUTING.md` - Guidelines (planned)
+- `README.md` - Project docs (planned)
+
 ### T13: Mobile and Tablet Accessibility
 **Description**: Optimize the application for mobile and tablet screens
 **Status**: 🔄 **Last**: 2025-05-11 20:45
@@ -187,6 +221,8 @@
 | T0 | Project Setup | 2025-04-26 | [tasks/T0.md] |
 
 ## Recent Updates
+- 2025-05-14 15:30: Completed landing page implementation with dynamic background and routing (T18)
+- 2025-05-14 10:30: Expanded T18 scope to include comprehensive visibility strategy
 - 2025-05-14 10:00: Created T18 for SEO implementation and Google Search Console setup
 - 2025-05-14 09:45: Implemented initial SEO changes (meta tags, robots.txt, sitemap.xml)
 - 2025-05-13 19:30: Updated T17 with email authentication implementation details

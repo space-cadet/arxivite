@@ -1,4 +1,5 @@
 import { ReactNode, createContext, useContext, useState } from 'react';
+import { Outlet } from 'react-router-dom';
 import Header from './Header';
 import Sidebar from './Sidebar';
 import { useMediaQuery, breakpoints } from '@/hooks/useMediaQuery';
@@ -28,7 +29,7 @@ export const useLayout = () => {
   return context;
 };
 
-const AppLayout = ({ children }: AppLayoutProps) => {
+const AppLayout = () => {
   const [isCollapsed, setIsCollapsed] = useState(false);
   const isMobile = useMediaQuery(breakpoints.ltSm);
   const isTablet = useMediaQuery(`${breakpoints.sm} and ${breakpoints.ltLg}`);
@@ -62,7 +63,7 @@ const AppLayout = ({ children }: AppLayoutProps) => {
         )}>
           <Header />
           <main className="flex-1 py-6 px-0 pb-24">
-            {children}
+            <Outlet />
           </main>
           
           {/* Mobile Navigation - Always visible on mobile */}
