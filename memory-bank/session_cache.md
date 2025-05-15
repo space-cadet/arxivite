@@ -1,4 +1,95 @@
 # Session Cache
+*Last Updated: 2025-05-15 17:30*
+
+## Current Session
+**Started**: 2025-05-15 16:00
+**Focus Task**: T19a
+**Session File**: `sessions/2025-05-15-afternoon.md`
+
+## Overview
+- Active: 8
+- Paused: 0
+- Completed: 6
+- Current Period: afternoon
+
+## Task Registry
+### T19a: LLM-Enhanced Search Query Parsing
+**Status**: ✅ **Priority**: HIGH
+**Started**: 2025-05-14 **Last**: 2025-05-15 17:30
+**Context**: Implemented LLM search parsing using Gemini 1.5 Flash, enhanced search UX
+**Files Modified**:
+- `src/lib/search/queryParser.ts`
+- `src/lib/llm.ts`
+- `src/components/papers/paper-filters.tsx`
+- `src/types/paper.ts`
+**Progress**:
+1. ✅ Implemented Gemini integration
+2. ✅ Enhanced search UX
+3. ✅ Fixed type safety
+4. ✅ Updated documentation
+
+## Session History (Last 3)
+1. `sessions/2025-05-15-afternoon.md`
+2. `sessions/2025-05-14-afternoon.md`
+3. `sessions/2025-05-14-morning.md`
+*Last Updated: 2025-05-14 17:00*
+
+## Current Session
+**Started**: 2025-05-14 16:00
+**Focus Task**: T19a (LLM-Enhanced Search Query Parsing)
+**Session File**: `sessions/2025-05-14-afternoon.md`
+
+## Overview
+- Active: 9 | Paused: 0 | Completed: 5
+- Last Session: `sessions/2025-05-14-morning.md`
+- Current Period: afternoon
+
+## Task Registry
+- T19a: LLM-Enhanced Search Query Parsing - 🔄
+- T18: SEO Implementation - 🔄
+- T17: Authentication System POC - 🔄
+- T16: Research Keywords System - 🔄
+- T15: Profile/Settings Enhancement - 🔄
+- META-1: Memory Bank Alignment - 🔄
+- T13: Mobile/Tablet Accessibility - 🔄
+- T12: UI Navigation Fixes - 🔄
+- T8: Vercel Deployment Routing - 🔄
+
+## Active Tasks
+### T19a: LLM-Enhanced Search Query Parsing
+**Status:** 🔄 **Priority:** HIGH
+**Started:** 2025-05-14 **Last**: 2025-05-14 17:00
+**Context**: Researching lightweight LLM options for real-time search query parsing; identified TinyLlama 1.1B + Cloudflare Workers as optimal solution for low latency
+**Files**: 
+- `memory-bank/tasks/T19a.md`
+- `memory-bank/tasks.md`
+- `memory-bank/progress.md`
+- (planned) `workers/search-parser.js`
+- (planned) `src/lib/queryParser.ts`
+
+**Progress**:
+1. ✅ Research LLM options for search parsing
+2. ✅ Select TinyLlama 1.1B with Cloudflare Workers
+3. 🔄 Create Cloudflare Worker implementation
+4. ⬜ Implement in application
+5. ⬜ Add conversion to arXiv format
+
+### T18: SEO Implementation and Website Visibility
+**Status:** 🔄 **Priority:** HIGH
+**Started:** 2025-05-14 **Last**: 2025-05-14 15:30
+**Context**: Working on landing page and SEO implementation
+**Files**: 
+- `index.html`
+- `public/robots.txt`
+- `public/sitemap.xml`
+- `src/pages/landing.tsx`
+
+**Progress**:
+1. ✅ Implement meta tags and OG cards
+2. ✅ Create sitemap and robots.txt
+3. ✅ Set up Google Search Console
+4. ✅ Implement landing page
+5. ⬜ Create documentation
 *Last Updated: 2025-05-14 10:00*
 
 ## Current Session

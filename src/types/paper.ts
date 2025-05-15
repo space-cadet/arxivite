@@ -6,6 +6,7 @@ export type Paper = Omit<ArxivPaper, 'links'> & {
   abstract: string;
   category: string;  // Primary category
   categories: string[];  // All categories including primary
+  doi?: string;  // Digital Object Identifier
 };
 
 export const arxivToPaper = (arxivPaper: ArxivPaper): Paper => ({

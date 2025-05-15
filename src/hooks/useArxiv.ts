@@ -5,7 +5,7 @@ import { arxiv } from '@/lib/arxiv';
 export function useArxivSearch() {
   const search = (params: ArxivSearchParams) => {
     return useQuery({
-      queryKey: ['arxiv', params.query, params.maxResults],
+      queryKey: ['arxiv', params.query, params.maxResults, params.start],
       queryFn: async () => {
         const response = await arxiv.search(params);
         return {

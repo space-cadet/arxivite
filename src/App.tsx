@@ -20,14 +20,13 @@ export default function App() {
           <Router>
             <Routes>
               <Route path="/" element={<LandingPage />} />
-              <Route path="app" element={<AppLayout />}>
-                <Route index element={<Navigate to="search" replace />} />
-                <Route path="search" element={<SearchPage />} />
-                <Route path="catchup" element={<CatchupPage />} />
-                <Route path="profile" element={<ProfilePage />} />
-                <Route path="bookmarks" element={<BookmarksPage />} />
-                <Route path="settings" element={<SettingsPage />} />
-                <Route path="auth-test" element={<AuthTestPage />} />
+              <Route element={<AppLayout />}>
+                <Route path="/search" element={<SearchPage />} />
+                <Route path="/catchup" element={<CatchupPage />} />
+                <Route path="/profile" element={<ProfilePage />} />
+                <Route path="/bookmarks" element={<BookmarksPage />} />
+                <Route path="/settings" element={<SettingsPage />} />
+                <Route path="/auth-test" element={<AuthTestPage />} />
               </Route>
             </Routes>
           </Router>

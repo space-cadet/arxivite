@@ -162,9 +162,9 @@ const LandingPage = () => {
               <div className="hidden md:flex items-center space-x-8">
                 <a href="#features" className="hover:text-blue-400 transition-colors">Features</a>
                 <a href="#how-it-works" className="hover:text-blue-400 transition-colors">How it Works</a>
-                <Link to="/app/search" className="hover:text-blue-400 transition-colors">Get Started</Link>
+                <Link to="/search" className="hover:text-blue-400 transition-colors">Get Started</Link>
                 <Link 
-                  to="/app/auth-test" 
+                  to="/auth-test" 
                   className="px-4 py-2 rounded-lg bg-blue-600 hover:bg-blue-500 transition-colors"
                 >
                   Sign In
@@ -189,9 +189,9 @@ const LandingPage = () => {
               <div className="px-2 pt-2 pb-3 space-y-1">
                 <a href="#features" className="block px-3 py-2 hover:bg-white/10 rounded-lg">Features</a>
                 <a href="#how-it-works" className="block px-3 py-2 hover:bg-white/10 rounded-lg">How it Works</a>
-                <Link to="/app/search" className="block px-3 py-2 hover:bg-white/10 rounded-lg">Get Started</Link>
+                <Link to="/search" className="block px-3 py-2 hover:bg-white/10 rounded-lg">Get Started</Link>
                 <Link 
-                  to="/app/auth-test" 
+                  to="/auth-test" 
                   className="w-full mt-4 px-4 py-2 rounded-lg bg-blue-600 hover:bg-blue-500 transition-colors block text-center"
                 >
                   Sign In
@@ -206,18 +206,18 @@ const LandingPage = () => {
           <div className="max-w-7xl mx-auto">
             <FadeIn>
               <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold text-center mb-6 bg-gradient-to-r from-white via-blue-400 to-blue-600 text-transparent bg-clip-text">
-                Stay on top of research effortlessly
+                arXivite
               </h1>
             </FadeIn>
             <FadeIn delay={200}>
               <p className="text-xl md:text-2xl text-center text-gray-400 mb-8 max-w-3xl mx-auto">
-                Track, organize, and discover arXiv papers seamlessly across all your devices
+                Your arXiv Browsing Companion
               </p>
             </FadeIn>
             <FadeIn delay={400}>
               <div className="flex flex-col sm:flex-row justify-center items-center gap-4">
                 <Link 
-                  to="/app/search"
+                  to="/search"
                   className="px-8 py-4 rounded-lg bg-blue-600 hover:bg-blue-500 transition-all duration-300 transform hover:-translate-y-1 flex items-center gap-2 group"
                 >
                   Get Started 
@@ -323,7 +323,7 @@ const LandingPage = () => {
             </FadeIn>
             <FadeIn delay={400}>
               <Link 
-                to="/app/search"
+                to="/search"
                 className="px-8 py-4 rounded-lg bg-blue-600 hover:bg-blue-500 transition-all duration-300 transform hover:-translate-y-1 flex items-center gap-2 mx-auto group inline-flex"
               >
                 Get Started Now
@@ -344,17 +344,17 @@ const LandingPage = () => {
               <div>
                 <h3 className="text-lg font-semibold mb-4">Product</h3>
                 <ul className="space-y-2 text-gray-400">
-                  <li><Link to="/app/search" className="hover:text-white transition-colors">Search</Link></li>
-                  <li><Link to="/app/catchup" className="hover:text-white transition-colors">Catchup</Link></li>
-                  <li><Link to="/app/bookmarks" className="hover:text-white transition-colors">Bookmarks</Link></li>
+                  <li><Link to="/search" className="hover:text-white transition-colors">Search</Link></li>
+                  <li><Link to="/catchup" className="hover:text-white transition-colors">Catchup</Link></li>
+                  <li><Link to="/bookmarks" className="hover:text-white transition-colors">Bookmarks</Link></li>
                 </ul>
               </div>
               <div>
                 <h3 className="text-lg font-semibold mb-4">Account</h3>
                 <ul className="space-y-2 text-gray-400">
-                  <li><Link to="/app/profile" className="hover:text-white transition-colors">Profile</Link></li>
-                  <li><Link to="/app/settings" className="hover:text-white transition-colors">Settings</Link></li>
-                  <li><Link to="/app/auth-test" className="hover:text-white transition-colors">Sign In</Link></li>
+                  <li><Link to="/profile" className="hover:text-white transition-colors">Profile</Link></li>
+                  <li><Link to="/settings" className="hover:text-white transition-colors">Settings</Link></li>
+                  <li><Link to="/auth-test" className="hover:text-white transition-colors">Sign In</Link></li>
                 </ul>
               </div>
               <div>

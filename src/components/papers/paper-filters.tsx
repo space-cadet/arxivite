@@ -1,3 +1,4 @@
+import React from 'react';
 import { Search } from 'lucide-react';
 import { Label } from '@/components/ui/label';
 import { Button } from '@/components/ui/button';
@@ -23,15 +24,22 @@ const PaperFilters = ({
   onSearch,
   categories
 }: PaperFiltersProps) => {
-  const handleSearch = (value: string) => {
-    onSearch(value);
+  const [localSearchValue, setLocalSearchValue] = React.useState(searchValue);
+
+  const handleSearch = () => {
+    onSearch(localSearchValue);
   };
 
   const handleKeyPress = (e: React.KeyboardEvent) => {
     if (e.key === 'Enter') {
-      handleSearch(searchValue);
+      handleSearch();
     }
   };
+
+  // Update local value when prop changes
+  React.useEffect(() => {
+    setLocalSearchValue(searchValue);
+  }, [searchValue]);
 
   return (
     <div className="space-y-5">
@@ -43,14 +51,14 @@ const PaperFilters = ({
             <HistoryInput
               id="paper-search"
               placeholder="Search papers..."
-              value={searchValue}
-              onValueChange={handleSearch}
+              value={localSearchValue}
+              onValueChange={setLocalSearchValue}
               onKeyDown={handleKeyPress}
               className="pl-8 w-full"
             />
           </div>
           <Button 
-            onClick={() => handleSearch(searchValue)}
+            onClick={handleSearch}
             className="h-10 sm:w-auto w-full"
           >
             Search

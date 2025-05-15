@@ -1,7 +1,26 @@
 # Edit History
-*Last Updated: 2025-05-14 10:00*
+*Last Updated: 2025-05-15*
+
+## 2025-05-15
+### 16:00-17:00 - T19a: LLM-Enhanced Search Implementation
+- Modified `src/lib/search/queryParser.ts` - Updated interface, prompt, and conversion logic
+- Modified `src/lib/llm.ts` - Added validation, type safety, and author name handling
+- Modified `src/components/papers/paper-filters.tsx` - Updated search trigger behavior
+- Modified `src/types/paper.ts` - Added DOI field to Paper interface
+
+### 17:00-17:30 - T19a: Documentation Updates
+- Updated `memory-bank/tasks/T19a.md` - Completed progress and session notes
+- Updated `memory-bank/tasks.md` - Task status and recent updates
+*Last Updated: 2025-05-14 17:00*
 
 ## 2025-05-14
+### 17:00 - T19a: LLM-Enhanced Search Query Parsing
+- Created `memory-bank/tasks/T19a.md` - Added task for intelligent search query parsing
+- Modified `memory-bank/tasks.md` - Added T19a to active tasks
+- Updated T19a with TinyLlama and Cloudflare Workers AI integration details
+- Added implementation code example and technical considerations
+- Set response time target to 100ms (from 1 second)
+
 ### 15:30 - T18: Landing Page Implementation
 - Created `src/pages/landing.tsx` - Added landing page with dynamic background and animations
 - Modified `src/App.tsx` - Updated routing structure with /app prefix
