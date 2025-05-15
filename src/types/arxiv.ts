@@ -1,10 +1,20 @@
 import { ParsedQuery } from '../lib/search/queryParser';
 
+export interface ArxivPaginationOptions {
+    pageSize: 20 | 50 | 100;
+    page: number;
+}
+
 export interface ArxivSearchParams {
     query: string;
-    maxResults?: number;
-    start?: number;
+    pagination?: ArxivPaginationOptions;
     parsedQuery?: ParsedQuery;
+}
+
+export interface ArxivSearchMetadata {
+    totalResults: number;
+    itemsPerPage: number;
+    startIndex: number;
 }
 
 export interface ArxivLink {
@@ -27,5 +37,5 @@ export interface ArxivPaper {
 
 export interface ArxivSearchResponse {
     papers: ArxivPaper[];
-    total: number;
+    metadata: ArxivSearchMetadata;
 }

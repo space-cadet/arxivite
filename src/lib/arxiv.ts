@@ -2,6 +2,8 @@ import type { ArxivSearchParams, ArxivSearchResponse, ArxivPaper } from '../type
 import { ArxivQueryParser } from './search/queryParser';
 // import { DOMParser } from 'xmldom';
 
+import type { ArxivSearchMetadata, ArxivPaginationOptions } from '../types/arxiv';
+
 // Helper function to parse XML and transform results to our data model
 const parseAndTransformResults = (xmlText: string): ArxivPaper[] => {
   const xmlDoc = parseXML(xmlText);
@@ -50,7 +52,7 @@ function parseXML(text: string): Document {
 }
 
 // Legacy version of the ArXiv request function (preserved for potential rollback)
-const makeArxivRequestLegacy = async (searchQuery: string, maxResults: number = 10, start: number = 0) => {
+const makeArxivRequestLegacy = async (searchQuery: string, pageSize: number = 20, startIndex: number = 0) => {
   // Determine if we need special handling for this query
   // Don't encode if it's a submittedDate query or an ID query
   let finalQuery;
@@ -74,7 +76,7 @@ const makeArxivRequestLegacy = async (searchQuery: string, maxResults: number = 
     finalQuery = encodeURIComponent(searchQuery);
   }
     
-  const url = `https://export.arxiv.org/api/query?search_query=${finalQuery}&start=${start}&max_results=${maxResults}&sortBy=submittedDate&sortOrder=descending`;
+  const url = `https://export.arxiv.org/api/query?search_query=${finalQuery}&start=${startIndex}&max_results=${pageSize}&sortBy=submittedDate&sortOrder=descending`;
   console.log('Legacy request:', url);
   
   const response = await fetch(url);
@@ -87,7 +89,42 @@ const makeArxivRequestLegacy = async (searchQuery: string, maxResults: number = 
 };
 
 // LLM-enhanced version with improved query parsing
-const makeArxivRequest = async (searchQuery: string, maxResults: number = 10, start: number = 0) => {
+const getSearchMetadata = async (searchQuery: string): Promise<ArxivSearchMetadata> => {
+  try {
+    // Make a minimal request to get total count
+    const url = `https://export.arxiv.org/api/query?search_query=${searchQuery}&max_results=1`;
+    const response = await fetch(url);
+    if (!response.ok) {
+      throw new Error(`ArXiv API error: ${response.status} ${response.statusText}`);
+    }
+    
+    const text = await response.text();
+    const xmlDoc = parseXML(text);
+    
+    // Get total results from opensearch:totalResults
+    // Get metadata from OpenSearch elements
+    const totalResults = parseInt(xmlDoc.getElementsByTagName('opensearch:totalResults')[0]?.textContent || '0', 10);
+    const itemsPerPage = parseInt(xmlDoc.getElementsByTagName('opensearch:itemsPerPage')[0]?.textContent || '0', 10);
+    const startIndex = parseInt(xmlDoc.getElementsByTagName('opensearch:startIndex')[0]?.textContent || '0', 10);
+    
+    console.log('ArXiv API metadata:', { totalResults, itemsPerPage, startIndex });
+    
+    return {
+      totalResults: Math.min(totalResults, 2000), // ArXiv API limit
+      itemsPerPage: 1,
+      startIndex: 0
+    };
+  } catch (error) {
+    console.error('Error getting search metadata:', error);
+    return {
+      totalResults: 0,
+      itemsPerPage: 1,
+      startIndex: 0
+    };
+  }
+};
+
+const makeArxivRequest = async (searchQuery: string, pagination?: ArxivPaginationOptions): Promise<{ papers: ArxivPaper[], metadata: ArxivSearchMetadata }> => {
   // Create parser instance
   const parser = new ArxivQueryParser();
   
@@ -108,7 +145,18 @@ const makeArxivRequest = async (searchQuery: string, maxResults: number = 10, st
       // If parsing produced no results, fall back to legacy parsing
       if (!finalQuery) {
         console.log('LLM parsing produced no results, falling back to legacy parser');
-        return makeArxivRequestLegacy(searchQuery, maxResults, start);
+        const legacyResult = await makeArxivRequestLegacy(searchQuery, pagination?.pageSize || 20, pagination?.page ? pagination.page * (pagination.pageSize || 20) : 0);
+        const xmlDoc = parseXML(await response.text());
+        const totalResults = parseInt(xmlDoc.getElementsByTagName('opensearch:totalResults')[0]?.textContent || '0', 10);
+        
+        return {
+          papers: legacyResult,
+          metadata: {
+            totalResults: Math.min(totalResults, 2000),
+            itemsPerPage: pagination?.pageSize || 20,
+            startIndex: pagination?.page ? pagination.page * (pagination.pageSize || 20) : 0
+          }
+        };
       }
     }
     
@@ -128,7 +176,12 @@ const makeArxivRequest = async (searchQuery: string, maxResults: number = 10, st
       finalQuery = encodeURIComponent(finalQuery);
     }
     
-    const url = `https://export.arxiv.org/api/query?search_query=${finalQuery}&start=${start}&max_results=${maxResults}`;
+    // Calculate pagination parameters
+    const pageSize = pagination?.pageSize || 20;
+    const page = pagination?.page || 0;
+    const start = page * pageSize;
+    
+    const url = `https://export.arxiv.org/api/query?search_query=${finalQuery}&start=${start}&max_results=${pageSize}`;
     console.log('Requesting:', url);
     
     const response = await fetch(url);
@@ -145,7 +198,7 @@ const makeArxivRequest = async (searchQuery: string, maxResults: number = 10, st
       const relaxedQuery = finalQuery.replace(/au:"([^"]+)"/g, '(au:"$1" OR all:"$1")');
       console.log('Relaxed query:', relaxedQuery);
       
-      const relaxedUrl = `https://export.arxiv.org/api/query?search_query=${relaxedQuery}&start=${start}&max_results=${maxResults}`;
+      const relaxedUrl = `https://export.arxiv.org/api/query?search_query=${relaxedQuery}&start=${start}&max_results=${pageSize}`;
       const relaxedResponse = await fetch(relaxedUrl);
       if (!relaxedResponse.ok) {
         throw new Error(`ArXiv API error: ${relaxedResponse.status} ${relaxedResponse.statusText}`);
@@ -155,7 +208,19 @@ const makeArxivRequest = async (searchQuery: string, maxResults: number = 10, st
       return parseAndTransformResults(relaxedText);
     }
     
-    return results;
+    // Get the total results count from the feed
+    const totalResults = parseInt(xmlDoc.getElementsByTagName('opensearch:totalResults')[0]?.textContent || '0', 10);
+    const itemsPerPage = pageSize;
+    const startIndex = start;
+
+    return {
+      papers: results,
+      metadata: {
+        totalResults: Math.min(totalResults, 2000), // ArXiv API limit
+        itemsPerPage,
+        startIndex
+      }
+    };
   } catch (error) {
     console.error('Error in LLM-enhanced search:', error);
     // Fall back to legacy search on any error
@@ -166,15 +231,23 @@ const makeArxivRequest = async (searchQuery: string, maxResults: number = 10, st
 
 // We default to using the improved search
 // Legacy implementation is preserved for potential rollback
-export const searchPapers = async ({ query, maxResults = 10, start = 0 }: ArxivSearchParams): Promise<ArxivSearchResponse> => {
+export const searchPapers = async ({ query, pagination }: ArxivSearchParams): Promise<ArxivSearchResponse> => {
   try {
-    // Use the improved implementation by default
-    const papers = await makeArxivRequest(query, maxResults, start);
-
-    return {
-      papers,
-      total: papers.length
-    };
+    // First get the total count
+    const metadata = await getSearchMetadata(query);
+    
+    // If no results, return early
+    if (metadata.totalResults === 0) {
+      return {
+        papers: [],
+        metadata
+      };
+    }
+    
+    // Then fetch the actual page of results with metadata
+    const result = await makeArxivRequest(query, pagination);
+    
+    return result;
   } catch (error) {
     console.error('Error searching arxiv papers:', error);
     throw error;

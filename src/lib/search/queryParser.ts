@@ -12,7 +12,21 @@ export interface ParsedQuery {
 }
 
 export class ArxivQueryParser {
-    private static PROMPT = `Parse query: "{query}". Return only raw JSON, no markdown or code blocks, with fields: authors[], topics[], year_range{start,end}, arxiv_categories[], institutions[]. Treat each word that looks like a name as a separate author. Preserve original capitalization. Return author names exactly as written. Omit null fields.`;
+    private static PROMPT = `Parse search query: "{query}". Return only raw JSON with fields: authors[], topics[], year_range{start,end}, arxiv_categories[], institutions[]. 
+
+IMPORTANT RULES:
+1. Do NOT split established technical terms or concepts that contain names (e.g., "Fisher information", "Cramer-Rao bound", "Gaussian distribution", "Markov chain", "Dirichlet distribution", "Kalman filter", "Maxwell equations", "Fourier transform", "Euler method", etc.)
+2. For queries like "fisher information" or "cramer rao", treat the entire phrase as a topic, not as author names
+3. Only extract author names when they appear independently or are clearly marked as authors
+4. For ambiguous cases (e.g., single names that could be authors or part of technical terms), prefer treating them as search terms rather than authors
+5. Preserve original capitalization
+6. Omit null or empty fields from the output
+
+Example mappings:
+- "fisher information" → topics: ["fisher information"]
+- "papers by fisher about information theory" → authors: ["fisher"], topics: ["information theory"]
+- "cramer rao bound 2024" → topics: ["cramer rao bound"], year_range: {start: 2024}
+- "gaussian process by rasmussen" → topics: ["gaussian process"], authors: ["rasmussen"]`;
 
     private cache: Map<string, ParsedQuery>;
 
@@ -87,8 +101,8 @@ export class ArxivQueryParser {
             parts.push(`(${topicQuery})`);
         }
 
-        // Add year range query
-        if (parsed.year_range) {
+        // Add year range query if it exists and has valid start year
+        if (parsed.year_range && parsed.year_range.start) {
             const { start, end } = parsed.year_range;
             const startDate = `${start}0101`;
             const endDate = end ? `${end}1231` : 'now';

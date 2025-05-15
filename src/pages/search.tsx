@@ -1,4 +1,5 @@
 import { useEffect, useMemo } from 'react';
+import { PaginationControls } from '@/components/papers/pagination-controls';
 import { usePersistedState } from '@/hooks/usePersistedState';
 import { useScrollState } from '@/hooks/useScrollState';
 import { usePaperState } from '@/hooks/usePaperState';
@@ -15,6 +16,8 @@ const SearchPage = () => {
   useScrollState('search');
   const paperState = usePaperState('search');
   const [searchInput, setSearchInput] = usePersistedState('search.input', '');
+  const [pageSize, setPageSize] = usePersistedState<20 | 50 | 100>('search.pageSize', 20);
+  const [currentPage, setCurrentPage] = usePersistedState('search.currentPage', 0);
   const [authorFilter, setAuthorFilter] = usePersistedState('search.authorFilter', '');
   const [selectedCategory, setSelectedCategory] = usePersistedState('search.category', 'all');
   const [availableCategories, setAvailableCategories] = usePersistedState<string[]>('search.availableCategories', []);
@@ -22,9 +25,31 @@ const SearchPage = () => {
   const { profile } = useProfile();
   const arxivSearch = useArxivSearch();
   
+  // Add a search key to force refetch when search is triggered
+  const [searchKey, setSearchKey] = usePersistedState('search.key', 0);
+  
   const { data, isLoading, error } = arxivSearch.search({ 
     query: searchInput,
-    maxResults: 20
+    pagination: {
+      pageSize,
+      page: currentPage
+    },
+    searchKey
+  });
+
+  // Convert arXiv papers to our application's Paper type
+  const papers = useMemo(() => {
+    if (!data?.papers?.length) return [];
+    return data.papers.map(arxivToPaper);
+  }, [data?.papers]);
+
+  // Debug logging
+  console.log('Search state:', {
+    searchInput,
+    pageSize,
+    currentPage,
+    totalResults: data?.metadata?.totalResults,
+    papers: papers.length
   });
   const arxivPapers = data?.papers || [];
   
@@ -66,6 +91,10 @@ const SearchPage = () => {
   
   const handleSearch = (query: string) => {
     setSearchInput(query);
+    // Reset to first page on new search
+    setCurrentPage(0);
+    // Increment search key to force refetch even if query hasn't changed
+    setSearchKey(prev => prev + 1);
   };
   
   const handleAuthorSearch = (author: string) => {
@@ -96,6 +125,35 @@ const SearchPage = () => {
         </Alert>
       )}
       
+      {/* Pagination Controls */}
+      {/* Debug data structure */}
+      <div className="hidden">
+        {JSON.stringify(data, null, 2)}
+      </div>
+      
+      {/* Show pagination if we have results */}
+      {data?.papers?.length > 0 && data?.metadata && Number.isFinite(data.metadata.totalResults) && (
+        <div>
+          <PaginationControls
+            currentPage={currentPage}
+            pageSize={pageSize}
+            totalResults={data.metadata.totalResults}
+            onPageChange={(page) => {
+              setCurrentPage(page);
+              // Force refetch when page changes
+              setSearchKey(prev => prev + 1);
+            }}
+            onPageSizeChange={(size) => {
+              setPageSize(size);
+              setCurrentPage(0); // Reset to first page
+              // Force refetch when page size changes
+              setSearchKey(prev => prev + 1);
+            }}
+            isLoading={isLoading}
+          />
+        </div>
+      )}
+
       {isLoading ? (
         <div className="space-y-4">
           <Skeleton className="h-12 w-full" />

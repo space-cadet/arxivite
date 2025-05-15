@@ -3,15 +3,12 @@ import type { ArxivSearchParams } from '../types/arxiv';
 import { arxiv } from '@/lib/arxiv';
 
 export function useArxivSearch() {
-  const search = (params: ArxivSearchParams) => {
+  const search = (params: ArxivSearchParams & { searchKey?: number }) => {
     return useQuery({
-      queryKey: ['arxiv', params.query, params.maxResults, params.start],
+      queryKey: ['arxiv', params.query, params.pagination?.pageSize, params.pagination?.page, params.searchKey],
       queryFn: async () => {
         const response = await arxiv.search(params);
-        return {
-          papers: response.papers,
-          total: response.total
-        };
+        return response; // Return the complete response including metadata
       },
       staleTime: 5 * 60 * 1000, // Consider data stale after 5 minutes
       gcTime: 30 * 60 * 1000, // Keep in cache for 30 minutes
