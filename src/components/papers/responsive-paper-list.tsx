@@ -7,9 +7,18 @@ import { PaperCard } from './paper-card';
 interface ResponsivePaperListProps {
   papers: Paper[];
   paperState: ReturnType<typeof usePaperState>;
+  onSort: (field: 'submittedDate' | 'lastUpdatedDate' | 'relevance') => void;
+  sortField: 'submittedDate' | 'lastUpdatedDate' | 'relevance';
+  sortOrder: 'ascending' | 'descending';
 }
 
-export function ResponsivePaperList({ papers, paperState }: ResponsivePaperListProps) {
+export function ResponsivePaperList({ 
+  papers, 
+  paperState,
+  onSort,
+  sortField,
+  sortOrder
+}: ResponsivePaperListProps) {
   const isMobile = useMediaQuery(breakpoints.ltMd);
   
   if (isMobile) {
@@ -22,5 +31,11 @@ export function ResponsivePaperList({ papers, paperState }: ResponsivePaperListP
     );
   }
   
-  return <PaperTable papers={papers} paperState={paperState} />;
+  return <PaperTable 
+    papers={papers} 
+    paperState={paperState}
+    onSort={onSort}
+    sortField={sortField}
+    sortOrder={sortOrder}
+  />;
 }

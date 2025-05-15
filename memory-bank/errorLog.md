@@ -1,5 +1,41 @@
 # Error Log
 
+## 2025-05-15 10:30: T16 - Missing Props in ResponsivePaperList Components
+**File:** Multiple files
+**Error:** TypeScript compile errors
+```
+Type '{ papers: Paper[]; paperState: PaperStateHook; }' is missing the following properties from type 'ResponsivePaperListProps': onSort, sortField, sortOrder
+Type '"submittedDate"' is not assignable to type '"relevance" | "date"'.
+```
+**Cause:** Missing required props in ResponsivePaperList component usage and type mismatch in SortIcon component:
+1. Required props not provided in multiple components
+2. Incorrect type for sort field in paper-table.tsx
+**Fix:** 
+1. Added missing props with default values
+2. Updated type definition for sort fields
+**Changes:**
+- Added onSort, sortField, and sortOrder props to ResponsivePaperList usage in:
+  - RecentPaperList.tsx
+  - bookmarks.tsx
+  - profile.tsx
+- Updated SortIcon field type in paper-table.tsx
+**Task:** T16
+
+## 2025-05-15 10:45: T16 - Unused Parameter Warnings
+**File:** Multiple files
+**Error:** TypeScript warnings
+```
+'field' is declared but its value is never read.
+```
+**Cause:** Unused parameters in no-op functions for onSort handlers
+**Fix:** Prefixed unused parameters with underscore to indicate intentional non-use
+**Changes:**
+- Updated parameter names to '_field' in:
+  - RecentPaperList.tsx
+  - bookmarks.tsx
+  - profile.tsx
+**Task:** T16
+
 ## 2025-05-13 15:14: T15 - Merge Conflict in Profile Page
 **File:** `src/pages/profile.tsx`
 **Error:** Runtime error in Vite

@@ -228,7 +228,13 @@ export default function BookmarksPage() {
                 </AlertDescription>
               </Alert>
             ) : (
-              <ResponsivePaperList papers={filteredPapers} paperState={paperState} />
+              <ResponsivePaperList 
+                papers={filteredPapers} 
+                paperState={paperState}
+                onSort={(_field) => {}} // No-op for now, can be enhanced later
+                sortField="submittedDate"
+                sortOrder="descending"
+              />
             )}
           </CardContent>
         </Card>

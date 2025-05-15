@@ -2,6 +2,17 @@
 *Last Updated: 2025-05-15*
 
 ## 2025-05-15
+### 21:00 - T19: Search Enhancement - Fixed ArXiv API Sort Parameters
+- Modified `src/types/arxiv.ts` - Updated ArxivSortOptions to use correct API parameters
+- Modified `src/components/papers/paper-table.tsx` - Updated sort field handling
+- Modified `src/components/papers/responsive-paper-list.tsx` - Updated sort props
+- Modified `src/pages/search.tsx` - Updated sort state management
+**Key Changes**:
+- Fixed 400 Bad Request error by using correct ArXiv API sort parameters
+- Changed 'date' to 'submittedDate' in sort options
+- Updated all components to use correct sort field types
+- Added proper type safety across sort implementations
+
 ### 16:00-17:00 - T19a: LLM-Enhanced Search Implementation
 - Modified `src/lib/search/queryParser.ts` - Updated interface, prompt, and conversion logic
 - Modified `src/lib/llm.ts` - Added validation, type safety, and author name handling

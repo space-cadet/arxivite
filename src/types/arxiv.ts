@@ -5,10 +5,17 @@ export interface ArxivPaginationOptions {
     page: number;
 }
 
+export interface ArxivSortOptions {
+    field: 'submittedDate' | 'lastUpdatedDate' | 'relevance';
+    order: 'ascending' | 'descending';
+}
+
 export interface ArxivSearchParams {
     query: string;
     pagination?: ArxivPaginationOptions;
     parsedQuery?: ParsedQuery;
+    maxResults?: number;
+    sort?: ArxivSortOptions;
 }
 
 export interface ArxivSearchMetadata {

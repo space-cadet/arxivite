@@ -76,5 +76,13 @@ export default function RecentPaperList({
     return authorMatch && categoryMatch;
   });
 
-  return <ResponsivePaperList papers={filteredPapers} paperState={paperState} />
+  return (
+    <ResponsivePaperList 
+      papers={filteredPapers} 
+      paperState={paperState}
+      onSort={(_field) => {}} // No-op since recent papers are pre-sorted
+      sortField="submittedDate"
+      sortOrder="descending"
+    />
+  )
 }

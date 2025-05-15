@@ -153,6 +153,9 @@ const ProfilePage = () => {
                   <ResponsivePaperList 
                     papers={papers}
                     paperState={paperState}
+                    onSort={(_field) => {}} // No-op for now, can be enhanced with sorting later
+                    sortField="submittedDate"
+                    sortOrder="descending"
                   />
                 </CollapsibleContent>
               </Collapsible>

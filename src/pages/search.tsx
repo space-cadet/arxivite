@@ -21,6 +21,8 @@ const SearchPage = () => {
   const [authorFilter, setAuthorFilter] = usePersistedState('search.authorFilter', '');
   const [selectedCategory, setSelectedCategory] = usePersistedState('search.category', 'all');
   const [availableCategories, setAvailableCategories] = usePersistedState<string[]>('search.availableCategories', []);
+  const [sortField, setSortField] = usePersistedState<'submittedDate' | 'lastUpdatedDate' | 'relevance'>('search.sortField', 'relevance');
+  const [sortOrder, setSortOrder] = usePersistedState<'ascending' | 'descending'>('search.sortOrder', 'descending');
   
   const { profile } = useProfile();
   const arxivSearch = useArxivSearch();
@@ -34,23 +36,13 @@ const SearchPage = () => {
       pageSize,
       page: currentPage
     },
+    sort: {
+      field: sortField,
+      order: sortOrder
+    },
     searchKey
   });
 
-  // Convert arXiv papers to our application's Paper type
-  const papers = useMemo(() => {
-    if (!data?.papers?.length) return [];
-    return data.papers.map(arxivToPaper);
-  }, [data?.papers]);
-
-  // Debug logging
-  console.log('Search state:', {
-    searchInput,
-    pageSize,
-    currentPage,
-    totalResults: data?.metadata?.totalResults,
-    papers: papers.length
-  });
   const arxivPapers = data?.papers || [];
   
   // Convert arXiv papers to our application's Paper type
@@ -58,6 +50,19 @@ const SearchPage = () => {
     if (!arxivPapers.length) return [];
     return arxivPapers.map(arxivToPaper);
   }, [arxivPapers]);
+
+  // Debug logging - only when dependencies change
+  useEffect(() => {
+    if (process.env.NODE_ENV === 'development') {
+      console.log('Search state:', {
+        searchInput,
+        pageSize,
+        currentPage,
+        totalResults: data?.metadata?.totalResults,
+        papers: papers.length
+      });
+    }
+  }, [searchInput, pageSize, currentPage, data?.metadata?.totalResults, papers.length]);
   
   useEffect(() => {
     const uniqueCategories = new Set<string>();
@@ -105,6 +110,20 @@ const SearchPage = () => {
     setSelectedCategory(category);
   };
 
+  const handleSort = (field: 'submittedDate' | 'lastUpdatedDate' | 'relevance') => {
+    if (field === sortField) {
+      // If clicking the same field, toggle order
+      setSortOrder(current => current === 'ascending' ? 'descending' : 'ascending');
+    } else {
+      // If clicking a new field, set it and default to descending
+      setSortField(field);
+      setSortOrder('descending');
+    }
+    // Reset to first page and force refetch
+    setCurrentPage(0);
+    setSearchKey(prev => prev + 1);
+  };
+
   return (
     <div className="w-full max-w-7xl mx-auto px-4 py-4 md:py-6 space-y-4 md:space-y-6">
       <PaperFilters 
@@ -132,7 +151,7 @@ const SearchPage = () => {
       </div>
       
       {/* Show pagination if we have results */}
-      {data?.papers?.length > 0 && data?.metadata && Number.isFinite(data.metadata.totalResults) && (
+      {data?.papers && data.papers.length > 0 && data?.metadata && Number.isFinite(data.metadata.totalResults) && (
         <div>
           <PaginationControls
             currentPage={currentPage}
@@ -162,7 +181,13 @@ const SearchPage = () => {
       ) : (
         <>
           {filteredPapers.length > 0 ? (
-            <ResponsivePaperList papers={filteredPapers} paperState={paperState} />
+            <ResponsivePaperList 
+              papers={filteredPapers} 
+              paperState={paperState}
+              onSort={handleSort}
+              sortField={sortField}
+              sortOrder={sortOrder}
+            />
           ) : (
             searchInput && (
               <Alert>

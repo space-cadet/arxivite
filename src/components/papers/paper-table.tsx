@@ -14,60 +14,15 @@ import {
 interface PaperTableProps {
   papers: Paper[];
   paperState: ReturnType<typeof usePaperState>;
+  onSort: (field: 'submittedDate' | 'lastUpdatedDate' | 'relevance') => void;
+  sortField: 'submittedDate' | 'lastUpdatedDate' | 'relevance';
+  sortOrder: 'ascending' | 'descending';
 }
 
-type SortField = 'title' | 'authors' | 'category' | 'publishedDate';
-type SortDirection = 'asc' | 'desc';
-
-const PaperTable = ({ papers, paperState }: PaperTableProps) => {
-  const [sortField, setSortField] = usePersistedState<SortField>('paperTable.sortField', 'publishedDate');
-  const [sortDirection, setSortDirection] = usePersistedState<SortDirection>('paperTable.sortDirection', 'desc');
-
-  const sortPapers = (papers: Paper[]): Paper[] => {
-    return [...papers].sort((a, b) => {
-      let compareA, compareB;
-
-      switch (sortField) {
-        case 'title':
-          compareA = a.title.toLowerCase();
-          compareB = b.title.toLowerCase();
-          break;
-        case 'authors':
-          compareA = a.authors[0]?.toLowerCase() || '';
-          compareB = b.authors[0]?.toLowerCase() || '';
-          break;
-        case 'category':
-          compareA = a.category.toLowerCase();
-          compareB = b.category.toLowerCase();
-          break;
-        case 'publishedDate':
-          compareA = new Date(a.publishedDate).getTime();
-          compareB = new Date(b.publishedDate).getTime();
-          break;
-        default:
-          return 0;
-      }
-
-      if (sortDirection === 'asc') {
-        return compareA > compareB ? 1 : -1;
-      } else {
-        return compareA < compareB ? 1 : -1;
-      }
-    });
-  };
-
-  const handleSort = (field: SortField) => {
-    if (field === sortField) {
-      setSortDirection(sortDirection === 'asc' ? 'desc' : 'asc');
-    } else {
-      setSortField(field);
-      setSortDirection('asc');
-    }
-  };
-
-  const SortIcon = ({ field }: { field: SortField }) => {
+const PaperTable = ({ papers, paperState, onSort, sortField, sortOrder }: PaperTableProps) => {
+  const SortIcon = ({ field }: { field: 'submittedDate' | 'lastUpdatedDate' | 'relevance' }) => {
     if (field !== sortField) return <ChevronDown className="h-4 w-4 text-muted-foreground/50" />;
-    return sortDirection === 'asc' ? 
+    return sortOrder === 'ascending' ? 
       <ChevronUp className="h-4 w-4" /> : 
       <ChevronDown className="h-4 w-4" />;
   };
@@ -77,47 +32,23 @@ const PaperTable = ({ papers, paperState }: PaperTableProps) => {
       <Table>
         <TableHeader>
           <TableRow>
-            <TableHead 
-              className="w-[400px] cursor-pointer pl-10"
-              onClick={() => handleSort('title')}
-            >
-              <div className="flex items-center gap-2">
-                Title
-                <SortIcon field="title" />
-              </div>
-            </TableHead>
+            <TableHead className="w-[400px] pl-10">Title</TableHead>
+            <TableHead>Authors</TableHead>
+            <TableHead>Category</TableHead>
             <TableHead 
               className="cursor-pointer"
-              onClick={() => handleSort('authors')}
-            >
-              <div className="flex items-center gap-2">
-                Authors
-                <SortIcon field="authors" />
-              </div>
-            </TableHead>
-            <TableHead 
-              className="cursor-pointer"
-              onClick={() => handleSort('category')}
-            >
-              <div className="flex items-center gap-2">
-                Category
-                <SortIcon field="category" />
-              </div>
-            </TableHead>
-            <TableHead 
-              className="cursor-pointer"
-              onClick={() => handleSort('publishedDate')}
+              onClick={() => onSort('submittedDate')}
             >
               <div className="flex items-center gap-2">
                 Date
-                <SortIcon field="publishedDate" />
+                <SortIcon field="submittedDate" />
               </div>
             </TableHead>
             <TableHead className="text-right">Actions</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
-          {sortPapers(papers).map((paper) => (
+          {papers.map((paper) => (
             <PaperTableRow key={paper.id} paper={paper} paperState={paperState} />
           ))}
         </TableBody>

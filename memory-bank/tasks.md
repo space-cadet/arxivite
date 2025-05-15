@@ -222,6 +222,7 @@ Phase 4: Social & Analytics
 | T0 | Project Setup | 2025-04-26 | [tasks/T0.md] |
 
 ## Recent Updates
+- 2025-05-15 21:00: Fixed ArXiv API sort parameters to use correct field names
 - 2025-05-15 20:30: Added comprehensive pagination support to search functionality
 - 2025-05-15 20:00: Implemented proper metadata handling in ArXiv API responses
 - 2025-05-15 19:30: Added configurable page sizes (20/50/100) to search

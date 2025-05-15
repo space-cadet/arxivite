@@ -6,6 +6,11 @@
 **Focus Task**: T19
 **Session File**: `sessions/2025-05-15-evening.md`
 
+## Latest Updates
+- Fixed ArXiv API sort parameters
+- Updated sort field handling across components
+- Enhanced type safety for sort operations
+
 ## Overview
 - Active: 8
 - Paused: 0
