@@ -72,12 +72,26 @@ export default {
         shine: {
           from: { backgroundPosition: "200% 0" },
           to: { backgroundPosition: "-200% 0" }
+        },
+        fadeInSlideDown: {
+          "0%": {
+            opacity: "0",
+            transform: "translate(-50%, -10px)"
+          },
+          "100%": {
+            opacity: "1",
+            transform: "translate(-50%, 0)"
+          }
         }
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
-        shine: "shine 8s ease-in-out infinite"
+        shine: "shine 8s ease-in-out infinite",
+        "fade-in-delayed": "fadeInSlideDown 0.8s ease-out 1s forwards"
+      },
+      fontFamily: {
+        caveat: ['Caveat', 'cursive']
       }
     }
   },

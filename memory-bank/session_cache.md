@@ -1,15 +1,16 @@
 # Session Cache
-*Last Updated: 2025-05-15 17:30*
+*Last Updated: 2025-05-15 22:00*
 
 ## Current Session
-**Started**: 2025-05-15 19:00
-**Focus Task**: T19
+**Started**: 2025-05-15 21:00
+**Focus Task**: T18
 **Session File**: `sessions/2025-05-15-evening.md`
 
 ## Latest Updates
-- Fixed ArXiv API sort parameters
-- Updated sort field handling across components
-- Enhanced type safety for sort operations
+- Enhanced landing page with self-deprecating text
+- Added GitHub repository link to app header
+- Made logo clickable to return to landing page
+- Created custom SVG caret icon
 
 ## Overview
 - Active: 8

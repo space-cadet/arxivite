@@ -25,7 +25,7 @@ const Sidebar = () => {
       )}
     >
       <div className="flex items-center justify-between p-4">
-        <div className="flex items-center gap-2">
+        <Link to="/" className="flex items-center gap-2 hover:opacity-80 transition-opacity">
           <LogoIcon 
             size={isCollapsed ? 24 : 28} 
             className="text-primary-foreground flex-shrink-0" 
@@ -36,7 +36,7 @@ const Sidebar = () => {
           )}>
             ArXivite
           </h2>
-        </div>
+        </Link>
         <Button
           variant="ghost"
           size="icon"

@@ -1,6 +1,6 @@
 import React, { useState, useEffect, ReactNode } from 'react';
 import { ArrowRight, BookMarked, Search, Sparkles, Menu, X } from 'lucide-react';
-import { LogoIcon } from '@/components/icons/LogoIcon';
+import { LogoIcon, CaretIcon } from '@/components/icons';
 import { Link } from 'react-router-dom';
 
 // Floating Orb Component
@@ -317,9 +317,19 @@ const LandingPage = () => {
               </h2>
             </FadeIn>
             <FadeIn delay={200}>
-              <p className="text-xl text-gray-400 mb-8 max-w-2xl mx-auto">
-                Join thousands of researchers who use arxivite to stay on top of their field
-              </p>
+              <div className="relative">
+                <p className="text-xl text-gray-400 mb-8 max-w-2xl mx-auto">
+                  <span className="relative">
+                    Join<span className="inline-flex mx-0.5 -mt-1 transform translate-y-1"><CaretIcon size={24} /></span>
+                    <span className="absolute -top-6 -right-20 opacity-0 animate-fade-in-delayed">
+                      <span className="font-caveat text-2xl text-blue-400 whitespace-nowrap leading-none">
+                        soon to be
+                      </span>
+                    </span>
+                  </span>
+                  thousands of researchers who use arxivite to stay on top of their field
+                </p>
+              </div>
             </FadeIn>
             <FadeIn delay={400}>
               <Link 

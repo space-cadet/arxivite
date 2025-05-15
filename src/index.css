@@ -107,3 +107,28 @@
     animation: float 20s infinite ease-in-out;
   }
 }
+
+/* Handwritten font */
+@layer base {
+  .font-caveat {
+    font-family: 'Caveat', cursive;
+  }
+}
+
+/* Fade in animation for handwritten text */
+@keyframes fadeInSlideDown {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, -20px) rotate(-3deg);
+  }
+  100% {
+    opacity: 1;
+    transform: translate(-50%, 0) rotate(-3deg);
+  }
+}
+
+@layer utilities {
+  .animate-fade-in-delayed {
+    animation: fadeInSlideDown 0.8s ease-out 1s forwards;
+  }
+}

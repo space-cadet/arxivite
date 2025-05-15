@@ -2,6 +2,16 @@
 *Last Updated: 2025-05-15*
 
 ## 2025-05-15
+### 22:00 - T18: Landing Page Enhancement
+- Modified `src/pages/landing.tsx` - Added self-deprecating text with custom caret
+- Modified `src/components/layout/Header.tsx` - Added GitHub repository link
+- Modified `src/components/layout/Sidebar.tsx` - Made logo clickable
+- Created `src/components/icons/CaretIcon.tsx` - Added custom SVG caret icon
+- Modified `src/components/icons/index.ts` - Added CaretIcon export
+- Modified `index.html` - Added Caveat font
+- Modified `tailwind.config.js` - Added font and animation configurations
+- Modified `src/index.css` - Added custom animations
+
 ### 21:00 - T19: Search Enhancement - Fixed ArXiv API Sort Parameters
 - Modified `src/types/arxiv.ts` - Updated ArxivSortOptions to use correct API parameters
 - Modified `src/components/papers/paper-table.tsx` - Updated sort field handling
