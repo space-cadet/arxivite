@@ -102,7 +102,7 @@ export class FileLogger {
       }
     } catch (error) {
       // If file doesn't exist yet, that's fine
-      if (error.code !== 'ENOENT') {
+      if (error instanceof Error && 'code' in error && error.code !== 'ENOENT') {
         throw error;
       }
     }

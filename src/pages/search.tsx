@@ -41,12 +41,6 @@ const SearchPage = () => {
       order: sortOrder
     },
     searchKey
-  }, {
-    // Add caching and stale time settings
-    staleTime: 30000, // Consider data fresh for 30 seconds
-    cacheTime: 300000, // Keep unused data in cache for 5 minutes
-    retry: 1, // Only retry once on failure
-    refetchOnWindowFocus: false // Don't refetch when window regains focus
   });
 
   const arxivPapers = data?.papers || [];

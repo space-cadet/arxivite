@@ -8,6 +8,7 @@ import { PaginationControls } from './pagination-controls';
 import { Button } from "@/components/ui/button";
 import { ArrowUpDown, ChevronLeft, ChevronRight } from "lucide-react";
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sheet";
+import { SortField, SortOrder } from '@/types/sorting';
 
 interface ResponsivePaperListProps {
   papers: Paper[];
@@ -15,9 +16,9 @@ interface ResponsivePaperListProps {
   tableId: string;
   totalResults?: number;
   currentPage?: number;
-  pageSize?: number;
+  pageSize: 20 | 50 | 100;
   onPageChange?: (page: number) => void;
-  onPageSizeChange?: (size: number) => void;
+  onPageSizeChange?: (size: 20 | 50 | 100) => void;
   isLoading?: boolean;
 }
 
@@ -27,30 +28,43 @@ export function ResponsivePaperList({
   tableId,
   totalResults,
   currentPage = 0,
-  pageSize = 10,
+  pageSize = 20,
   onPageChange,
   onPageSizeChange,
   isLoading
 }: ResponsivePaperListProps) {
   const isMobile = useMediaQuery(breakpoints.ltMd);
   const [isOpen, setIsOpen] = useState(false);
-  const [sortField, setSortField] = useState<'date' | 'title'>('date');
-  const [sortAscending, setSortAscending] = useState(false);
+  const [sortField, setSortField] = useState<SortField>('submittedDate');
+  const [sortOrder, setSortOrder] = useState<SortOrder>('descending');
 
   const processedPapers = useMemo(() => {
     let sorted = [...papers].sort((a, b) => {
-      if (sortField === 'date') {
+      if (sortField === 'submittedDate') {
         const dateA = new Date(a.publishedDate || '').getTime();
         const dateB = new Date(b.publishedDate || '').getTime();
-        return sortAscending ? dateA - dateB : dateB - dateA;
+        return sortOrder === 'ascending' ? dateA - dateB : dateB - dateA;
       }
       // Title sort
-      return sortAscending 
-        ? a.title.localeCompare(b.title)
-        : b.title.localeCompare(a.title);
+      if (sortField === 'title') {
+        return sortOrder === 'ascending' 
+          ? a.title.localeCompare(b.title)
+          : b.title.localeCompare(a.title);
+      }
+      return 0;
     });
     return sorted;
-  }, [papers, sortField, sortAscending]);
+  }, [papers, sortField, sortOrder]);
+
+  const handleSortToggle = (field: SortField) => {
+    if (field === sortField) {
+      setSortOrder(order => order === 'ascending' ? 'descending' : 'ascending');
+    } else {
+      setSortField(field);
+      setSortOrder('descending');
+    }
+    setIsOpen(false);
+  };
 
   const renderContent = () => {
     if (isMobile) {
@@ -74,24 +88,16 @@ export function ResponsivePaperList({
               </SheetHeader>
               <div className="grid gap-4 py-4">
                 <Button
-                  variant={sortField === 'date' ? 'default' : 'outline'}
-                  onClick={() => {
-                    setSortField('date');
-                    setSortAscending(sortField === 'date' ? !sortAscending : false);
-                    setIsOpen(false);
-                  }}
+                  variant={sortField === 'submittedDate' ? 'default' : 'outline'}
+                  onClick={() => handleSortToggle('submittedDate')}
                 >
-                  Date {sortField === 'date' && (sortAscending ? '(Oldest)' : '(Newest)')}
+                  Date {sortField === 'submittedDate' && (sortOrder === 'ascending' ? '(Oldest)' : '(Newest)')}
                 </Button>
                 <Button
                   variant={sortField === 'title' ? 'default' : 'outline'}
-                  onClick={() => {
-                    setSortField('title');
-                    setSortAscending(sortField === 'title' ? !sortAscending : true);
-                    setIsOpen(false);
-                  }}
+                  onClick={() => handleSortToggle('title')}
                 >
-                  Title {sortField === 'title' && (sortAscending ? '(A-Z)' : '(Z-A)')}
+                  Title {sortField === 'title' && (sortOrder === 'ascending' ? '(A-Z)' : '(Z-A)')}
                 </Button>
               </div>
             </SheetContent>
@@ -136,8 +142,8 @@ export function ResponsivePaperList({
               currentPage={currentPage}
               pageSize={pageSize}
               totalResults={totalResults}
-              onPageChange={onPageChange}
-              onPageSizeChange={onPageSizeChange}
+              onPageChange={(page) => onPageChange?.(page)}
+              onPageSizeChange={(size) => onPageSizeChange?.(size)}
               isLoading={isLoading}
             />
           </div>
@@ -148,11 +154,11 @@ export function ResponsivePaperList({
           tableId={tableId}
           defaultSort={{
             field: sortField,
-            order: sortAscending ? 'asc' : 'desc'
+            order: sortOrder
           }}
           onSortChange={(field, order) => {
-            setSortField(field as 'date' | 'title');
-            setSortAscending(order === 'asc');
+            setSortField(field);
+            setSortOrder(order);
           }}
         />
       </>

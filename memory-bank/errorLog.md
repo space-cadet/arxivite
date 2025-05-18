@@ -1,5 +1,64 @@
 # Error Log
 
+## 2025-05-19 14:35: T18 - Type Safety Issues with Error Handling
+**File:** `src/lib/logging/logger.ts`
+**Error:** TypeScript type safety warning - unsafe access to error.code
+**Cause:** Missing proper type narrowing for error object causing potential runtime errors
+**Fix:** Added proper type narrowing using instanceof and property checks
+**Changes:**
+```typescript
+// Before
+if (error.code !== 'ENOENT') {
+  throw error;
+}
+
+// After
+if (error instanceof Error && 'code' in error && error.code !== 'ENOENT') {
+  throw error;
+}
+```
+
+## 2025-05-19 14:30: T18 - Type Inconsistencies in Paper Sorting
+**File:** `src/components/papers/paper-table.tsx`
+**Error:** TypeScript type mismatch in sorting logic
+**Cause:** Incorrect mapping of sort fields to Paper type properties and unsafe date handling
+**Fix:** Updated sort field mapping and added proper date handling with fallbacks
+**Changes:** 
+```typescript
+// Before
+case 'submittedDate':
+  comparison = a.publishedDate - b.publishedDate;
+  break;
+
+// After
+case 'submittedDate':
+  comparison = new Date(a.publishedDate).getTime() - new Date(b.publishedDate).getTime();
+  break;
+case 'lastUpdatedDate':
+  comparison = new Date(a.updatedDate || a.publishedDate).getTime() - new Date(b.updatedDate || b.publishedDate).getTime();
+  break;
+```
+
+## 2025-05-19 14:22: T18 - Invalid Hook Arguments in Search Page
+**File:** `src/pages/search.tsx`
+**Error:** `error TS2554: Expected 1 arguments, but got 2.`
+**Cause:** The `useArxivSearch().search()` hook was being called with query options as a second argument, but the hook only accepts a single params object
+**Fix:** Removed the second argument since caching settings are already configured in the useArxivSearch hook itself
+**Changes:** Removed the redundant options object:
+```typescript
+// Before
+arxivSearch.search(params, {
+  staleTime: 30000,
+  cacheTime: 300000,
+  retry: 1,
+  refetchOnWindowFocus: false
+});
+
+// After
+arxivSearch.search(params);
+```
+**Task:** T18
+
 ## 2025-05-15 10:30: T16 - Missing Props in ResponsivePaperList Components
 **File:** Multiple files
 **Error:** TypeScript compile errors

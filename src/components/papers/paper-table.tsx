@@ -79,10 +79,10 @@ const PaperTable = ({
           comparison = a.category.localeCompare(b.category);
           break;
         case 'submittedDate':
+          comparison = new Date(a.publishedDate).getTime() - new Date(b.publishedDate).getTime();
+          break;
         case 'lastUpdatedDate':
-          const dateA = new Date(a[sortField]);
-          const dateB = new Date(b[sortField]);
-          comparison = dateA.getTime() - dateB.getTime();
+          comparison = new Date(a.updatedDate || a.publishedDate).getTime() - new Date(b.updatedDate || b.publishedDate).getTime();
           break;
         default:
           return 0;
