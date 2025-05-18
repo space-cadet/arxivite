@@ -1,5 +1,15 @@
 # Edit History
-*Last Updated: 2025-05-15*
+*Last Updated: 2025-05-17*
+
+## 2025-05-17
+### 15:30 - T20: Logging System Implementation
+- Created `src/lib/logging/supabase-logger.ts` - Implemented Supabase-based logging system
+- Created `memory-bank/tasks/T20.md` - Added new task for logging implementation
+- Modified `memory-bank/tasks.md` - Added T20 to active tasks
+**Key Changes**:
+- Added structured logging system
+- Implemented Supabase integration
+- Created utility functions for common logging patterns
 
 ## 2025-05-15
 ### 22:00 - T18: Landing Page Enhancement
