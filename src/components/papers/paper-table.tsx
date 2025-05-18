@@ -1,7 +1,9 @@
+import { useMemo } from 'react';
 import { usePersistedState } from '@/hooks/usePersistedState';
 import { usePaperState } from '@/hooks/usePaperState';
 import { ChevronDown, ChevronUp } from 'lucide-react';
 import { Paper } from '@/types/paper';
+import { SortField, SortOrder } from '@/types/sorting';
 import PaperTableRow from './paper-table-row';
 import {
   Table,
@@ -14,30 +16,116 @@ import {
 interface PaperTableProps {
   papers: Paper[];
   paperState: ReturnType<typeof usePaperState>;
-  onSort: (field: 'submittedDate' | 'lastUpdatedDate' | 'relevance') => void;
-  sortField: 'submittedDate' | 'lastUpdatedDate' | 'relevance';
-  sortOrder: 'ascending' | 'descending';
+  tableId: string; // Unique identifier for persisting sort state
+  defaultSort?: {
+    field: SortField;
+    order: SortOrder;
+  };
+  onSortChange?: (field: SortField, order: SortOrder) => void; // Optional callback for parent components
 }
 
-const PaperTable = ({ papers, paperState, onSort, sortField, sortOrder }: PaperTableProps) => {
-  const SortIcon = ({ field }: { field: 'submittedDate' | 'lastUpdatedDate' | 'relevance' }) => {
+const PaperTable = ({ 
+  papers, 
+  paperState, 
+  tableId,
+  defaultSort = { field: 'submittedDate', order: 'descending' },
+  onSortChange 
+}: PaperTableProps) => {
+  // Internal sorting state
+  const [sortField, setSortField] = usePersistedState<SortField>(
+    `${tableId}.sortField`, 
+    defaultSort.field
+  );
+  const [sortOrder, setSortOrder] = usePersistedState<SortOrder>(
+    `${tableId}.sortOrder`, 
+    defaultSort.order
+  );
+
+  // Handle sorting
+  const handleSort = (field: SortField) => {
+    let newOrder: SortOrder = 'descending';
+    if (field === sortField) {
+      newOrder = sortOrder === 'ascending' ? 'descending' : 'ascending';
+      setSortOrder(newOrder);
+    } else {
+      setSortField(field);
+      setSortOrder(newOrder);
+    }
+    
+    // Notify parent component if callback provided
+    onSortChange?.(field, newOrder);
+  };
+
+  // Sort icon component
+  const SortIcon = ({ field }: { field: SortField }) => {
     if (field !== sortField) return <ChevronDown className="h-4 w-4 text-muted-foreground/50" />;
     return sortOrder === 'ascending' ? 
       <ChevronUp className="h-4 w-4" /> : 
       <ChevronDown className="h-4 w-4" />;
   };
 
+  // Sort papers
+  const sortedPapers = useMemo(() => {
+    return [...papers].sort((a, b) => {
+      let comparison = 0;
+      switch (sortField) {
+        case 'title':
+          comparison = a.title.localeCompare(b.title);
+          break;
+        case 'authors':
+          comparison = (a.authors[0] || '').localeCompare(b.authors[0] || '');
+          break;
+        case 'categories':
+          comparison = a.category.localeCompare(b.category);
+          break;
+        case 'submittedDate':
+        case 'lastUpdatedDate':
+          const dateA = new Date(a[sortField]);
+          const dateB = new Date(b[sortField]);
+          comparison = dateA.getTime() - dateB.getTime();
+          break;
+        default:
+          return 0;
+      }
+      return sortOrder === 'ascending' ? comparison : -comparison;
+    });
+  }, [papers, sortField, sortOrder]);
+
   return (
     <div className="rounded-md border">
       <Table>
         <TableHeader>
           <TableRow>
-            <TableHead className="w-[400px] pl-10">Title</TableHead>
-            <TableHead>Authors</TableHead>
-            <TableHead>Category</TableHead>
+            <TableHead 
+              className="w-[400px] pl-10 cursor-pointer"
+              onClick={() => handleSort('title')}
+            >
+              <div className="flex items-center gap-2">
+                Title
+                <SortIcon field="title" />
+              </div>
+            </TableHead>
             <TableHead 
               className="cursor-pointer"
-              onClick={() => onSort('submittedDate')}
+              onClick={() => handleSort('authors')}
+            >
+              <div className="flex items-center gap-2">
+                Authors
+                <SortIcon field="authors" />
+              </div>
+            </TableHead>
+            <TableHead 
+              className="cursor-pointer"
+              onClick={() => handleSort('categories')}
+            >
+              <div className="flex items-center gap-2">
+                Category
+                <SortIcon field="categories" />
+              </div>
+            </TableHead>
+            <TableHead 
+              className="cursor-pointer"
+              onClick={() => handleSort('submittedDate')}
             >
               <div className="flex items-center gap-2">
                 Date
@@ -48,7 +136,7 @@ const PaperTable = ({ papers, paperState, onSort, sortField, sortOrder }: PaperT
           </TableRow>
         </TableHeader>
         <TableBody>
-          {papers.map((paper) => (
+          {sortedPapers.map((paper) => (
             <PaperTableRow key={paper.id} paper={paper} paperState={paperState} />
           ))}
         </TableBody>

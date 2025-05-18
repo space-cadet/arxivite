@@ -1,5 +1,14 @@
 # Edit History
-*Last Updated: 2025-05-18*
+*Last Updated: 2025-05-19*
+
+## 2025-05-19
+### 17:30 - T23: Table Component Sorting Implementation
+- Created `src/types/sorting.ts` - Added sorting type definitions
+- Modified `src/components/papers/paper-table.tsx` - Implemented internal sorting logic
+- Modified `src/components/papers/responsive-paper-list.tsx` - Updated to use new table props
+- Created `memory-bank/tasks/META-2.md` - New task for GitHub issue reconciliation
+- Modified `memory-bank/tasks/T23.md` - Updated progress with sorting implementation
+- Modified `memory-bank/tasks.md` - Added META-2 and updated T23 status
 
 ## 2025-05-18
 ### 16:30 - T20: Enhanced Logging System Implementation

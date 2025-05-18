@@ -3,21 +3,25 @@ import { usePaperState } from '@/hooks/usePaperState';
 import { useMediaQuery, breakpoints } from '@/hooks/useMediaQuery';
 import PaperTable from './paper-table';
 import { PaperCard } from './paper-card';
+import { SortField, SortOrder } from '@/types/sorting';
 
 interface ResponsivePaperListProps {
   papers: Paper[];
   paperState: ReturnType<typeof usePaperState>;
-  onSort: (field: 'submittedDate' | 'lastUpdatedDate' | 'relevance') => void;
-  sortField: 'submittedDate' | 'lastUpdatedDate' | 'relevance';
-  sortOrder: 'ascending' | 'descending';
+  tableId: string;
+  defaultSort?: {
+    field: SortField;
+    order: SortOrder;
+  };
+  onSortChange?: (field: SortField, order: SortOrder) => void;
 }
 
 export function ResponsivePaperList({ 
   papers, 
   paperState,
-  onSort,
-  sortField,
-  sortOrder
+  tableId,
+  defaultSort,
+  onSortChange
 }: ResponsivePaperListProps) {
   const isMobile = useMediaQuery(breakpoints.ltMd);
   
@@ -31,11 +35,13 @@ export function ResponsivePaperList({
     );
   }
   
-  return <PaperTable 
-    papers={papers} 
-    paperState={paperState}
-    onSort={onSort}
-    sortField={sortField}
-    sortOrder={sortOrder}
-  />;
+  return (
+    <PaperTable 
+      papers={papers} 
+      paperState={paperState}
+      tableId={tableId}
+      defaultSort={defaultSort}
+      onSortChange={onSortChange}
+    />
+  );
 }

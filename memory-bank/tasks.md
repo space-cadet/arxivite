@@ -12,6 +12,11 @@
 ## Active Tasks
 | ID | Title | Status | Priority | Started | File |
 |----|-------|--------|----------|---------|------|
+| META-2 | GitHub Issues and Task File Reconciliation | 🔄 | HIGH | 2025-05-19 | [tasks/META-2.md] |
+| T24 | Release Notes Integration | ⬜ | LOW | - | [tasks/T24.md] |
+| T23 | Search and Navigation Enhancements | 🔄 | HIGH | 2025-05-19 | [tasks/T23.md] |
+| T22 | Author List Enhancement | ⬜ | HIGH | - | [tasks/T22.md] |
+| T21 | Zotero and Mendeley Integration | ⬜ | MEDIUM | - | [tasks/T21.md] |
 | T20 | Implement Comprehensive Logging System | 🔄 | HIGH | 2025-05-17 | [tasks/T20.md] ✅P1 |
 | T19a | LLM-Enhanced Search Query Parsing | ✅ | HIGH | 2025-05-14 | [tasks/T19a.md] |
 | T18 | SEO Implementation and Website Visibility Enhancement | 🔄 | HIGH | 2025-05-14 | [tasks/T18.md] |
@@ -226,6 +231,9 @@ Phase 4: Social & Analytics
 | T0 | Project Setup | 2025-04-26 | [tasks/T0.md] |
 
 ## Recent Updates
+- 2025-05-19 17:30: Created META-2 for GitHub issues reconciliation
+- 2025-05-19 17:30: Implemented sorting functionality in PaperTable component (T23)
+- 2025-05-19 17:00: Updated T23 with sorting enhancement progress
 - 2025-05-18 16:30: Enhanced T20 logging system with comprehensive ArXiv and LLM API logging
 - 2025-05-18 16:00: Implemented automatic log cleanup policy for T20
 - 2025-05-18 15:45: Fixed ArXiv API result count discrepancy and duplicate API calls
