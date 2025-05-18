@@ -1,4 +1,5 @@
-// src/lib/llm.ts
+import { logLLMUsage, logError } from './logging/supabase-logger';
+
 export interface LLMResponse {
     content: string;
     error?: string;
@@ -23,12 +24,15 @@ class GeminiLLMService {
         // Check cache first
         const cachedResponse = this.cache.get(prompt);
         if (cachedResponse) {
+            await logLLMUsage('gemini-1.5-flash', 0, 0); // Log cache hit
             return cachedResponse;
         }
         
+        const startTime = Date.now();
         try {
             // If no API key, return empty result
             if (!this.apiKey) {
+                await logError(new Error('No API key provided'), 'llm-api');
                 return '{"authors":[],"topics":[],"years":[],"institutions":[],"journals":[]}';
             }
             
@@ -99,8 +103,28 @@ class GeminiLLMService {
             // Store in cache
             this.cache.set(prompt, finalJson);
             
+            // Log successful API call
+            await logLLMUsage('gemini-1.5-flash', data.candidates[0].tokenCount || 0, Date.now() - startTime, {
+                model: 'gemini-1.5-flash',
+                promptTokens: Math.ceil(prompt.length / 4),
+                responseTokens: data.candidates[0].tokenCount || 0,
+                response: rawContent,
+                cacheHit: false,
+                validJson: true,
+                tokenDetails: {
+                    prompt: prompt.length,
+                    response: rawContent.length,
+                    apiReported: data.candidates[0].tokenCount
+                }
+            });
+            
             return finalJson;
         } catch (error) {
+            await logError(error as Error, 'llm-api', { 
+                prompt,
+                timestamp: new Date().toISOString(),
+                errorType: error instanceof SyntaxError ? 'json_parse_error' : 'api_error'
+            });
             console.error('LLM API error:', error);
             // Return empty result on error
             return '{"authors":[],"topics":[],"years":[],"institutions":[],"journals":[]}';

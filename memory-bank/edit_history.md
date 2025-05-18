@@ -1,15 +1,19 @@
 # Edit History
-*Last Updated: 2025-05-17*
+*Last Updated: 2025-05-18*
+
+## 2025-05-18
+### 16:30 - T20: Enhanced Logging System Implementation
+- Modified `src/lib/logging/supabase-logger.ts` - Added comprehensive logging for API calls
+- Modified `src/lib/arxiv.ts` - Added detailed ArXiv API logging with timing and metadata
+- Modified `src/lib/llm.ts` - Enhanced LLM API logging with response content and token details
+- Created `memory-bank/implementation-details/supabase-logging-setup.md` - Added setup documentation
+- Modified `memory-bank/tasks/T20.md` - Updated progress and technical notes
 
 ## 2025-05-17
 ### 15:30 - T20: Logging System Implementation
 - Created `src/lib/logging/supabase-logger.ts` - Implemented Supabase-based logging system
 - Created `memory-bank/tasks/T20.md` - Added new task for logging implementation
 - Modified `memory-bank/tasks.md` - Added T20 to active tasks
-**Key Changes**:
-- Added structured logging system
-- Implemented Supabase integration
-- Created utility functions for common logging patterns
 
 ## 2025-05-15
 ### 22:00 - T18: Landing Page Enhancement
@@ -27,11 +31,6 @@
 - Modified `src/components/papers/paper-table.tsx` - Updated sort field handling
 - Modified `src/components/papers/responsive-paper-list.tsx` - Updated sort props
 - Modified `src/pages/search.tsx` - Updated sort state management
-**Key Changes**:
-- Fixed 400 Bad Request error by using correct ArXiv API sort parameters
-- Changed 'date' to 'submittedDate' in sort options
-- Updated all components to use correct sort field types
-- Added proper type safety across sort implementations
 
 ### 16:00-17:00 - T19a: LLM-Enhanced Search Implementation
 - Modified `src/lib/search/queryParser.ts` - Updated interface, prompt, and conversion logic

@@ -1,7 +1,6 @@
 import type { ArxivSearchParams, ArxivSearchResponse, ArxivPaper } from '../types/arxiv';
 import { ArxivQueryParser } from './search/queryParser';
-// import { DOMParser } from 'xmldom';
-
+import { logArxivQuery, logError } from './logging/supabase-logger';
 import type { ArxivSearchMetadata, ArxivPaginationOptions } from '../types/arxiv';
 
 // Helper function to get pagination parameters
@@ -153,7 +152,11 @@ const makeArxivRequest = async (params: ArxivSearchParams): Promise<{ papers: Ar
       
       // If parsing produced no results, fall back to legacy parsing
       if (!finalQuery) {
-        console.log('LLM parsing produced no results, falling back to legacy parser');
+        await logArxivQuery('fallback', {
+          reason: 'llm_parsing_failed',
+          originalQuery: params.query,
+          timestamp: new Date().toISOString()
+        });
         const { pageSize, start } = getPaginationParams(params.pagination);
         const url = `https://export.arxiv.org/api/query?search_query=${params.query}&start=${start}&max_results=${pageSize}`;
         const legacyResult = await makeArxivRequestLegacy(params.query, pageSize, start);
@@ -197,6 +200,15 @@ const makeArxivRequest = async (params: ArxivSearchParams): Promise<{ papers: Ar
     const sortOrder = params.sort?.order || 'descending';
     const url = `https://export.arxiv.org/api/query?search_query=${finalQuery}&start=${start}&max_results=${pageSize}&sortBy=${sortBy}&sortOrder=${sortOrder}`;
     console.log('Requesting:', url);
+    
+    await logArxivQuery('request', { 
+      url,
+      finalQuery,
+      pageSize,
+      start,
+      sortBy,
+      sortOrder
+    });
     
     const response = await fetch(url);
     if (!response.ok) {
@@ -269,7 +281,14 @@ const makeArxivRequest = async (params: ArxivSearchParams): Promise<{ papers: Ar
 // We default to using the improved search
 // Legacy implementation is preserved for potential rollback
 export const searchPapers = async (params: ArxivSearchParams): Promise<ArxivSearchResponse> => {
+  const startTime = Date.now();
   try {
+    await logArxivQuery(params.query, { 
+      pagination: params.pagination,
+      sort: params.sort,
+      timestamp: new Date().toISOString()
+    });
+
     // First get the total count
     const metadata = await getSearchMetadata(params.query);
     
@@ -281,11 +300,21 @@ export const searchPapers = async (params: ArxivSearchParams): Promise<ArxivSear
       };
     }
     
-    // Then fetch the actual page of results with metadata
+    // Fetch the actual page of results with metadata
     const result = await makeArxivRequest(params);
+    
+    await logArxivQuery('metadata', {
+      query: params.query,
+      actualResults: result.metadata.totalResults,
+      metadataResults: metadata.totalResults,
+      latencyMs: Date.now() - startTime,
+      pageSize: params.pagination?.pageSize || 20,
+      page: params.pagination?.page || 0
+    });
     
     return result;
   } catch (error) {
+    await logError(error as Error, 'arxiv-api', { query: params.query });
     console.error('Error searching arxiv papers:', error);
     throw error;
   }
