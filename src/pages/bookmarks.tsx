@@ -23,8 +23,10 @@ export default function BookmarksPage() {
   const { profile } = useProfile();
   const context = useBookmarkContext();
   const { getAllBookmarks } = context;
-  const [authorFilter, setAuthorFilter] = usePersistedState<string>("bookmarks.authorFilter", "")
-  const [selectedCategory, setSelectedCategory] = usePersistedState<string>("bookmarks.category", "all")
+  const [authorFilter, setAuthorFilter] = usePersistedState<string>("bookmarks.authorFilter", "");
+  const [selectedCategory, setSelectedCategory] = usePersistedState<string>("bookmarks.category", "all");
+  const [currentPage, setCurrentPage] = usePersistedState<number>("bookmarks.currentPage", 0);
+  const [pageSize, setPageSize] = usePersistedState<20 | 50 | 100>("bookmarks.pageSize", 20);
   
   // Get all bookmarked papers
   const bookmarks = getAllBookmarks();
@@ -231,9 +233,13 @@ export default function BookmarksPage() {
               <ResponsivePaperList 
                 papers={filteredPapers} 
                 paperState={paperState}
-                onSort={(_field) => {}} // No-op for now, can be enhanced later
-                sortField="submittedDate"
-                sortOrder="descending"
+                tableId="bookmarks"
+                totalResults={filteredPapers.length}
+                currentPage={currentPage}
+                pageSize={pageSize}
+                onPageChange={setCurrentPage}
+                onPageSizeChange={(size) => setPageSize(size as 20 | 50 | 100)}
+                isLoading={isLoading}
               />
             )}
           </CardContent>

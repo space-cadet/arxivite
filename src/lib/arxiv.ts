@@ -196,7 +196,13 @@ const makeArxivRequest = async (params: ArxivSearchParams): Promise<{ papers: Ar
     const page = params.pagination?.page || 0;
     const start = page * pageSize;
     
-    const sortBy = params.sort?.field || 'relevance';
+    // Map our sort fields to arXiv API's sort fields
+    let sortBy = 'relevance';
+    if (params.sort?.field === 'submittedDate') sortBy = 'submitted';
+    else if (params.sort?.field === 'lastUpdatedDate') sortBy = 'lastUpdatedDate';
+    else if (params.sort?.field === 'relevance') sortBy = 'relevance';
+    
+    // arXiv only accepts 'ascending' or 'descending'
     const sortOrder = params.sort?.order || 'descending';
     const url = `https://export.arxiv.org/api/query?search_query=${finalQuery}&start=${start}&max_results=${pageSize}&sortBy=${sortBy}&sortOrder=${sortOrder}`;
     console.log('Requesting:', url);

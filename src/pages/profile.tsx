@@ -24,6 +24,8 @@ const ProfilePage = () => {
   const { toast } = useToast();
   const paperState = usePaperState('profile-papers');
   const [isOpen, setIsOpen] = usePersistedState('profile.papersTableOpen', true);
+  const [currentPage, setCurrentPage] = usePersistedState<number>('profile.currentPage', 0);
+  const [pageSize, setPageSize] = usePersistedState<20 | 50 | 100>('profile.pageSize', 20);
   
   const [papers, setPapers] = useState<Paper[]>([]);
   const [isRefreshing, setIsRefreshing] = useState(false);
@@ -153,9 +155,13 @@ const ProfilePage = () => {
                   <ResponsivePaperList 
                     papers={papers}
                     paperState={paperState}
-                    onSort={(_field) => {}} // No-op for now, can be enhanced with sorting later
-                    sortField="submittedDate"
-                    sortOrder="descending"
+                    tableId="profile"
+                    totalResults={papers.length}
+                    currentPage={currentPage}
+                    pageSize={pageSize}
+                    onPageChange={setCurrentPage}
+                    onPageSizeChange={(size) => setPageSize(size as 20 | 50 | 100)}
+                    isLoading={isLoadingPapers}
                   />
                 </CollapsibleContent>
               </Collapsible>

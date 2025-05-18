@@ -31,7 +31,7 @@ const SearchPage = () => {
   const [searchKey, setSearchKey] = usePersistedState('search.key', 0);
   
   const { data, isLoading, error } = arxivSearch.search({ 
-    query: searchInput,
+    query: searchInput || '',  // Ensure empty string if undefined
     pagination: {
       pageSize,
       page: currentPage
@@ -41,6 +41,12 @@ const SearchPage = () => {
       order: sortOrder
     },
     searchKey
+  }, {
+    // Add caching and stale time settings
+    staleTime: 30000, // Consider data fresh for 30 seconds
+    cacheTime: 300000, // Keep unused data in cache for 5 minutes
+    retry: 1, // Only retry once on failure
+    refetchOnWindowFocus: false // Don't refetch when window regains focus
   });
 
   const arxivPapers = data?.papers || [];
@@ -144,35 +150,11 @@ const SearchPage = () => {
         </Alert>
       )}
       
-      {/* Pagination Controls */}
       {/* Debug data structure */}
       <div className="hidden">
         {JSON.stringify(data, null, 2)}
       </div>
-      
-      {/* Show pagination if we have results */}
-      {data?.papers && data.papers.length > 0 && data?.metadata && Number.isFinite(data.metadata.totalResults) && (
-        <div>
-          <PaginationControls
-            currentPage={currentPage}
-            pageSize={pageSize}
-            totalResults={data.metadata.totalResults}
-            onPageChange={(page) => {
-              setCurrentPage(page);
-              // Force refetch when page changes
-              setSearchKey(prev => prev + 1);
-            }}
-            onPageSizeChange={(size) => {
-              setPageSize(size);
-              setCurrentPage(0); // Reset to first page
-              // Force refetch when page size changes
-              setSearchKey(prev => prev + 1);
-            }}
-            isLoading={isLoading}
-          />
-        </div>
-      )}
-
+    
       {isLoading ? (
         <div className="space-y-4">
           <Skeleton className="h-12 w-full" />
@@ -184,9 +166,20 @@ const SearchPage = () => {
             <ResponsivePaperList 
               papers={filteredPapers} 
               paperState={paperState}
-              onSort={handleSort}
-              sortField={sortField}
-              sortOrder={sortOrder}
+              tableId="search"
+              totalResults={data?.metadata?.totalResults}
+              currentPage={currentPage}
+              pageSize={pageSize}
+              onPageChange={(page) => {
+                setCurrentPage(page);
+                setSearchKey(prev => prev + 1);
+              }}
+              onPageSizeChange={(size) => {
+                setPageSize(size as 20 | 50 | 100);
+                setCurrentPage(0);
+                setSearchKey(prev => prev + 1);
+              }}
+              isLoading={isLoading}
             />
           ) : (
             searchInput && (

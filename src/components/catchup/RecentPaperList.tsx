@@ -4,6 +4,7 @@ import { Skeleton } from "@/components/ui/skeleton"
 import { Alert, AlertDescription } from "@/components/ui/alert"
 import { AlertCircle } from "lucide-react"
 import type { Paper } from "@/types/paper"
+import { useState } from "react"
 
 type TimeRange = "daily" | "weekly" | "monthly"
 type FilterType = "all" | "recommended" | "bookmarked"
@@ -26,6 +27,8 @@ export default function RecentPaperList({
   paperState
 }: RecentPaperListProps) {
   const { papers, isLoading, error, isEmpty } = useRecentPapers(timeRange, filter)
+  const [currentPage, setCurrentPage] = useState(0);
+  const [pageSize, setPageSize] = useState<20 | 50 | 100>(20);
 
   if (isLoading) {
     return (
@@ -80,9 +83,13 @@ export default function RecentPaperList({
     <ResponsivePaperList 
       papers={filteredPapers} 
       paperState={paperState}
-      onSort={(_field) => {}} // No-op since recent papers are pre-sorted
-      sortField="submittedDate"
-      sortOrder="descending"
+      tableId="catchup"
+      totalResults={filteredPapers.length}
+      currentPage={currentPage}
+      pageSize={pageSize}
+      onPageChange={setCurrentPage}
+      onPageSizeChange={(size) => setPageSize(size as 20 | 50 | 100)}
+      isLoading={isLoading}
     />
   )
 }
