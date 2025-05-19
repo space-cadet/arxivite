@@ -1,5 +1,40 @@
 # Error Log
 
+## 2025-05-19 19:30: T23 - Local/Vercel Search Parameter Mismatch
+**File:** `src/lib/arxiv.ts`
+**Error:** `Error in LLM-enhanced search: Error: ArXiv API error: 400 Bad Request`
+**Cause:** Local and Vercel environments using different sort parameters due to localStorage persistence:
+```
+Local: sortBy=relevance&sortOrder=ascending
+Vercel: sortBy=submittedDate&sortOrder=descending
+```
+**Fix:** Centralized search configuration with consistent defaults
+**Changes:** 
+```typescript
+// Created src/config/search.ts
+export const DEFAULT_SEARCH_CONFIG = {
+  pageSize: 50,
+  sortField: 'relevance',
+  sortOrder: 'descending',
+  currentPage: 0
+};
+
+// Updated search.tsx to use unified config
+const [searchConfig, setSearchConfig] = usePersistedState<SearchConfig>('search.config', DEFAULT_SEARCH_CONFIG);
+```
+**Task:** T23
+
+## 2025-05-19 19:30: T23 - Search Parameter Inconsistency
+**File:** `src/pages/search.tsx`, `src/lib/arxiv.ts`
+**Error:** Different sort parameters between local and Vercel environments
+**Cause:** Inconsistent state persistence causing different default values to be used
+**Fix:** Implemented centralized search configuration
+**Changes:** 
+- Created `src/config/search.ts` with DEFAULT_SEARCH_CONFIG
+- Updated search page to use unified configuration
+- Fixed TypeScript type issues with page size and sort order
+**Task:** T23
+
 ## 2025-05-19 14:35: T18 - Type Safety Issues with Error Handling
 **File:** `src/lib/logging/logger.ts`
 **Error:** TypeScript type safety warning - unsafe access to error.code

@@ -10,35 +10,49 @@ import { useArxivSearch } from '@/hooks/useArxiv';
 import { useProfile } from '@/contexts/ProfileContext';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Skeleton } from '@/components/ui/skeleton';
+import { DEFAULT_SEARCH_CONFIG, SearchConfig } from '@/config/search';
 
 const SearchPage = () => {
   // Add scroll and paper state persistence
   useScrollState('search');
   const paperState = usePaperState('search');
   const [searchInput, setSearchInput] = usePersistedState('search.input', '');
-  const [pageSize, setPageSize] = usePersistedState<20 | 50 | 100>('search.pageSize', 20);
-  const [currentPage, setCurrentPage] = usePersistedState('search.currentPage', 0);
+  const [searchConfig, setSearchConfig] = usePersistedState<SearchConfig>('search.config', DEFAULT_SEARCH_CONFIG);
   const [authorFilter, setAuthorFilter] = usePersistedState('search.authorFilter', '');
   const [selectedCategory, setSelectedCategory] = usePersistedState('search.category', 'all');
   const [availableCategories, setAvailableCategories] = usePersistedState<string[]>('search.availableCategories', []);
-  const [sortField, setSortField] = usePersistedState<'submittedDate' | 'lastUpdatedDate' | 'relevance'>('search.sortField', 'relevance');
-  const [sortOrder, setSortOrder] = usePersistedState<'ascending' | 'descending'>('search.sortOrder', 'descending');
   
   const { profile } = useProfile();
   const arxivSearch = useArxivSearch();
   
   // Add a search key to force refetch when search is triggered
   const [searchKey, setSearchKey] = usePersistedState('search.key', 0);
+
+  const setPageSize = (size: 20 | 50 | 100) => {
+    setSearchConfig(prev => ({ ...prev, pageSize: size }));
+  };
+
+  const setCurrentPage = (page: number) => {
+    setSearchConfig(prev => ({ ...prev, currentPage: page }));
+  };
+
+  const setSortField = (field: SearchConfig['sortField']) => {
+    setSearchConfig(prev => ({ ...prev, sortField: field }));
+  };
+
+  const setSortOrder = (order: SearchConfig['sortOrder']) => {
+    setSearchConfig(prev => ({ ...prev, sortOrder: order }));
+  };
   
   const { data, isLoading, error } = arxivSearch.search({ 
-    query: searchInput || '',  // Ensure empty string if undefined
+    query: searchInput || '',
     pagination: {
-      pageSize,
-      page: currentPage
+      pageSize: searchConfig.pageSize,
+      page: searchConfig.currentPage
     },
     sort: {
-      field: sortField,
-      order: sortOrder
+      field: searchConfig.sortField,
+      order: searchConfig.sortOrder
     },
     searchKey
   });
@@ -56,13 +70,13 @@ const SearchPage = () => {
     if (process.env.NODE_ENV === 'development') {
       console.log('Search state:', {
         searchInput,
-        pageSize,
-        currentPage,
+        pageSize: searchConfig.pageSize,
+        currentPage: searchConfig.currentPage,
         totalResults: data?.metadata?.totalResults,
         papers: papers.length
       });
     }
-  }, [searchInput, pageSize, currentPage, data?.metadata?.totalResults, papers.length]);
+  }, [searchInput, searchConfig.pageSize, searchConfig.currentPage, data?.metadata?.totalResults, papers.length]);
   
   useEffect(() => {
     const uniqueCategories = new Set<string>();
@@ -110,10 +124,10 @@ const SearchPage = () => {
     setSelectedCategory(category);
   };
 
-  const handleSort = (field: 'submittedDate' | 'lastUpdatedDate' | 'relevance') => {
-    if (field === sortField) {
+  const handleSort = (field: SearchConfig['sortField']) => {
+    if (field === searchConfig.sortField) {
       // If clicking the same field, toggle order
-      setSortOrder(current => current === 'ascending' ? 'descending' : 'ascending');
+      setSortOrder(searchConfig.sortOrder === 'ascending' ? 'descending' : 'ascending');
     } else {
       // If clicking a new field, set it and default to descending
       setSortField(field);
@@ -162,14 +176,11 @@ const SearchPage = () => {
               paperState={paperState}
               tableId="search"
               totalResults={data?.metadata?.totalResults}
-              currentPage={currentPage}
-              pageSize={pageSize}
-              onPageChange={(page) => {
-                setCurrentPage(page);
-                setSearchKey(prev => prev + 1);
-              }}
+              currentPage={searchConfig.currentPage}
+              pageSize={searchConfig.pageSize}
+              onPageChange={setCurrentPage}
               onPageSizeChange={(size) => {
-                setPageSize(size as 20 | 50 | 100);
+                setPageSize(size as typeof searchConfig.pageSize);
                 setCurrentPage(0);
                 setSearchKey(prev => prev + 1);
               }}

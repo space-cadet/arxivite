@@ -231,6 +231,7 @@ Phase 4: Social & Analytics
 | T0 | Project Setup | 2025-04-26 | [tasks/T0.md] |
 
 ## Recent Updates
+- 2025-05-19 19:30: Implemented search parameter consistency fix (T23)
 - 2025-05-19 20:00: Enhanced T20 logging system with token usage tracking and daily snapshots
 - 2025-05-19 19:30: Completed mobile sorting and pagination implementation (T23)
 - 2025-05-19 19:00: Fixed duplicate pagination controls in search page (T23)
