@@ -2,6 +2,13 @@
 *Last Updated: 2025-05-19*
 
 ## 2025-05-19
+### 20:00 - T20: Token Usage Tracking Implementation
+- Modified `supabase-logging-setup.md` - Added token tracking and snapshot functionality
+- Updated token usage tracking function to fix aggregate function errors
+- Implemented daily usage snapshots with enhanced metrics (cache hits, latency, model usage)
+- Modified `memory-bank/tasks/T20.md` - Updated progress with token tracking implementation
+- Modified `memory-bank/tasks.md` - Added token tracking milestone
+
 ### 19:30 - T23: Mobile Sort and Pagination Implementation
 - Modified `src/components/papers/responsive-paper-list.tsx` - Added pagination and sort controls
 - Modified `src/components/catchup/RecentPaperList.tsx` - Added pagination support
