@@ -16,8 +16,8 @@
 | T24 | Release Notes Integration | ⬜ | LOW | - | [tasks/T24.md] |
 | T23 | Search and Navigation Enhancements | 🔄 | HIGH | 2025-05-19 | [tasks/T23.md] ✅P1,P2 |
 | T22 | Author List Enhancement | ⬜ | HIGH | - | [tasks/T22.md] |
-| T21 | Zotero and Mendeley Integration | ⬜ | MEDIUM | - | [tasks/T21.md] |
-| T20 | Implement Comprehensive Logging System | 🔄 | HIGH | 2025-05-17 | [tasks/T20.md] ✅P1 |
+| T21 | Zotero and Mendeley Integration | 🔄 | MEDIUM | 2025-05-20 | [tasks/T21.md] |
+| T20 | Implement Comprehensive Logging System | 🔄 | HIGH | 2025-05-17 | [tasks/T20.md] ✅P1,P2,P3 |
 | T19a | LLM-Enhanced Search Query Parsing | ✅ | HIGH | 2025-05-14 | [tasks/T19a.md] |
 | T18 | SEO Implementation and Website Visibility Enhancement | 🔄 | HIGH | 2025-05-14 | [tasks/T18.md] |
 | T17 | Authentication System POC | 🔄 | HIGH | 2025-05-13 | [tasks/T17.md] |
@@ -140,6 +140,25 @@ Phase 4: Social & Analytics
 **Files**:
 - `src/lib/ml/`
 - `src/components/profile/`
+
+### T21: Zotero and Mendeley Integration
+**Description**: Implement integration with Zotero and Mendeley for paper export
+**Status**: 🔄 **Last**: 2025-05-20 14:30
+**Criteria**: 
+- Zotero OAuth integration
+- Paper export functionality
+- UI integration in papers list
+- Settings page integration
+**Files**:
+- `src/lib/integrations/zotero.ts` (planned)
+- `src/components/integrations/ZoteroConnect.tsx` (planned)
+- `src/components/papers/ExportButton.tsx` (planned)
+- `implementation-details/zotero-integration-setup.md`
+**Progress**:
+1. ✅ Zotero application registration
+2. ✅ Integration documentation
+3. ✅ OAuth flow planning
+4. 🔄 Implementation in progress
 
 ### T6: Paper Bookmarking System
 **Description**: Implement paper bookmarking functionality

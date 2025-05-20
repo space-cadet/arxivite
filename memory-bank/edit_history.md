@@ -1,6 +1,19 @@
 # Edit History
 *Last Updated: 2025-05-19*
 
+## 2025-05-20
+### 15:00 - T20: Updated Logging System Documentation and Status
+- Modified `tasks/T20.md` - Updated progress, completion criteria, and technical notes
+- Modified `tasks.md` - Updated T20 progress (completed Phases 1-3)
+- Modified `session_cache.md` - Updated session state with correct implementation status
+
+## 2025-05-20
+### 14:30 - T21: Zotero Integration Setup
+- Created `implementation-details/zotero-integration-setup.md` - Added integration documentation
+- Modified `tasks/T21.md` - Updated with implementation checklist and progress
+- Modified `tasks.md` - Updated T21 status and details
+- Modified `session_cache.md` - Updated with current task focus
+
 ## 2025-05-19
 ### 20:00 - T23: Search Parameter Consistency Fix
 - Created `src/config/search.ts` - Added centralized search configuration
