@@ -99,25 +99,29 @@ const makeArxivRequestLegacy = async (searchQuery: string, pageSize: number = 20
 const getSearchMetadata = async (searchQuery: string): Promise<ArxivSearchMetadata> => {
   try {
     // Make a minimal request to get total count
-    const url = `https://export.arxiv.org/api/query?search_query=${searchQuery}&max_results=1`;
-    const response = await fetch(url);
+    const url = new URL('https://export.arxiv.org/api/query');
+    url.searchParams.append('search_query', `all:${searchQuery}`);
+    url.searchParams.append('start', '0');
+    url.searchParams.append('max_results', '1');
+
+    const response = await fetch(url.toString());
     if (!response.ok) {
       throw new Error(`ArXiv API error: ${response.status} ${response.statusText}`);
     }
     
     const text = await response.text();
-    const xmlDoc = parseXML(text);
+    const parser = new DOMParser();
+    const doc = parser.parseFromString(text, 'application/xml');
     
-    // Get total results from opensearch:totalResults
-    // Get metadata from OpenSearch elements
-    const totalResults = parseInt(xmlDoc.getElementsByTagName('opensearch:totalResults')[0]?.textContent || '0', 10);
-    const itemsPerPage = parseInt(xmlDoc.getElementsByTagName('opensearch:itemsPerPage')[0]?.textContent || '0', 10);
-    const startIndex = parseInt(xmlDoc.getElementsByTagName('opensearch:startIndex')[0]?.textContent || '0', 10);
+    // Use getElementsByTagNameNS for XML namespaces
+    const totalResultsEl = doc.getElementsByTagNameNS('http://a9.com/-/spec/opensearch/1.1/', 'totalResults')[0];
+    const totalResults = parseInt(totalResultsEl?.textContent || '0', 10);
     
-    console.log('ArXiv API metadata:', { totalResults, itemsPerPage, startIndex });
+    console.log('ArXiv API metadata:', { totalResults });
     
+    // ArXiv API has a limit of 2000 results
     return {
-      totalResults: Math.min(totalResults, 2000), // ArXiv API limit
+      totalResults: Math.min(totalResults, 2000),
       itemsPerPage: 1,
       startIndex: 0
     };
@@ -142,141 +146,89 @@ const makeArxivRequest = async (params: ArxivSearchParams): Promise<{ papers: Ar
     
     let finalQuery = params.query;
     
-    // Only use LLM parsing if no explicit operators
+    // If no explicit operators, parse the query
     if (!hasExplicitOperators) {
-      // Parse query using LLM
-      const parsed = await parser.parseQuery(params.query);
-      
-      // Convert to arXiv format
-      finalQuery = parser.convertToArxivFormat(parsed);
-      
-      // If parsing produced no results, fall back to legacy parsing
-      if (!finalQuery) {
-        await logArxivQuery('fallback', {
+      try {
+        // Parse and convert to ArXiv format
+        const parsed = await parser.parseQuery(params.query);
+        const converted = parser.convertToArxivFormat(parsed);
+        if (converted) {
+          finalQuery = converted;
+        }
+      } catch (error) {
+        await logError(error as Error, 'query_parser', {
           reason: 'llm_parsing_failed',
           originalQuery: params.query,
           timestamp: new Date().toISOString()
         });
-        const { pageSize, start } = getPaginationParams(params.pagination);
-        const url = `https://export.arxiv.org/api/query?search_query=${params.query}&start=${start}&max_results=${pageSize}`;
-        const legacyResult = await makeArxivRequestLegacy(params.query, pageSize, start);
-        const response = await fetch(url);
-        const xmlDoc = parseXML(await response.text());
-        const totalResults = parseInt(xmlDoc.getElementsByTagName('opensearch:totalResults')[0]?.textContent || '0', 10);
-        
-        return {
-          papers: legacyResult,
-          metadata: {
-            totalResults: Math.min(totalResults, 2000),
-            itemsPerPage: pageSize,
-            startIndex: start
-          }
-        };
       }
     }
     
-    // Handle special cases (ID queries)
-    if (finalQuery.includes('id:') && finalQuery.includes('OR')) {
-      const idPattern = /id:([^OR\s]+)/g;
-      const ids = [];
-      let match;
-      while ((match = idPattern.exec(finalQuery)) !== null) {
-        ids.push(match[1].trim());
-      }
-      finalQuery = `id:${ids.join(',')}`;
-    }
+    // Construct the URL
+    const url = new URL('https://export.arxiv.org/api/query');
+    url.searchParams.append('search_query', `all:${finalQuery}`);
+    url.searchParams.append('start', start.toString());
+    url.searchParams.append('max_results', pageSize.toString());
+    url.searchParams.append('sortBy', 'submittedDate');
+    url.searchParams.append('sortOrder', 'descending');
     
-    // Encode if not already containing special operators
-    if (!hasExplicitOperators && !finalQuery.includes(':')) {
-      finalQuery = encodeURIComponent(finalQuery);
-    }
+    console.log('Making request to:', url.toString());
     
-    // Calculate pagination parameters
-    const pageSize = params.pagination?.pageSize || 20;
-    const page = params.pagination?.page || 0;
-    const start = page * pageSize;
-    
-    // Map our sort fields to arXiv API's sort fields
-    let sortBy = 'relevance';
-    if (params.sort?.field === 'submittedDate') sortBy = 'submitted';
-    else if (params.sort?.field === 'lastUpdatedDate') sortBy = 'lastUpdatedDate';
-    else if (params.sort?.field === 'relevance') sortBy = 'relevance';
-    
-    // arXiv only accepts 'ascending' or 'descending'
-    const sortOrder = params.sort?.order || 'descending';
-    const url = `https://export.arxiv.org/api/query?search_query=${finalQuery}&start=${start}&max_results=${pageSize}&sortBy=${sortBy}&sortOrder=${sortOrder}`;
-    console.log('Requesting:', url);
-    
-    await logArxivQuery('request', { 
-      url,
-      finalQuery,
-      pageSize,
-      start,
-      sortBy,
-      sortOrder
-    });
-    
-    const response = await fetch(url);
+    const response = await fetch(url.toString());
     if (!response.ok) {
       throw new Error(`ArXiv API error: ${response.status} ${response.statusText}`);
     }
     
     const text = await response.text();
-    const results = parseAndTransformResults(text);
     
-    // If no results with strict author search, try relaxed search
-    if (results.length === 0 && finalQuery.includes('au:"')) {
-      console.log('No results with strict author search, trying relaxed search');
-      const relaxedQuery = finalQuery.replace(/au:"([^"]+)"/g, '(au:"$1" OR all:"$1")');
-      console.log('Relaxed query:', relaxedQuery);
+    // If the query was too broad, try a relaxed search
+    if (text.includes('Parser error')) {
+      console.log('Parser error detected, trying relaxed search');
       
-      const relaxedUrl = `https://export.arxiv.org/api/query?search_query=${relaxedQuery}&start=${start}&max_results=${pageSize}`;
-      const relaxedResponse = await fetch(relaxedUrl);
+      // Try a more relaxed search by adding AND between terms
+      const relaxedQuery = finalQuery.replace(/\s+/g, ' AND ');
+      url.searchParams.set('search_query', `all:${relaxedQuery}`);
+      
+      console.log('Making relaxed request to:', url.toString());
+      
+      const relaxedResponse = await fetch(url.toString());
       if (!relaxedResponse.ok) {
         throw new Error(`ArXiv API error: ${relaxedResponse.status} ${relaxedResponse.statusText}`);
       }
       
       const relaxedText = await relaxedResponse.text();
       const relaxedResults = parseAndTransformResults(relaxedText);
-      // Parse the relaxed response XML to get metadata
-      const relaxedXmlDoc = parseXML(relaxedText);
-      const relaxedTotalResults = parseInt(relaxedXmlDoc.getElementsByTagName('opensearch:totalResults')[0]?.textContent || '0', 10);
       
       return {
         papers: relaxedResults,
         metadata: {
-          totalResults: Math.min(relaxedTotalResults, 2000),
+          totalResults: 0, // Let searchPapers handle metadata
           itemsPerPage: pageSize,
           startIndex: start
         }
       };
     }
     
-    // Parse the XML response
-    const xmlDoc = parseXML(text);
-    // Get the total results count from the feed
-    const totalResults = parseInt(xmlDoc.getElementsByTagName('opensearch:totalResults')[0]?.textContent || '0', 10);
-    const itemsPerPage = pageSize;
-    const startIndex = start;
+    // Parse the XML response and get results
+    const results = parseAndTransformResults(text);
 
     return {
       papers: results,
       metadata: {
-        totalResults: Math.min(totalResults, 2000), // ArXiv API limit
-        itemsPerPage,
-        startIndex
+        totalResults: 0, // Let searchPapers handle metadata
+        itemsPerPage: pageSize,
+        startIndex: start
       }
     };
   } catch (error) {
     console.error('Error in LLM-enhanced search:', error);
     // Fall back to legacy search on any error
     console.log('Falling back to legacy search');
-    const { pageSize, start } = getPaginationParams(params.pagination);
     const papers = await makeArxivRequestLegacy(params.query, pageSize, start);
     return {
       papers,
       metadata: {
-        totalResults: 0,
+        totalResults: 0, // Let searchPapers handle metadata
         itemsPerPage: pageSize,
         startIndex: start
       }
@@ -284,17 +236,52 @@ const makeArxivRequest = async (params: ArxivSearchParams): Promise<{ papers: Ar
   }
 };
 
-// We default to using the improved search
-// Legacy implementation is preserved for potential rollback
+// Cache for search results
+const searchResultsCache = new Map<string, {
+  papers: ArxivPaper[];
+  metadata: {
+    totalResults: number;
+    itemsPerPage: number;
+    startIndex: number;
+  };
+  timestamp: number;
+}>();
+
+// Cache expiry time (30 minutes)
+const CACHE_EXPIRY_MS = 30 * 60 * 1000;
+
+// Generate cache key from search parameters
+const generateCacheKey = (params: ArxivSearchParams): string => {
+  const { query } = params;
+  // Only cache based on the query, not pagination
+  return JSON.stringify({ query });
+};
+
+// Client-side sorting function
+const sortPapers = (papers: ArxivPaper[], field: string, order: 'ascending' | 'descending'): ArxivPaper[] => {
+  return [...papers].sort((a, b) => {
+    const multiplier = order === 'ascending' ? 1 : -1;
+    
+    switch (field) {
+      case 'submittedDate':
+        return multiplier * (new Date(a.publishedDate).getTime() - new Date(b.publishedDate).getTime());
+      case 'lastUpdatedDate':
+        return multiplier * (new Date(a.updatedDate).getTime() - new Date(b.updatedDate).getTime());
+      case 'title':
+        return multiplier * a.title.localeCompare(b.title);
+      case 'relevance':
+        // For relevance, we'll keep the server's order
+        return 0;
+      default:
+        return 0;
+    }
+  });
+};
+
 export const searchPapers = async (params: ArxivSearchParams): Promise<ArxivSearchResponse> => {
   const startTime = Date.now();
+  
   try {
-    await logArxivQuery(params.query, { 
-      pagination: params.pagination,
-      sort: params.sort,
-      timestamp: new Date().toISOString()
-    });
-
     // First get the total count
     const metadata = await getSearchMetadata(params.query);
     
@@ -302,27 +289,52 @@ export const searchPapers = async (params: ArxivSearchParams): Promise<ArxivSear
     if (metadata.totalResults === 0) {
       return {
         papers: [],
-        metadata
+        metadata: {
+          totalResults: 0,
+          itemsPerPage: params.pagination?.pageSize || 20,
+          startIndex: params.pagination?.page || 0
+        }
       };
     }
-    
-    // Fetch the actual page of results with metadata
-    const result = await makeArxivRequest(params);
-    
-    await logArxivQuery('metadata', {
+
+    // Log the search query
+    await logArxivQuery('request', {
       query: params.query,
-      actualResults: result.metadata.totalResults,
-      metadataResults: metadata.totalResults,
-      latencyMs: Date.now() - startTime,
-      pageSize: params.pagination?.pageSize || 20,
-      page: params.pagination?.page || 0
+      pagination: params.pagination,
+      sort: params.sort,
+      timestamp: new Date().toISOString()
     });
-    
-    return result;
+
+    // Get pagination params
+    const { pageSize, page, start } = getPaginationParams(params.pagination);
+
+    // Fetch the actual page of results
+    const response = await makeArxivRequest({
+      ...params,
+      pagination: { pageSize, page },
+      sort: { field: 'submittedDate', order: 'descending' }
+    });
+
+    // Apply client-side sorting if different from default
+    let papers = response.papers;
+    if (params.sort?.field && params.sort.field !== 'submittedDate') {
+      papers = sortPapers(papers, params.sort.field, params.sort.order);
+    }
+
+    return {
+      papers,
+      metadata: {
+        totalResults: metadata.totalResults,
+        itemsPerPage: pageSize,
+        startIndex: start
+      }
+    };
   } catch (error) {
-    await logError(error as Error, 'arxiv-api', { query: params.query });
-    console.error('Error searching arxiv papers:', error);
+    console.error('Error searching papers:', error);
     throw error;
+  } finally {
+    const endTime = Date.now();
+    console.log(`Search completed in ${endTime - startTime}ms`);
   }
 };
 

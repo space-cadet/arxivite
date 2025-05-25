@@ -1,5 +1,12 @@
 # Edit History
-*Last Updated: 2025-05-19*
+
+## 2025-05-25 22:37 - T23: Fixed Search Pagination and Sorting
+- Modified `src/lib/arxiv.ts` to fix pagination and sorting issues
+
+## 2025-05-25 21:35 - T23: Added Sort by Field to Search Form
+- Modified `paper-filters.tsx` to add Sort by dropdown
+
+*Last Updated: 2025-05-25 21:35*
 
 ## 2025-05-20
 ### 15:00 - T20: Updated Logging System Documentation and Status

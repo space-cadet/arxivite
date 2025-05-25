@@ -1,16 +1,16 @@
 # Session Cache
-*Last Updated: 2025-05-19 20:00*
+*Last Updated: 2025-05-25 22:39*
 
 ## Current Session
-**Started**: 2025-05-20 14:30
-**Focus Task**: T21
-**Session File**: `sessions/2025-05-20-afternoon.md`
+**Started**: 2025-05-25 21:35
+**Focus Task**: T23
+**Session File**: `sessions/2025-05-25-evening.md`
 
 ## Latest Updates
-- Created Zotero integration documentation
-- Registered Zotero application and obtained API credentials
-- Updated T21 with detailed implementation checklist
-- Outlined OAuth flow structure and requirements
+- Fixed pagination and sorting issues in search functionality
+- Modified arxiv.ts to handle pagination correctly
+- Updated T23 documentation with latest progress
+- Improved error handling in query parser
 
 ## Current Session
 **Started**: 2025-05-19 20:00

@@ -14,7 +14,7 @@
 |----|-------|--------|----------|---------|------|
 | META-2 | GitHub Issues and Task File Reconciliation | 🔄 | HIGH | 2025-05-19 | [tasks/META-2.md] |
 | T24 | Release Notes Integration | ⬜ | LOW | - | [tasks/T24.md] |
-| T23 | Search and Navigation Enhancements | 🔄 | HIGH | 2025-05-19 | [tasks/T23.md] ✅P1,P2 |
+| T23 | Search and Navigation Enhancements | 🔄 | HIGH | 2025-05-19 | [tasks/T23.md] ✅P1,P2,P3 |
 | T22 | Author List Enhancement | ⬜ | HIGH | - | [tasks/T22.md] |
 | T21 | Zotero and Mendeley Integration | 🔄 | MEDIUM | 2025-05-20 | [tasks/T21.md] |
 | T20 | Implement Comprehensive Logging System | 🔄 | HIGH | 2025-05-17 | [tasks/T20.md] ✅P1,P2,P3 |
