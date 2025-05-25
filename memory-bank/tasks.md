@@ -14,8 +14,8 @@
 |----|-------|--------|----------|---------|------|
 | META-2 | GitHub Issues and Task File Reconciliation | 🔄 | HIGH | 2025-05-19 | [tasks/META-2.md] |
 | T24 | Release Notes Integration | ⬜ | LOW | - | [tasks/T24.md] |
-| T23 | Search and Navigation Enhancements | 🔄 | HIGH | 2025-05-19 | [tasks/T23.md] ✅P1,P2,P3 |
-| T22 | Author List Enhancement | ⬜ | HIGH | - | [tasks/T22.md] |
+| T23 | Search and Navigation Enhancements | 🔄 | HIGH | 2025-05-19 | [tasks/T23.md] ✅P1,P2,P3-partial |
+| T22 | Author List Enhancement | 🔄 | HIGH | 2025-05-25 | [tasks/T22.md] ✅P1 |
 | T21 | Zotero and Mendeley Integration | 🔄 | MEDIUM | 2025-05-20 | [tasks/T21.md] |
 | T20 | Implement Comprehensive Logging System | 🔄 | HIGH | 2025-05-17 | [tasks/T20.md] ✅P1,P2,P3 |
 | T19a | LLM-Enhanced Search Query Parsing | ✅ | HIGH | 2025-05-14 | [tasks/T19a.md] |
@@ -250,6 +250,9 @@ Phase 4: Social & Analytics
 | T0 | Project Setup | 2025-04-26 | [tasks/T0.md] |
 
 ## Recent Updates
+- 2025-05-25: Enhanced pagination UX with duplicate controls (top and bottom) for desktop/tablet (T23)
+- 2025-05-25: Fixed TypeScript build errors by adding missing sortField properties (T23)
+- 2025-05-25: Completed author list truncation with interactive toggle buttons (T22)
 - 2025-05-19 19:30: Implemented search parameter consistency fix (T23)
 - 2025-05-19 20:00: Enhanced T20 logging system with token usage tracking and daily snapshots
 - 2025-05-19 19:30: Completed mobile sorting and pagination implementation (T23)

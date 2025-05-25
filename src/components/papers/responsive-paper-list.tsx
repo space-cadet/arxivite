@@ -161,6 +161,18 @@ export function ResponsivePaperList({
             setSortOrder(order);
           }}
         />
+        {totalResults && totalResults > 0 && (
+          <div className="mt-4">
+            <PaginationControls
+              currentPage={currentPage}
+              pageSize={pageSize}
+              totalResults={totalResults}
+              onPageChange={(page) => onPageChange?.(page)}
+              onPageSizeChange={(size) => onPageSizeChange?.(size)}
+              isLoading={isLoading}
+            />
+          </div>
+        )}
       </>
     );
   };

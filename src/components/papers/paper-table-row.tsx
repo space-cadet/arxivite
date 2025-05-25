@@ -5,6 +5,7 @@ import { PaperStateHook } from '@/hooks/usePaperState';
 import { Button } from '@/components/ui/button';
 import { TableCell, TableRow } from '@/components/ui/table';
 import { useBookmarkContext } from '@/lib/bookmarks/context';
+import { useState } from 'react';
 
 interface PaperTableRowProps {
   paper: Paper;
@@ -14,6 +15,7 @@ interface PaperTableRowProps {
 const PaperTableRow = ({ paper, paperState }: PaperTableRowProps) => {
   const isOpen = paperState.isExpanded(paper.id);
   const { addBookmark, removeBookmark, loading, error, getBookmark } = useBookmarkContext();
+  const [showAllAuthors, setShowAllAuthors] = useState(false);
   
   const isBookmarked = getBookmark(paper.id) !== undefined;
   
@@ -77,7 +79,28 @@ const PaperTableRow = ({ paper, paperState }: PaperTableRowProps) => {
             {paper.title}
           </div>
         </TableCell>
-        <TableCell>{paper.authors.join(', ')}</TableCell>
+        <TableCell>
+          <div className="flex items-center gap-1">
+            <span>
+              {showAllAuthors || paper.authors.length <= 3
+                ? paper.authors.join(', ')
+                : paper.authors.slice(0, 3).join(', ')
+              }
+            </span>
+            {paper.authors.length > 3 && (
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setShowAllAuthors(!showAllAuthors);
+                }}
+                className="text-xs text-primary hover:text-primary/80 font-medium px-1 py-0.5 rounded hover:bg-primary/10 transition-colors"
+                title={showAllAuthors ? 'Show fewer authors' : `Show all ${paper.authors.length} authors`}
+              >
+                {showAllAuthors ? 'show less' : `+${paper.authors.length - 3} more`}
+              </button>
+            )}
+          </div>
+        </TableCell>
         <TableCell>
           <span className="inline-flex items-center rounded-md bg-primary/10 px-2 py-1 text-xs font-medium text-primary">
             {paper.category}

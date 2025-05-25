@@ -23,6 +23,7 @@ export default function CatchupPage() {
   const [filter, setFilter] = usePersistedState<FilterType>("catchup.filter", "all")
   const [authorFilter, setAuthorFilter] = usePersistedState<string>("catchup.authorFilter", "")
   const [selectedCategory, setSelectedCategory] = usePersistedState<string>("catchup.category", "all")
+  const [sortField, setSortField] = usePersistedState<string>("catchup.sortField", "submittedDate")
 
   // Add scroll state persistence
   useScrollState('catchup');
@@ -51,9 +52,11 @@ export default function CatchupPage() {
             authorValue={authorFilter}
             categoryValue={selectedCategory}
             searchValue=""
+            sortField={sortField}
             onSearch={() => {}}
             onAuthorSearch={handleAuthorSearch}
             onCategorySelect={handleCategorySelect}
+            onSortChange={setSortField}
             categories={profile.categories}
           />
 

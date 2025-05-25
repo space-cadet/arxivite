@@ -144,9 +144,11 @@ const SearchPage = () => {
         searchValue={searchInput}
         authorValue={authorFilter}
         categoryValue={selectedCategory}
+        sortField={searchConfig.sortField}
         onSearch={handleSearch}
         onAuthorSearch={handleAuthorSearch}
         onCategorySelect={handleCategorySelect}
+        onSortChange={(field) => setSortField(field as SearchConfig['sortField'])}
         categories={availableCategories}
       />
       

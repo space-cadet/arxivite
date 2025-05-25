@@ -1,12 +1,25 @@
 # Edit History
 
-## 2025-05-25 22:37 - T23: Fixed Search Pagination and Sorting
+## 2025-05-25
+### 16:00 - T23: Pagination UX Enhancement - Duplicate Controls
+- Modified `src/components/papers/responsive-paper-list.tsx` - Added duplicate pagination controls at bottom of results table
+
+### 15:45 - T23: TypeScript Build Fixes - Missing PaperFilters Props
+- Modified `src/pages/bookmarks.tsx` - Added sortField state and onSortChange prop to PaperFilters
+- Modified `src/pages/catchup.tsx` - Added sortField state and onSortChange prop to PaperFilters  
+- Modified `src/pages/search.tsx` - Connected sortField to existing searchConfig and added onSortChange handler
+
+### 15:30 - T22: Author List Enhancement - Interactive Truncation Implementation
+- Modified `src/components/papers/paper-table-row.tsx` - Added useState import and showAllAuthors state
+- Modified `src/components/papers/paper-table-row.tsx` - Implemented interactive author list truncation with "+N more" / "show less" toggle button
+
+### 22:37 - T23: Fixed Search Pagination and Sorting
 - Modified `src/lib/arxiv.ts` to fix pagination and sorting issues
 
-## 2025-05-25 21:35 - T23: Added Sort by Field to Search Form
+### 21:35 - T23: Added Sort by Field to Search Form
 - Modified `paper-filters.tsx` to add Sort by dropdown
 
-*Last Updated: 2025-05-25 21:35*
+*Last Updated: 2025-05-25 16:00*
 
 ## 2025-05-20
 ### 15:00 - T20: Updated Logging System Documentation and Status

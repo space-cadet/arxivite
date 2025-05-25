@@ -25,6 +25,7 @@ export default function BookmarksPage() {
   const { getAllBookmarks } = context;
   const [authorFilter, setAuthorFilter] = usePersistedState<string>("bookmarks.authorFilter", "");
   const [selectedCategory, setSelectedCategory] = usePersistedState<string>("bookmarks.category", "all");
+  const [sortField, setSortField] = usePersistedState<string>("bookmarks.sortField", "submittedDate");
   const [currentPage, setCurrentPage] = usePersistedState<number>("bookmarks.currentPage", 0);
   const [pageSize, setPageSize] = usePersistedState<20 | 50 | 100>("bookmarks.pageSize", 20);
   
@@ -168,9 +169,11 @@ export default function BookmarksPage() {
           authorValue={authorFilter}
           categoryValue={selectedCategory}
           searchValue=""
+          sortField={sortField}
           onSearch={() => {}}
           onAuthorSearch={handleAuthorSearch}
           onCategorySelect={handleCategorySelect}
+          onSortChange={setSortField}
           categories={profile.categories}
         />
 
