@@ -9,7 +9,7 @@ import { useProfile } from '@/contexts/ProfileContext';
 import { getCategoryById, getCategoryName } from '@/lib/categories';
 import { useToast } from "@/hooks/use-toast";
 import { Toaster } from "@/components/ui/toaster";
-import { useArxivSearch } from '@/hooks/useArxiv';
+import { useAuthorSearch } from '@/hooks/useAuthorSearch';
 import { arxivToPaper, Paper } from '@/types/paper';
 import { PaperCacheService } from '@/lib/papers/cache';
 import { Alert, AlertDescription } from "@/components/ui/alert";
@@ -35,10 +35,33 @@ const ProfilePage = () => {
     ? profile.authors.map(name => `au:"${name}"`).join(' OR ')
     : '';
   
-  const { data: authorPapers, isLoading: isLoadingPapers, error: paperError } = useArxivSearch().search({ 
-    query: authorQuery,
-    maxResults: 50
-  });
+  const authorSearchHook = useAuthorSearch();
+  const [authorPapers, setAuthorPapers] = useState<any>(null);
+  const [isLoadingPapers, setIsLoadingPapers] = useState(false);
+  const [paperError, setPaperError] = useState<Error | null>(null);
+
+  // Fetch author papers when query changes
+  useEffect(() => {
+    if (!authorQuery) return;
+    
+    const fetchAuthorPapers = async () => {
+      setIsLoadingPapers(true);
+      setPaperError(null);
+      try {
+        const result = await authorSearchHook.search({
+          query: authorQuery,
+          maxResults: 50
+        });
+        setAuthorPapers(result);
+      } catch (error) {
+        setPaperError(error instanceof Error ? error : new Error('Unknown error'));
+      } finally {
+        setIsLoadingPapers(false);
+      }
+    };
+
+    fetchAuthorPapers();
+  }, [authorQuery]);
 
   // Load cached papers on mount
   useEffect(() => {
@@ -58,14 +81,22 @@ const ProfilePage = () => {
   }, [authorPapers]);
 
   const handleRefresh = async () => {
-    if (profile.authors.length === 0) return;
+    if (profile.authors.length === 0 || !authorQuery) return;
     
     setIsRefreshing(true);
     PaperCacheService.clear();
     
     try {
-      // Force a refetch by clearing the cache
-      PaperCacheService.clear();
+      const result = await authorSearchHook.search({
+        query: authorQuery,
+        maxResults: 50
+      });
+      setAuthorPapers(result);
+      
+      toast({
+        title: "Papers refreshed",
+        description: "Your paper list has been updated."
+      });
     } catch (error) {
       toast({
         variant: "destructive",

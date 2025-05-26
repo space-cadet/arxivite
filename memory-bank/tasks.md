@@ -1,17 +1,18 @@
 # Tasks Master Reference
-*Last Updated: 2025-05-13 10:30*
+*Last Updated: 2025-05-26 16:30*
 
 ## Tasks Overview
-- **Active Tasks:** 9
+- **Active Tasks:** 10
 - **Paused Tasks:** 0
 - **Completed Tasks:** 5
-- **Latest Task ID:** T19a
+- **Latest Task ID:** T25
 
 ## Task Registry
 
 ## Active Tasks
 | ID | Title | Status | Priority | Started | File |
 |----|-------|--------|----------|---------|------|
+| T25 | OpenAlex Database Integration | ⬜ | HIGH | - | [tasks/T25.md] |
 | META-2 | GitHub Issues and Task File Reconciliation | 🔄 | HIGH | 2025-05-19 | [tasks/META-2.md] |
 | T24 | Release Notes Integration | ⬜ | LOW | - | [tasks/T24.md] |
 | T23 | Search and Navigation Enhancements | 🔄 | HIGH | 2025-05-19 | [tasks/T23.md] ✅P1,P2,P3-partial |
@@ -22,7 +23,7 @@
 | T18 | SEO Implementation and Website Visibility Enhancement | 🔄 | HIGH | 2025-05-14 | [tasks/T18.md] |
 | T17 | Authentication System POC | 🔄 | HIGH | 2025-05-13 | [tasks/T17.md] |
 | T16 | Comprehensive Research Keywords System | 🔄 | HIGH | 2025-05-13 | [tasks/T16.md] |
-| T15 | Profile and Settings Enhancement & Reorganization | 🔄 | HIGH | 2025-05-13 | [tasks/T15.md] |
+| T15 | Profile and Settings Enhancement & Reorganization | 🔄 | HIGH | 2025-05-13 | [tasks/T15.md] ✅Core+BugFix |
 | ID | Title | Status | Priority | Started | File |
 |----|-------|--------|----------|---------|------|
 | META-1 | Memory Bank Alignment with Custom arXiv API Implementation | 🔄 | HIGH | 2025-05-13 | [tasks/META-1.md] |
@@ -34,6 +35,46 @@
 | T6 | Paper Bookmarking System | 🔄 | MEDIUM | 2025-05-11 | [tasks/T6.md] |
 
 ## Task Details
+### T25: OpenAlex Database Integration
+**Description**: Integrate OpenAlex academic database to expand paper discovery beyond arXiv preprints
+**Status**: ⬜ **Last**: -
+**Criteria**:
+Phase 1: Core Integration
+- ⬜ OpenAlex API client with rate limiting
+- ⬜ OpenAlex-specific type definitions
+- ⬜ React hook for OpenAlex operations
+- ⬜ Extended Paper interface for unified data
+- ⬜ Data mapping utilities
+
+Phase 2: Unified Search
+- ⬜ Multi-source search orchestration
+- ⬜ Source abstraction layer
+- ⬜ Result normalization system
+- ⬜ Basic deduplication (DOI/title)
+- ⬜ Source selection configuration
+
+Phase 3: UI Integration
+- ⬜ Database selector in search filters
+- ⬜ Source badges on paper cards
+- ⬜ Citation counts and impact metrics
+- ⬜ Venue information display
+- ⬜ Open access indicators
+
+Phase 4: Advanced Features
+- ⬜ Cross-reference arXiv with published versions
+- ⬜ Citation-based sorting and filtering
+- ⬜ Related papers via citations
+- ⬜ Venue type filtering
+- ⬜ Subject area clustering
+
+**Files**:
+- `src/lib/openalex.ts` - OpenAlex API client
+- `src/types/openalex.ts` - OpenAlex types
+- `src/hooks/useOpenAlex.ts` - React hook
+- `src/lib/unifiedSearch.ts` - Multi-source orchestration
+- `src/components/papers/source-badge.tsx` - Source indicators
+- `implementation-details/openalex-integration-plan.md` - Implementation guide
+
 ### T18: SEO Implementation and Website Visibility Enhancement
 **Description**: Implement SEO optimizations and enhance overall web presence
 **Status**: 🔄 **Last**: 2025-05-15 22:00
@@ -250,6 +291,7 @@ Phase 4: Social & Analytics
 | T0 | Project Setup | 2025-04-26 | [tasks/T0.md] |
 
 ## Recent Updates
+- 2025-05-26: Created T25 for OpenAlex database integration to expand beyond arXiv
 - 2025-05-26: Fixed pagination total results count display issue and enhanced LLM query parsing (T23, T19a)
 - 2025-05-25: Enhanced pagination UX with duplicate controls (top and bottom) for desktop/tablet (T23)
 - 2025-05-25: Fixed TypeScript build errors by adding missing sortField properties (T23)

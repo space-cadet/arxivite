@@ -1,6 +1,15 @@
 # Edit History
 
 ## 2025-05-26
+### 16:30 - T25: Created OpenAlex Database Integration Task
+- Created `memory-bank/tasks/T25.md` - New task for expanding beyond arXiv to OpenAlex database
+- Created `memory-bank/implementation-details/openalex-integration-plan.md`
+- Modified `memory-bank/tasks.md` - Added T25 to active tasks, updated task counts and recent updates
+
+### 21:15 - T15: Fix Profile Page Author Paper Retrieval
+- Created `src/hooks/useAuthorSearch.ts` - Direct ArXiv API hook bypassing LLM processing
+- Modified `src/pages/profile.tsx` - Replaced useArxivSearch with useAuthorSearch for exact author matching
+
 ### 15:30 - T19a: Enhanced LLM query parsing for multi-word searches
 - Modified `src/lib/search/queryParser.ts` - Updated prompt to handle multi-word queries as separate topics
 - Modified `memory-bank/tasks/T19a.md` - Added automated prompt optimization system design
