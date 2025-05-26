@@ -1,5 +1,14 @@
 # Edit History
 
+## 2025-05-26
+### 15:30 - T19a: Enhanced LLM query parsing for multi-word searches
+- Modified `src/lib/search/queryParser.ts` - Updated prompt to handle multi-word queries as separate topics
+- Modified `memory-bank/tasks/T19a.md` - Added automated prompt optimization system design
+
+### 14:30 - T23: Fixed pagination total results count issue
+- Modified `src/lib/arxiv.ts` - Updated getSearchMetadata function to use same LLM query processing
+- Modified `memory-bank/tasks/T23.md` - Updated completion criteria and documentation
+
 ## 2025-05-25
 ### 16:00 - T23: Pagination UX Enhancement - Duplicate Controls
 - Modified `src/components/papers/responsive-paper-list.tsx` - Added duplicate pagination controls at bottom of results table

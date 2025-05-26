@@ -15,18 +15,21 @@ export class ArxivQueryParser {
     private static PROMPT = `Parse search query: "{query}". Return only raw JSON with fields: authors[], topics[], year_range{start,end}, arxiv_categories[], institutions[]. 
 
 IMPORTANT RULES:
-1. Do NOT split established technical terms or concepts that contain names (e.g., "Fisher information", "Cramer-Rao bound", "Gaussian distribution", "Markov chain", "Dirichlet distribution", "Kalman filter", "Maxwell equations", "Fourier transform", "Euler method", etc.)
-2. For queries like "fisher information" or "cramer rao", treat the entire phrase as a topic, not as author names
-3. Only extract author names when they appear independently or are clearly marked as authors
-4. For ambiguous cases (e.g., single names that could be authors or part of technical terms), prefer treating them as search terms rather than authors
-5. Preserve original capitalization
-6. Omit null or empty fields from the output
+1. For multi-word searches without conjunctions (AND/OR), treat each word/phrase as a separate topic UNLESS they form a well-known technical term
+2. Well-known technical terms should be kept together (e.g., "Fisher information", "Cramer-Rao bound", "Gaussian distribution", "quantum mechanics", "machine learning")
+3. Scientific abbreviations should be treated as separate topics (e.g., "fqhe braid" → ["fqhe", "braid"])
+4. Only extract author names when explicitly indicated (e.g., "by smith", "papers by jones")
+5. For ambiguous cases, prefer treating terms as topics rather than authors
+6. Preserve original capitalization
+7. Omit null or empty fields from the output
 
 Example mappings:
+- "fqhe braid" → topics: ["fqhe", "braid"]
+- "quantum entanglement" → topics: ["quantum entanglement"] 
 - "fisher information" → topics: ["fisher information"]
 - "papers by fisher about information theory" → authors: ["fisher"], topics: ["information theory"]
-- "cramer rao bound 2024" → topics: ["cramer rao bound"], year_range: {start: 2024}
-- "gaussian process by rasmussen" → topics: ["gaussian process"], authors: ["rasmussen"]`;
+- "machine learning deep learning" → topics: ["machine learning", "deep learning"]
+- "cramer rao bound 2024" → topics: ["cramer rao bound"], year_range: {start: 2024}`;
 
     private cache: Map<string, ParsedQuery>;
 

@@ -95,14 +95,39 @@ const makeArxivRequestLegacy = async (searchQuery: string, pageSize: number = 20
   return parseAndTransformResults(text);
 };
 
-// LLM-enhanced version with improved query parsing
+// LLM-enhanced version with improved query parsing - uses same query processing as actual search
 const getSearchMetadata = async (searchQuery: string): Promise<ArxivSearchMetadata> => {
   try {
-    // Make a minimal request to get total count
+    // Create parser instance to process query the same way as actual search
+    const parser = new ArxivQueryParser();
+    
+    // Check if query contains explicit search operators
+    const hasExplicitOperators = /\b(au:|ti:|abs:|cat:|all:|submittedDate:)\b/.test(searchQuery);
+    
+    let finalQuery = searchQuery;
+    
+    // If no explicit operators, parse the query using LLM (same as actual search)
+    if (!hasExplicitOperators) {
+      try {
+        // Parse and convert to ArXiv format
+        const parsed = await parser.parseQuery(searchQuery);
+        const converted = parser.convertToArxivFormat(parsed);
+        if (converted) {
+          finalQuery = converted;
+        }
+      } catch (error) {
+        console.log('LLM parsing failed for metadata, using original query');
+        // Fall back to original query if LLM parsing fails
+      }
+    }
+    
+    // Make a minimal request to get total count using the same query format
     const url = new URL('https://export.arxiv.org/api/query');
-    url.searchParams.append('search_query', `all:${searchQuery}`);
+    url.searchParams.append('search_query', `all:${finalQuery}`);
     url.searchParams.append('start', '0');
     url.searchParams.append('max_results', '1');
+
+    console.log('Fetching metadata with processed query from:', url.toString());
 
     const response = await fetch(url.toString());
     if (!response.ok) {
@@ -110,14 +135,20 @@ const getSearchMetadata = async (searchQuery: string): Promise<ArxivSearchMetada
     }
     
     const text = await response.text();
-    const parser = new DOMParser();
-    const doc = parser.parseFromString(text, 'application/xml');
+    const domParser = new DOMParser();
+    const doc = domParser.parseFromString(text, 'application/xml');
     
-    // Use getElementsByTagNameNS for XML namespaces
-    const totalResultsEl = doc.getElementsByTagNameNS('http://a9.com/-/spec/opensearch/1.1/', 'totalResults')[0];
-    const totalResults = parseInt(totalResultsEl?.textContent || '0', 10);
-    
-    console.log('ArXiv API metadata:', { totalResults });
+    // Extract totalResults using the working method from debug logs
+    const totalResultsEl = doc.getElementsByTagName('opensearch:totalResults')[0] || 
+                          doc.getElementsByTagNameNS('http://a9.com/-/spec/opensearch/1.1/', 'totalResults')[0];
+                          
+    let totalResults = 0;
+    if (totalResultsEl) {
+      totalResults = parseInt(totalResultsEl.textContent || '0', 10);
+      console.log('Metadata: Successfully extracted totalResults:', totalResults);
+    } else {
+      console.warn('Could not find totalResults element in metadata XML response');
+    }
     
     // ArXiv API has a limit of 2000 results
     return {
